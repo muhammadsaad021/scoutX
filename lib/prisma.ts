@@ -17,7 +17,7 @@
     const users = await prisma.users.findMany()
 */
 
-import { PrismaClient } from '@/lib/generated/prisma'
+import { PrismaClient } from '@prisma/client'
 
 // Extend the global type to include our prisma instance
 const globalForPrisma = globalThis as unknown as {
