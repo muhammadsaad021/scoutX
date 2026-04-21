@@ -14,6 +14,8 @@ type Player = {
   Height: number | null;
   Weight: number | null;
   CreatedAt: string;
+  AverageScore: number | null;
+  MatchesPlayed: number;
   Users: { Name: string } | null;
 };
 
@@ -143,8 +145,7 @@ export default function PlayersPage() {
                 <th>Position</th>
                 <th>Age</th>
                 <th>Club</th>
-                <th>Height</th>
-                <th>Weight</th>
+                <th>Avg Score</th>
                 <th>Added By</th>
                 <th>Actions</th>
               </tr>
@@ -160,8 +161,16 @@ export default function PlayersPage() {
                   </td>
                   <td>{player.Age ?? "—"}</td>
                   <td>{player.Club ?? "—"}</td>
-                  <td>{player.Height ? `${player.Height} cm` : "—"}</td>
-                  <td>{player.Weight ? `${player.Weight} kg` : "—"}</td>
+                  <td>
+                    {player.AverageScore != null ? (
+                      <span style={{
+                        fontWeight: 700,
+                        color: player.AverageScore >= 60 ? "var(--success)" : player.AverageScore >= 30 ? "var(--warning)" : "var(--danger)"
+                      }}>
+                        {player.AverageScore}
+                      </span>
+                    ) : <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>—</span>}
+                  </td>
                   <td style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>{player.Users?.Name ?? "—"}</td>
                   <td>
                     <div style={{ display: "flex", gap: "0.5rem" }}>
