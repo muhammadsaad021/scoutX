@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { generatePlayerReportPDF } from "@/lib/pdf-generator";
+import PerformanceCharts from "@/components/PerformanceCharts";
 
 type Performance = {
   PerformanceID: number;
@@ -208,6 +209,9 @@ export default function PlayerProfilePage() {
           {STAT_BOX("Avg Rating", avgRating)}
         </div>
       </div>
+
+      {/* Performance Charts */}
+      {player.Performances.length > 0 && <PerformanceCharts playerId={player.PlayerID} />}
 
       {/* Performance History */}
       <h3 style={{ marginBottom: "1rem" }}>Performance History ({player.Performances.length})</h3>
