@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { generateRankingsPDF } from "@/lib/pdf-generator";
 
 type RankedPlayer = {
   Rank: number;
@@ -127,15 +128,27 @@ export default function RankingsPage() {
           <p>
             {loading ? "Calculating..." : message || `${total} player${total !== 1 ? "s" : ""} ranked${position ? ` — ${position}` : " across all positions"}`}
           </p>
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          <button
+            id="btn-export-rankings-pdf"
+            className="btn btn-secondary"
+            onClick={() => {
+              generateRankingsPDF(ranked, position);
+              showToast("Rankings exported as PDF!");
+            }}
+            disabled={ranked.length === 0}
+          >
+            📄 Export PDF
+          </button>
+          <button
+            id="btn-export-rankings"
+            className="btn btn-secondary"
+            onClick={handleExport}
+            disabled={exporting || ranked.length === 0}
+          >
+            {exporting ? "Exporting..." : "⬇ Export CSV"}
+          </button>
         </div>
-        <button
-          id="btn-export-rankings"
-          className="btn btn-secondary"
-          onClick={handleExport}
-          disabled={exporting || ranked.length === 0}
-        >
-          {exporting ? "Exporting..." : "⬇ Export CSV"}
-        </button>
       </div>
 
       {/* Position Filter */}
