@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { generatePlayerReportPDF } from "@/lib/pdf-generator";
+import PerformanceCharts from "@/components/PerformanceCharts";
 
 type Performance = {
   PerformanceID: number;
@@ -57,6 +59,9 @@ export default function PlayerProfilePage() {
   const [noteText, setNoteText] = useState("");
   const [noteSubmitting, setNoteSubmitting] = useState(false);
   const [noteError, setNoteError] = useState("");
+  
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false);
+  
   const [toast, setToast] = useState({ show: false, message: "", ok: true });
 
   const showToast = (message: string, ok = true) => {
@@ -95,6 +100,28 @@ export default function PlayerProfilePage() {
       fetchPlayer();
     }
     setNoteSubmitting(false);
+  };
+
+  const handleGenerateReport = async () => {
+    setIsGeneratingReport(true);
+    try {
+      const res = await fetch("/api/reports/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerID: id, format: "PDF" }),
+      });
+      const data = await res.json();
+      
+      if (!res.ok) {
+        showToast(data.error || "Failed to generate report.", false);
+      } else {
+        generatePlayerReportPDF(data.player);
+        showToast("Report generated successfully!");
+      }
+    } catch (err) {
+      showToast("An error occurred.", false);
+    }
+    setIsGeneratingReport(false);
   };
 
   if (loading) return (
@@ -140,6 +167,14 @@ export default function PlayerProfilePage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
         <Link href="/players" style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>← Back to Players</Link>
         <div style={{ display: "flex", gap: "0.75rem" }}>
+          <button 
+            onClick={handleGenerateReport} 
+            disabled={isGeneratingReport} 
+            className="btn btn-secondary"
+            style={{ fontSize: "0.875rem", padding: "0.4rem 0.875rem" }}
+          >
+            {isGeneratingReport ? "Generating..." : "📄 PDF Report"}
+          </button>
           {isScoutOrAdmin && (
             <>
               <Link href={`/players/${id}/edit`} id="btn-edit-player" className="btn btn-secondary">Edit Profile</Link>
@@ -174,6 +209,9 @@ export default function PlayerProfilePage() {
           {STAT_BOX("Avg Rating", avgRating)}
         </div>
       </div>
+
+      {/* Performance Charts */}
+      {player.Performances.length > 0 && <PerformanceCharts playerId={player.PlayerID} />}
 
       {/* Performance History */}
       <h3 style={{ marginBottom: "1rem" }}>Performance History ({player.Performances.length})</h3>
