@@ -106,6 +106,7 @@ export default function RankingsPage() {
     setExporting(false);
   };
 
+
   return (
     <div className="container" style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
 
@@ -128,161 +129,158 @@ export default function RankingsPage() {
           <p>
             {loading ? "Calculating..." : message || `${total} player${total !== 1 ? "s" : ""} ranked${position ? ` — ${position}` : " across all positions"}`}
           </p>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <button
-            id="btn-export-rankings-pdf"
-            className="btn btn-secondary"
-            onClick={() => {
-              generateRankingsPDF(ranked, position);
-              showToast("Rankings exported as PDF!");
-            }}
-            disabled={ranked.length === 0}
-          >
-            📄 Export PDF
-          </button>
-          <button
-            id="btn-export-rankings"
-            className="btn btn-secondary"
-            onClick={handleExport}
-            disabled={exporting || ranked.length === 0}
-          >
-            {exporting ? "Exporting..." : "⬇ Export CSV"}
-          </button>
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <button
+              id="btn-export-rankings-pdf"
+              className="btn btn-secondary"
+              onClick={() => {
+                generateRankingsPDF(ranked, position);
+                showToast("Rankings exported as PDF!");
+              }}
+              disabled={ranked.length === 0}
+            >
+              📄 Export PDF
+            </button>
+            <button
+              id="btn-export-rankings"
+              className="btn btn-secondary"
+              onClick={handleExport}
+              disabled={exporting || ranked.length === 0}
+            >
+              {exporting ? "Exporting..." : "⬇ Export CSV"}
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Position Filter */}
-      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
-        {POSITIONS.map((pos) => (
-          <button
-            key={pos || "all"}
-            id={`filter-${pos || "all"}`}
-            onClick={() => setPosition(pos)}
-            className="btn"
-            style={{
-              padding: "0.4rem 1rem",
-              fontSize: "0.8rem",
-              background: position === pos ? "var(--primary)" : "var(--bg-secondary)",
-              color: position === pos ? "white" : "var(--text-secondary)",
-              border: `1px solid ${position === pos ? "var(--primary)" : "var(--border-color)"}`,
-              borderRadius: "var(--radius-full)",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-            }}
-          >
-            {pos || "All Positions"}
-          </button>
-        ))}
-      </div>
+        {/* Position Filter */}
+        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginBottom: "1.5rem" }}>
+          {POSITIONS.map((pos) => (
+            <button
+              key={pos || "all"}
+              id={`filter-${pos || "all"}`}
+              onClick={() => setPosition(pos)}
+              className="btn"
+              style={{
+                padding: "0.4rem 1rem",
+                fontSize: "0.8rem",
+                background: position === pos ? "var(--primary)" : "var(--bg-secondary)",
+                color: position === pos ? "white" : "var(--text-secondary)",
+                border: `1px solid ${position === pos ? "var(--primary)" : "var(--border-color)"}`,
+                borderRadius: "var(--radius-full)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {pos || "All Positions"}
+            </button>
+          ))}
+        </div>
 
-      {/* Top 3 Podium */}
-      {!loading && ranked.length >= 3 && (
-        <div style={{
-          display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
-          gap: "1rem", marginBottom: "2rem",
-        }}>
-          {[ranked[1], ranked[0], ranked[2]].map((player, i) => {
-            if (!player) return null;
-            const podiumOrder = [2, 1, 3];
-            const heights = ["120px", "150px", "100px"];
-            return (
-              <Link
-                key={player.PlayerID}
-                href={`/players/${player.PlayerID}`}
-                style={{ textDecoration: "none" }}
-              >
-                <div className="card animate-fade-in" style={{
-                  textAlign: "center", padding: "1.5rem 1rem",
-                  borderTop: `3px solid ${i === 1 ? "var(--primary)" : i === 0 ? "#9CA3AF" : "#CD7F32"}`,
-                  transition: "transform 0.2s ease",
-                  cursor: "pointer",
-                }}
-                  onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-                  onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        {/* Top 3 Podium */}
+        {!loading && ranked.length >= 3 && (
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr 1fr 1fr",
+            gap: "1rem", marginBottom: "2rem",
+          }}>
+            {[ranked[1], ranked[0], ranked[2]].map((player, i) => {
+              if (!player) return null;
+              const podiumOrder = [2, 1, 3];
+              return (
+                <Link
+                  key={player.PlayerID}
+                  href={`/players/${player.PlayerID}`}
+                  style={{ textDecoration: "none" }}
                 >
-                  <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{MEDAL[podiumOrder[i]]}</div>
-                  <div style={{ fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.25rem" }}>
-                    {player.Name}
-                  </div>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.75rem" }}>
-                    {player.Position} · {player.Club ?? "—"}
-                  </div>
-                  <div style={{ fontSize: "1.75rem", fontWeight: 800, color: SCORE_COLOR(player.AverageScore) }}>
-                    {player.AverageScore}
-                  </div>
-                  <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>
-                    avg score
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Full Rankings Table */}
-      <div className="table-container">
-        {loading ? (
-          <div style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
-            Calculating rankings...
-          </div>
-        ) : ranked.length === 0 ? (
-          <div style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
-            {message || "No players with performance data found."}
-            {(userRole === "Scout" || userRole === "Admin") && (
-              <p style={{ marginTop: "0.75rem" }}>
-                <Link href="/players" style={{ color: "var(--primary)" }}>
-                  Add performance data to players →
-                </Link>
-              </p>
-            )}
-          </div>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th style={{ width: "60px" }}>Rank</th>
-                <th>Player</th>
-                <th>Position</th>
-                <th>Club</th>
-                <th>Age</th>
-                <th>Matches</th>
-                <th style={{ minWidth: "180px" }}>Average Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ranked.map((player) => (
-                <tr key={player.PlayerID} className="animate-fade-in">
-                  <td>
-                    <span style={{
-                      fontWeight: 700, fontSize: "1rem",
-                      color: player.Rank <= 3 ? "var(--primary)" : "var(--text-muted)",
-                    }}>
-                      {MEDAL[player.Rank] || `#${player.Rank}`}
-                    </span>
-                  </td>
-                  <td>
-                    <Link href={`/players/${player.PlayerID}`}
-                      style={{ fontWeight: 600, color: "var(--text-primary)", textDecoration: "none" }}
-                      id={`btn-rank-player-${player.PlayerID}`}
-                    >
+                  <div className="card animate-fade-in" style={{
+                    textAlign: "center", padding: "1.5rem 1rem",
+                    borderTop: `3px solid ${i === 1 ? "var(--primary)" : i === 0 ? "#9CA3AF" : "#CD7F32"}`,
+                    cursor: "pointer",
+                  }}
+                  >
+                    <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{MEDAL[podiumOrder[i]]}</div>
+                    <div style={{ fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.25rem" }}>
                       {player.Name}
-                    </Link>
-                  </td>
-                  <td>
-                    <span className="badge badge-primary">{player.Position}</span>
-                  </td>
-                  <td>{player.Club ?? "—"}</td>
-                  <td>{player.Age ?? "—"}</td>
-                  <td style={{ color: "var(--text-muted)" }}>{player.MatchesPlayed}</td>
-                  <td style={{ minWidth: "180px" }}>
-                    <ScoreBar score={player.AverageScore} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    </div>
+                    <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.75rem" }}>
+                      {player.Position} · {player.Club ?? "—"}
+                    </div>
+                    <div style={{ fontSize: "1.75rem", fontWeight: 800, color: SCORE_COLOR(player.AverageScore) }}>
+                      {player.AverageScore}
+                    </div>
+                    <div style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginTop: "0.25rem" }}>
+                      avg score
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         )}
+
+        {/* Full Rankings Table */}
+        <div className="table-container">
+          {loading ? (
+            <div style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
+              Calculating rankings...
+            </div>
+          ) : ranked.length === 0 ? (
+            <div style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
+              {message || "No players with performance data found."}
+              {(userRole === "Scout" || userRole === "Admin") && (
+                <p style={{ marginTop: "0.75rem" }}>
+                  <Link href="/players" style={{ color: "var(--primary)" }}>
+                    Add performance data to players →
+                  </Link>
+                </p>
+              )}
+            </div>
+          ) : (
+            <table>
+              <thead>
+                <tr>
+                  <th style={{ width: "60px" }}>Rank</th>
+                  <th>Player</th>
+                  <th>Position</th>
+                  <th>Club</th>
+                  <th>Age</th>
+                  <th>Matches</th>
+                  <th style={{ minWidth: "180px" }}>Average Score</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ranked.map((player) => (
+                  <tr key={player.PlayerID} className="animate-fade-in">
+                    <td>
+                      <span style={{
+                        fontWeight: 700, fontSize: "1rem",
+                        color: player.Rank <= 3 ? "var(--primary)" : "var(--text-muted)",
+                      }}>
+                        {MEDAL[player.Rank] || `#${player.Rank}`}
+                      </span>
+                    </td>
+                    <td>
+                      <Link href={`/players/${player.PlayerID}`}
+                        style={{ fontWeight: 600, color: "var(--text-primary)", textDecoration: "none" }}
+                        id={`btn-rank-player-${player.PlayerID}`}
+                      >
+                        {player.Name}
+                      </Link>
+                    </td>
+                    <td>
+                      <span className="badge badge-primary">{player.Position}</span>
+                    </td>
+                    <td>{player.Club ?? "—"}</td>
+                    <td>{player.Age ?? "—"}</td>
+                    <td style={{ color: "var(--text-muted)" }}>{player.MatchesPlayed}</td>
+                    <td style={{ minWidth: "180px" }}>
+                      <ScoreBar score={player.AverageScore} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     </div>
   );
