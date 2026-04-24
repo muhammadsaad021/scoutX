@@ -87,25 +87,25 @@ export default async function DashboardPage() {
 
       {/* Top Metrics Row */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
-        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)" }}>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600, marginBottom: "0.5rem" }}>
             Total Players
           </div>
-          <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--text-primary)" }}>
+          <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--primary)" }}>
             {totalPlayers}
           </div>
         </div>
 
-        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", animationDelay: "0.1s" }}>
+        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)", animationDelay: "0.1s" }}>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600, marginBottom: "0.5rem" }}>
             Active Scouts
           </div>
-          <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--text-primary)" }}>
+          <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--primary)" }}>
             {totalScouts} <span style={{ fontSize: "1rem", fontWeight: 400, color: "var(--text-muted)" }}>/ {totalUsers} total users</span>
           </div>
         </div>
 
-        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", animationDelay: "0.2s" }}>
+        <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)", animationDelay: "0.2s" }}>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600, marginBottom: "0.5rem" }}>
             Total Evaluations
           </div>
