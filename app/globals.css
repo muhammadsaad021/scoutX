@@ -190,6 +190,7 @@ a:hover {
 .card:hover {
   border-color: var(--border-light);
   box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
 }
 
 /* ---- Form Inputs ---- */

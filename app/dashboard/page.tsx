@@ -182,33 +182,25 @@ export default async function DashboardPage() {
       <h3 style={{ marginBottom: "1rem" }}>Quick Access</h3>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
         <Link href="/players/new" style={{ textDecoration: "none" }}>
-          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", transition: "transform 0.2s", animationDelay: "0.5s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}>
+          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", animationDelay: "0.5s" }}>
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>➕</div>
             <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>Add Player</div>
           </div>
         </Link>
         <Link href="/search" style={{ textDecoration: "none" }}>
-          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", transition: "transform 0.2s", animationDelay: "0.6s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}>
+          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", animationDelay: "0.6s" }}>
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>🔍</div>
             <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>Advanced Search</div>
           </div>
         </Link>
         <Link href="/compare" style={{ textDecoration: "none" }}>
-          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", transition: "transform 0.2s", animationDelay: "0.7s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}>
+          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", animationDelay: "0.7s" }}>
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>⚖️</div>
             <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>Compare Players</div>
           </div>
         </Link>
         <Link href="/watchlists" style={{ textDecoration: "none" }}>
-          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", transition: "transform 0.2s", animationDelay: "0.8s" }}
-            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}>
+          <div className="card animate-slide-in" style={{ textAlign: "center", padding: "1.5rem", animationDelay: "0.8s" }}>
             <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>📋</div>
             <div style={{ fontWeight: 600, color: "var(--text-primary)" }}>My Watchlists</div>
           </div>

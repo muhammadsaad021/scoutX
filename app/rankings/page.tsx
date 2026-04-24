@@ -185,7 +185,6 @@ export default function RankingsPage() {
             {[ranked[1], ranked[0], ranked[2]].map((player, i) => {
               if (!player) return null;
               const podiumOrder = [2, 1, 3];
-              const heights = ["120px", "150px", "100px"];
               return (
                 <Link
                   key={player.PlayerID}
@@ -195,11 +194,8 @@ export default function RankingsPage() {
                   <div className="card animate-fade-in" style={{
                     textAlign: "center", padding: "1.5rem 1rem",
                     borderTop: `3px solid ${i === 1 ? "var(--primary)" : i === 0 ? "#9CA3AF" : "#CD7F32"}`,
-                    transition: "transform 0.2s ease",
                     cursor: "pointer",
                   }}
-                    onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
-                    onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
                   >
                     <div style={{ fontSize: "2rem", marginBottom: "0.5rem" }}>{MEDAL[podiumOrder[i]]}</div>
                     <div style={{ fontWeight: 700, color: "var(--text-primary)", marginBottom: "0.25rem" }}>
