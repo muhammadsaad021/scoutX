@@ -4,8 +4,8 @@ import authConfig from "./auth.config";
 // Use the smaller edge-compatible configuration here
 const { auth } = NextAuth(authConfig);
 
-const publicRoutes = ["/", "/login"];
-const authRoutes = ["/login"];
+const publicRoutes = ["/", "/login", "/register"];
+const authRoutes = ["/login", "/register"];
 const apiAuthPrefix = "/api/auth";
 
 export default auth((req) => {
