@@ -14,7 +14,7 @@ export async function GET() {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const userId = parseInt(session!.user.id!);
+  const userId = parseInt(session?.user?.id || "0");
 
   try {
     const watchlists = await prisma.watchLists.findMany({
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const role = (session!.user as any).role;
+  const role = (session?.user as any).role;
   if (role !== "Coach" && role !== "Manager" && role !== "Admin") {
     return NextResponse.json(
       { error: "Only Coaches, Managers or Admins can create watchlists." },
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Watchlist name is required." }, { status: 400 });
     }
 
-    const userId = parseInt(session!.user.id!);
+    const userId = parseInt(session?.user?.id || "0");
 
     // Prevent duplicate names for the same user
     const existing = await prisma.watchLists.findFirst({

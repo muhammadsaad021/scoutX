@@ -95,7 +95,7 @@ export async function POST(req: NextRequest) {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const role = (session!.user as any).role;
+  const role = (session?.user as any).role;
   if (role !== "Scout" && role !== "Admin") {
     return NextResponse.json({ error: "Only Scouts can create player profiles." }, { status: 403 });
   }
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
         Club: club || null,
         Height: height ? parseFloat(height) : null,
         Weight: weight ? parseFloat(weight) : null,
-        CreatedByScoutID: parseInt(session!.user.id!),
+        CreatedByScoutID: parseInt(session?.user?.id || "0"),
       },
       select: {
         PlayerID: true, Name: true, Age: true,

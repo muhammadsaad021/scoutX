@@ -15,8 +15,8 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   const { id, playerId } = await params;
   const watchListID = parseInt(id);
   const playerID = parseInt(playerId);
-  const userId = parseInt(session!.user.id!);
-  const role = (session!.user as any).role;
+  const userId = parseInt(session?.user?.id || "0");
+  const role = (session?.user as any)?.role;
 
   const watchlist = await prisma.watchLists.findUnique({
     where: { WatchListID: watchListID },

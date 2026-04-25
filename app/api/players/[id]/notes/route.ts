@@ -14,7 +14,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const role = (session!.user as any).role;
+  const role = (session?.user as any).role;
   if (role !== "Scout" && role !== "Admin") {
     return NextResponse.json({ error: "Only Scouts can add notes." }, { status: 403 });
   }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, { params }: Params) {
     const note = await prisma.scoutNotes.create({
       data: {
         PlayerID: playerID,
-        ScoutID: parseInt(session!.user.id!),
+        ScoutID: parseInt(session?.user?.id || "0"),
         NoteText: noteText.trim(),
       },
       include: {

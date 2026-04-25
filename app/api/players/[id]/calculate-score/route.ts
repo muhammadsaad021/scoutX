@@ -18,7 +18,7 @@ export async function POST(_req: NextRequest, { params }: Params) {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const role = (session!.user as any).role;
+  const role = (session?.user as any).role;
   if (role !== "Coach" && role !== "Manager" && role !== "Admin") {
     return NextResponse.json(
       { error: "Only Coaches or Managers can calculate player scores." },

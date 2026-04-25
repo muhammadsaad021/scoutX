@@ -17,23 +17,7 @@ type Player = {
   Users: { Name: string } | null;
 };
 
-const POSITIONS = ["", "Goalkeeper", "Defender", "Midfielder", "Forward", "Winger", "Striker"];
-
-const SCORE_COLOR = (score: number | null) => {
-  if (!score) return "var(--text-muted)";
-  if (score >= 60) return "var(--success)";
-  if (score >= 30) return "var(--warning)";
-  return "var(--danger)";
-};
-
-const POSITION_BADGE: Record<string, string> = {
-  Goalkeeper: "badge-warning",
-  Defender: "badge-primary",
-  Midfielder: "badge-success",
-  Forward: "badge-danger",
-  Winger: "badge-danger",
-  Striker: "badge-danger",
-};
+const POSITIONS = ["All Players", "Goalkeeper", "Defender", "Midfielder", "Forward", "Winger", "Striker"];
 
 export default function SearchPage() {
   const { data: session } = useSession();
@@ -45,11 +29,12 @@ export default function SearchPage() {
   const [club, setClub]         = useState("");
   const [ageMin, setAgeMin]     = useState("");
   const [ageMax, setAgeMax]     = useState("");
-  const [sortBy, setSortBy]     = useState("CreatedAt");
+  const [sortBy, setSortBy]     = useState("AverageScore"); // default to score for rankings
   const [sortOrder, setSortOrder] = useState("desc");
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const [results, setResults]   = useState<Player[]>([]);
-  const [loading, setLoading]   = useState(false);
+  const [loading, setLoading]   = useState(true);
   const [searched, setSearched] = useState(false);
 
   // Build URL params and fetch
@@ -58,7 +43,7 @@ export default function SearchPage() {
     setSearched(true);
     const params = new URLSearchParams();
     if (query)    params.set("q", query);
-    if (position) params.set("position", position);
+    if (position && position !== "All Players") params.set("position", position);
     if (club)     params.set("club", club);
     if (ageMin)   params.set("ageMin", ageMin);
     if (ageMax)   params.set("ageMax", ageMax);
@@ -78,219 +63,195 @@ export default function SearchPage() {
 
   const clearFilters = () => {
     setQuery(""); setPosition(""); setClub("");
-    setAgeMin(""); setAgeMax(""); setSortBy("CreatedAt"); setSortOrder("desc");
+    setAgeMin(""); setAgeMax(""); setSortBy("AverageScore"); setSortOrder("desc");
   };
 
-  const activeFilters = [query, position, club, ageMin, ageMax].filter(Boolean).length;
-
   return (
-    <div className="container" style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+    <div className="container" style={{ paddingTop: "2rem", paddingBottom: "3rem", maxWidth: "1000px" }}>
 
       {/* Page Header */}
-      <div style={{ marginBottom: "2rem" }}>
-        <h1 style={{ marginBottom: "0.25rem" }}>Advanced Search</h1>
-        <p>Filter players by position, age, club, or performance score.</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "2rem" }}>
+        <div>
+          <h1 style={{ fontSize: "2rem", margin: 0, fontWeight: 700 }}>Verified Talent Pool</h1>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginTop: "0.25rem", textTransform: "uppercase", letterSpacing: "1px" }}>
+            {results.length} ACTIVE PROFILES IDENTIFIED
+          </p>
+        </div>
+        <select 
+          value={sortBy} 
+          onChange={(e) => setSortBy(e.target.value)}
+          style={{ background: "var(--bg-secondary)", color: "var(--text-primary)", border: "1px solid var(--border-color)", padding: "0.5rem 1rem", borderRadius: "4px", fontSize: "0.875rem", outline: "none" }}
+        >
+          <option value="AverageScore">SORT BY: HIGHEST OVR</option>
+          <option value="CreatedAt">SORT BY: NEWEST</option>
+          <option value="Name">SORT BY: NAME (A-Z)</option>
+        </select>
       </div>
 
-      {/* Filter Panel */}
-      <div className="card animate-fade-in" style={{ marginBottom: "1.5rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-          <h3 style={{ fontSize: "1rem" }}>🔍 Search Filters</h3>
-          {activeFilters > 0 && (
-            <button onClick={clearFilters} className="btn btn-secondary"
-              style={{ padding: "0.3rem 0.75rem", fontSize: "0.8rem" }}>
-              Clear {activeFilters} filter{activeFilters > 1 ? "s" : ""}
+      {/* Search Bar Row */}
+      <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
+        <div style={{ flex: 1, position: "relative" }}>
+          <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }}>🔍</span>
+          <input
+            type="text"
+            placeholder="SEARCH BY NAME, CLUB, OR NATION..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            style={{
+              width: "100%",
+              padding: "1rem 1rem 1rem 3rem",
+              background: "transparent",
+              border: "1px solid var(--border-color)",
+              borderRadius: "4px",
+              color: "white",
+              fontSize: "0.875rem",
+              letterSpacing: "1px",
+              outline: "none"
+            }}
+            onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+            onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+          />
+        </div>
+        <button 
+          onClick={() => setShowAdvanced(!showAdvanced)}
+          style={{ 
+            padding: "0 1.5rem", background: showAdvanced ? "var(--primary)" : "var(--bg-secondary)", 
+            color: showAdvanced ? "#000" : "var(--text-primary)", border: showAdvanced ? "none" : "1px solid var(--border-color)", 
+            borderRadius: "4px", fontSize: "0.875rem", cursor: "pointer", fontWeight: 600,
+            display: "flex", alignItems: "center", gap: "0.5rem", transition: "all 0.2s ease"
+          }}
+        >
+          ⚙️ ADVANCED FILTERS
+        </button>
+      </div>
+
+      {/* Advanced Filters Panel */}
+      {showAdvanced && (
+        <div className="card animate-slide-in" style={{ marginBottom: "1.5rem", borderLeft: "4px solid var(--primary)" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
+            <div>
+              <label className="label">Club</label>
+              <input type="text" className="input" placeholder="e.g. Barcelona" value={club} onChange={(e) => setClub(e.target.value)} />
+            </div>
+            <div>
+              <label className="label">Min Age</label>
+              <input type="number" className="input" placeholder="16" value={ageMin} onChange={(e) => setAgeMin(e.target.value)} />
+            </div>
+            <div>
+              <label className="label">Max Age</label>
+              <input type="number" className="input" placeholder="40" value={ageMax} onChange={(e) => setAgeMax(e.target.value)} />
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
+            <button onClick={clearFilters} className="btn" style={{ background: "transparent", color: "var(--danger)", border: "1px solid var(--danger)" }}>Clear Filters</button>
+          </div>
+        </div>
+      )}
+
+      {/* Position Chips */}
+      <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", marginBottom: "2rem" }}>
+        {POSITIONS.map((pos) => {
+          const isActive = pos === position || (pos === "All Players" && !position);
+          return (
+            <button
+              key={pos}
+              onClick={() => setPosition(pos === "All Players" ? "" : pos)}
+              style={{
+                padding: "0.5rem 1.25rem",
+                borderRadius: "20px",
+                fontSize: "0.75rem",
+                fontWeight: 700,
+                letterSpacing: "1px",
+                textTransform: "uppercase",
+                border: "none",
+                cursor: "pointer",
+                background: isActive ? "var(--primary)" : "var(--bg-secondary)",
+                color: isActive ? "#000" : "var(--text-secondary)",
+                transition: "all 0.2s ease"
+              }}
+            >
+              {pos}
             </button>
-          )}
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
-          {/* Global text search */}
-          <div style={{ gridColumn: "1 / -1" }}>
-            <label className="label">Search by Name or Club</label>
-            <input
-              id="input-search-query"
-              type="text"
-              className="input"
-              placeholder="e.g. Ronaldo, Al-Nassr..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
-
-          {/* Position */}
-          <div>
-            <label className="label">Position</label>
-            <select id="select-position" className="select" value={position}
-              onChange={(e) => setPosition(e.target.value)}>
-              <option value="">All Positions</option>
-              {POSITIONS.filter(Boolean).map((p) => (
-                <option key={p} value={p}>{p}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Club */}
-          <div>
-            <label className="label">Club</label>
-            <input
-              id="input-club-filter"
-              type="text"
-              className="input"
-              placeholder="e.g. Barcelona..."
-              value={club}
-              onChange={(e) => setClub(e.target.value)}
-            />
-          </div>
-
-          {/* Age Min */}
-          <div>
-            <label className="label">Min Age</label>
-            <input
-              id="input-age-min"
-              type="number"
-              className="input"
-              placeholder="e.g. 18"
-              min={10} max={60}
-              value={ageMin}
-              onChange={(e) => setAgeMin(e.target.value)}
-            />
-          </div>
-
-          {/* Age Max */}
-          <div>
-            <label className="label">Max Age</label>
-            <input
-              id="input-age-max"
-              type="number"
-              className="input"
-              placeholder="e.g. 30"
-              min={10} max={60}
-              value={ageMax}
-              onChange={(e) => setAgeMax(e.target.value)}
-            />
-          </div>
-
-          {/* Sort By */}
-          <div>
-            <label className="label">Sort By</label>
-            <select id="select-sort-by" className="select" value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}>
-              <option value="CreatedAt">Date Added</option>
-              <option value="Name">Name (A-Z)</option>
-              <option value="Age">Age</option>
-              <option value="Position">Position</option>
-            </select>
-          </div>
-
-          {/* Sort Order */}
-          <div>
-            <label className="label">Order</label>
-            <select id="select-sort-order" className="select" value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}>
-              <option value="desc">Descending</option>
-              <option value="asc">Ascending</option>
-            </select>
-          </div>
-        </div>
+          )
+        })}
       </div>
 
-      {/* Results Count */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
-          {loading ? "Searching..." : searched ? `${results.length} player${results.length !== 1 ? "s" : ""} found` : ""}
-        </p>
-        {(userRole === "Scout" || userRole === "Admin") && (
-          <Link href="/players/new" id="btn-add-player-search" className="btn btn-primary"
-            style={{ padding: "0.4rem 0.875rem", fontSize: "0.8rem" }}>
-            + Add Player
-          </Link>
-        )}
-      </div>
-
-      {/* Results Table */}
-      {loading ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>
-          Searching...
-        </div>
-      ) : results.length === 0 && searched ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem" }}>
-          <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🔎</div>
-          <h3 style={{ marginBottom: "0.5rem" }}>No players found</h3>
-          <p style={{ color: "var(--text-muted)" }}>Try adjusting your filters or clearing them.</p>
-          <button onClick={clearFilters} className="btn btn-secondary" style={{ marginTop: "1rem" }}>
-            Clear all filters
-          </button>
-        </div>
-      ) : results.length > 0 ? (
-        <div className="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Player</th>
-                <th>Position</th>
-                <th>Age</th>
-                <th>Club</th>
-                <th>Height</th>
-                <th>Matches</th>
-                <th>Avg Score</th>
-                <th>Scout</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map((player) => (
-                <tr key={player.PlayerID} className="animate-fade-in">
-                  <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>{player.Name}</td>
-                  <td>
-                    <span className={`badge ${POSITION_BADGE[player.Position] || "badge-primary"}`}>
-                      {player.Position}
-                    </span>
-                  </td>
-                  <td>{player.Age ?? "—"}</td>
-                  <td>{player.Club ?? "—"}</td>
-                  <td>{player.Height ? `${player.Height} cm` : "—"}</td>
-                  <td style={{ color: "var(--text-muted)" }}>{player.MatchesPlayed}</td>
-                  <td>
-                    {player.AverageScore != null ? (
-                      <span style={{ fontWeight: 700, color: SCORE_COLOR(player.AverageScore) }}>
-                        {player.AverageScore}
-                      </span>
-                    ) : (
-                      <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>No data</span>
-                    )}
-                  </td>
-                  <td style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
-                    {player.Users?.Name ?? "—"}
-                  </td>
-                  <td>
-                    <div style={{ display: "flex", gap: "0.5rem" }}>
-                      <Link
-                        href={`/players/${player.PlayerID}`}
-                        id={`btn-view-search-${player.PlayerID}`}
-                        className="btn btn-secondary"
-                        style={{ padding: "0.35rem 0.65rem", fontSize: "0.8rem" }}
-                      >
-                        View
-                      </Link>
-                      {(userRole === "Scout" || userRole === "Admin") && (
-                        <Link
-                          href={`/players/${player.PlayerID}/edit`}
-                          id={`btn-edit-search-${player.PlayerID}`}
-                          className="btn btn-secondary"
-                          style={{ padding: "0.35rem 0.65rem", fontSize: "0.8rem" }}
-                        >
-                          Edit
-                        </Link>
+      {/* Results List */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        {loading ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>Loading intelligence...</div>
+        ) : results.length === 0 ? (
+          <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)", border: "1px dashed var(--border-color)", borderRadius: "4px" }}>
+            No profiles match the active filters.
+          </div>
+        ) : (
+          results.map((player) => (
+            <Link 
+              key={player.PlayerID} 
+              href={`/players/${player.PlayerID}`}
+              style={{ textDecoration: "none" }}
+            >
+              <div 
+                className="animate-slide-in"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "1.25rem",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-color)",
+                  borderRadius: "4px",
+                  transition: "all 0.2s ease",
+                  cursor: "pointer"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = "var(--primary)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-glow)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = "var(--border-color)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+                  <div style={{ width: "60px", height: "60px", background: "var(--bg-secondary)", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2rem" }}>
+                    👤
+                  </div>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.25rem" }}>
+                      <h3 style={{ margin: 0, fontSize: "1.25rem", color: "var(--text-primary)" }}>{player.Name}</h3>
+                      {player.AverageScore && player.AverageScore >= 80 && (
+                        <span style={{ fontSize: "0.6rem", background: "var(--primary-light)", color: "var(--primary)", padding: "0.2rem 0.5rem", borderRadius: "2px", fontWeight: 700, letterSpacing: "1px" }}>
+                          ELITE_PROSPECT
+                        </span>
                       )}
                     </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ) : null}
+                    <div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+                      {player.Club || "Free Agent"} • {player.Position} • {player.Age ? `${player.Age} Years Old` : "Age Unknown"}
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", alignItems: "center", gap: "3rem", textAlign: "right" }}>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    <div style={{ fontSize: "2rem", fontWeight: 700, color: player.AverageScore && player.AverageScore >= 80 ? "var(--primary)" : "var(--text-primary)", lineHeight: 1 }}>
+                      {player.AverageScore ? Math.round(player.AverageScore) : "—"}
+                    </div>
+                    <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px" }}>OVR SCORE</div>
+                  </div>
+                  <div style={{ width: "1px", height: "40px", background: "var(--border-color)" }}></div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: "80px" }}>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1, marginBottom: "0.25rem" }}>
+                      €{player.AverageScore ? Math.round((player.AverageScore * 1.5) + (Math.random() * 10)) : 10}M
+                    </div>
+                    <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px" }}>VALUE</div>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
     </div>
   );
 }

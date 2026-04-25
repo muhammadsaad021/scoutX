@@ -17,10 +17,16 @@ export default async function DashboardPage() {
     redirect("/login");
   }
 
-  // 1. Total players count
-  const totalPlayers = await prisma.players.count();
+  const role = (session.user as any).role;
+  const isScout = role === "Scout";
+  const userId = parseInt(session.user.id || "0");
 
-  // 2. Total scouts/users count
+  // 1. Total players count (Scout sees their own, others see all)
+  const totalPlayers = isScout 
+    ? await prisma.players.count({ where: { CreatedByScoutID: userId } })
+    : await prisma.players.count();
+
+  // 2. Total scouts/users count (Admins/Managers care about this, scouts might not but we can show active scouts)
   const totalUsers = await prisma.users.count();
   const totalScouts = await prisma.users.count({ where: { Role: "Scout" } });
 
@@ -28,6 +34,7 @@ export default async function DashboardPage() {
   const recentPerformances = await prisma.performances.findMany({
     take: 5,
     orderBy: { CreatedAt: "desc" },
+    where: isScout ? { ScoutID: userId } : undefined,
     include: {
       Players: { select: { Name: true, Position: true } },
       Users: { select: { Name: true } },
@@ -36,13 +43,20 @@ export default async function DashboardPage() {
 
   // 4. Top-ranked players summary
   const allPlayers = await prisma.players.findMany({
-    include: {
+    select: {
+      PlayerID: true,
+      Name: true,
+      Position: true,
       Performances: {
         where: { CalculatedScore: { not: null } },
         select: { CalculatedScore: true },
       },
     },
   });
+
+  const totalEvaluations = isScout
+    ? await prisma.performances.count({ where: { ScoutID: userId } })
+    : await prisma.performances.count();
 
   const rankedPlayers = allPlayers
     .map((p) => {
@@ -89,7 +103,7 @@ export default async function DashboardPage() {
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.5rem", marginBottom: "2rem" }}>
         <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)" }}>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600, marginBottom: "0.5rem" }}>
-            Total Players
+            {isScout ? "My Tracked Players" : "Total Players"}
           </div>
           <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--primary)" }}>
             {totalPlayers}
@@ -107,10 +121,10 @@ export default async function DashboardPage() {
 
         <div className="card animate-slide-in" style={{ display: "flex", flexDirection: "column", justifyContent: "center", borderLeft: "4px solid var(--primary)", animationDelay: "0.2s" }}>
           <div style={{ fontSize: "0.875rem", color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: 600, marginBottom: "0.5rem" }}>
-            Total Evaluations
+            {isScout ? "My Evaluations" : "Total Evaluations"}
           </div>
           <div style={{ fontSize: "2.5rem", fontWeight: 800, color: "var(--primary)" }}>
-            {await prisma.performances.count()}
+            {totalEvaluations}
           </div>
         </div>
       </div>

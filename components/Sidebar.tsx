@@ -31,10 +31,7 @@ export default function Sidebar() {
     }}>
       {/* Brand */}
       <div style={{ marginBottom: "3rem", paddingLeft: "1rem" }}>
-        <h1 style={{ color: "var(--primary)", fontSize: "1.75rem", margin: 0, letterSpacing: "-1px" }}>SCOUT-HUB</h1>
-        <div style={{ color: "var(--text-muted)", fontSize: "0.7rem", letterSpacing: "1px", marginTop: "0.25rem", textTransform: "uppercase" }}>
-          Elite Tactical Scouting
-        </div>
+        <h1 style={{ color: "var(--primary)", fontSize: "1.75rem", margin: 0, letterSpacing: "-1px" }}>scoutX</h1>
       </div>
 
       {/* Navigation */}

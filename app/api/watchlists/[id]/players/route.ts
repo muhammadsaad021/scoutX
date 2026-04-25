@@ -16,8 +16,8 @@ export async function POST(req: NextRequest, { params }: Params) {
 
   const { id } = await params;
   const watchListID = parseInt(id);
-  const userId = parseInt(session!.user.id!);
-  const role = (session!.user as any).role;
+  const userId = parseInt(session?.user?.id || "0");
+  const role = (session?.user as any).role;
 
   // Verify ownership
   const watchlist = await prisma.watchLists.findUnique({

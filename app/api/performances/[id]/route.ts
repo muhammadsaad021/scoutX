@@ -32,7 +32,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const { error, session } = await requireAuth();
   if (error) return error;
 
-  const role = (session!.user as any).role;
+  const role = (session?.user as any).role;
   if (role !== "Scout" && role !== "Admin") {
     return NextResponse.json({ error: "Only Scouts can edit performance data." }, { status: 403 });
   }

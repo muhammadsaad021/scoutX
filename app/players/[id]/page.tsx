@@ -184,29 +184,82 @@ export default function PlayerProfilePage() {
         </div>
       </div>
 
-      {/* Player Header Card */}
-      <div className="card animate-fade-in" style={{ marginBottom: "1.5rem" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
-          <div>
-            <h2 style={{ marginBottom: "0.5rem" }}>{player.Name}</h2>
-            <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              <span className="badge badge-primary">{player.Position}</span>
-              {player.Club && <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>🏟️ {player.Club}</span>}
-              {player.Age && <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>🎂 {player.Age} years old</span>}
+      {/* Tactical Player Header Card */}
+      <div className="card animate-fade-in" style={{ marginBottom: "1.5rem", padding: "2rem", border: "none", background: "var(--bg-secondary)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "2rem" }}>
+          
+          {/* Left info */}
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: "1rem", marginBottom: "0.5rem" }}>
+              <h1 style={{ margin: 0, fontSize: "3.5rem", fontWeight: 800, color: "var(--primary)", lineHeight: 1 }}>
+                {avgRating ? Math.round(parseFloat(avgRating) * 10) : "N/A"}
+              </h1>
+              <span style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>{player.Position}</span>
+            </div>
+            
+            <h2 style={{ fontSize: "2.5rem", margin: "0.5rem 0", textTransform: "uppercase", letterSpacing: "1px" }}>{player.Name}</h2>
+            
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--text-secondary)", fontSize: "0.875rem", textTransform: "uppercase", letterSpacing: "1px" }}>
+              <span>🌍 NATION N/A</span>
+              <span>•</span>
+              <span>{player.Club || "FREE AGENT"}</span>
+              <span>•</span>
+              <span>{player.Age ? `${player.Age} YRS` : "AGE UNKNOWN"}</span>
+            </div>
+
+            {/* Per Match Stats Row */}
+            <div style={{ display: "flex", gap: "1rem", marginTop: "2rem" }}>
+              <div style={{ background: "var(--bg-card)", padding: "1rem", borderRadius: "4px", minWidth: "120px", border: "1px solid var(--border-color)" }}>
+                <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px", marginBottom: "0.5rem" }}>GOALS / MATCH</div>
+                <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {player.Performances.length ? (totalGoals / player.Performances.length).toFixed(2) : "0.00"}
+                </div>
+                <div style={{ height: "3px", background: "var(--primary)", width: "60%", marginTop: "0.5rem", borderRadius: "2px" }}></div>
+              </div>
+
+              <div style={{ background: "var(--bg-card)", padding: "1rem", borderRadius: "4px", minWidth: "120px", border: "1px solid var(--border-color)" }}>
+                <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px", marginBottom: "0.5rem" }}>ASSISTS / MATCH</div>
+                <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {player.Performances.length ? (totalAssists / player.Performances.length).toFixed(2) : "0.00"}
+                </div>
+                <div style={{ height: "3px", background: "var(--accent)", width: "40%", marginTop: "0.5rem", borderRadius: "2px" }}></div>
+              </div>
+
+              <div style={{ background: "var(--bg-card)", padding: "1rem", borderRadius: "4px", minWidth: "120px", border: "1px solid var(--border-color)" }}>
+                <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px", marginBottom: "0.5rem" }}>PASSES / MATCH</div>
+                <div style={{ fontSize: "1.5rem", fontWeight: 700, color: "var(--text-primary)" }}>
+                  {player.Performances.length ? (totalPasses / player.Performances.length).toFixed(1) : "0.0"}
+                </div>
+                <div style={{ height: "3px", background: "var(--warning)", width: "80%", marginTop: "0.5rem", borderRadius: "2px" }}></div>
+              </div>
             </div>
           </div>
-          <div style={{ textAlign: "right" }}>
-            <div style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>Added by</div>
-            <div style={{ fontWeight: 600 }}>{player.Users?.Name ?? "Unknown Scout"}</div>
+
+          {/* Right side Image Placeholder & Actions */}
+          <div style={{ width: "300px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+            <div style={{ width: "100%", height: "250px", background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "5rem" }}>
+              👤
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 0.5rem", fontSize: "0.75rem", fontWeight: 600 }}>
+                <span>ADD TO COMPARE QUEUE</span>
+                <span style={{ width: "36px", height: "20px", background: "var(--border-color)", borderRadius: "10px", position: "relative" }}>
+                   <span style={{ position: "absolute", left: "2px", top: "2px", width: "16px", height: "16px", background: "var(--text-muted)", borderRadius: "50%" }}></span>
+                </span>
+              </div>
+              <Link href="/watchlists" style={{ background: "var(--primary)", color: "#000", padding: "1rem", borderRadius: "4px", textAlign: "center", fontWeight: 800, textDecoration: "none", letterSpacing: "1px" }}>
+                ☆ ADD TO FAVORITES
+              </Link>
+              <button 
+                onClick={handleGenerateReport} 
+                disabled={isGeneratingReport} 
+                style={{ background: "var(--bg-card)", color: "var(--text-primary)", border: "1px solid var(--border-color)", padding: "1rem", borderRadius: "4px", textAlign: "center", fontWeight: 600, cursor: "pointer", letterSpacing: "1px" }}
+              >
+                📊 {isGeneratingReport ? "GENERATING..." : "OPEN DETAILED ANALYTICS (PDF)"}
+              </button>
+            </div>
           </div>
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))", gap: "1rem", marginTop: "1.5rem" }}>
-          {STAT_BOX("Height", player.Height ? `${player.Height} cm` : null)}
-          {STAT_BOX("Weight", player.Weight ? `${player.Weight} kg` : null)}
-          {STAT_BOX("Total Goals", totalGoals)}
-          {STAT_BOX("Total Assists", totalAssists)}
-          {STAT_BOX("Total Passes", totalPasses)}
-          {STAT_BOX("Avg Rating", avgRating)}
         </div>
       </div>
 
