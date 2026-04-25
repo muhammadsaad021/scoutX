@@ -62,6 +62,53 @@ export default function PlayerProfilePage() {
     setTimeout(() => setToast({ show: false, message: "", ok: true }), 3000);
   };
 
+  // Watchlist state
+  const [watchlists, setWatchlists] = useState<any[]>([]);
+  const [selectedWatchlist, setSelectedWatchlist] = useState<string>("");
+  const [isAddingToWatchlist, setIsAddingToWatchlist] = useState(false);
+
+  const fetchWatchlists = useCallback(async () => {
+    if (userRole !== "Manager") return;
+    try {
+      const res = await fetch("/api/watchlists");
+      if (res.ok) {
+        const data = await res.json();
+        setWatchlists(data);
+        if (data.length > 0) setSelectedWatchlist(data[0].WatchListID.toString());
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [userRole]);
+
+  useEffect(() => {
+    fetchWatchlists();
+  }, [fetchWatchlists]);
+
+  const handleAddToWatchlist = async () => {
+    if (!selectedWatchlist) {
+      showToast("Please select a watchlist first.", false);
+      return;
+    }
+    setIsAddingToWatchlist(true);
+    try {
+      const res = await fetch(`/api/watchlists/${selectedWatchlist}/players`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ playerID: parseInt(id as string) }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast("Added to Watchlist!");
+      } else {
+        showToast(data.error || "Failed to add to watchlist.", false);
+      }
+    } catch (err) {
+      showToast("An error occurred.", false);
+    }
+    setIsAddingToWatchlist(false);
+  };
+
   const fetchPlayer = useCallback(async () => {
     const res = await fetch(`/api/players/${id}`);
     if (res.status === 404) { setNotFound(true); setLoading(false); return; }
@@ -287,10 +334,32 @@ export default function PlayerProfilePage() {
             </button>
             {userRole === "Manager" && (
               <>
-                <button className="scoutx-pp-btn scoutx-pp-btn-secondary" onClick={() => showToast("Added to Watchlist")}>
-                  <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>bookmark_add</span> 
-                  ADD TO WATCHLIST
-                </button>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", background: "#0a0a0a", border: "1px solid #222", padding: "0.25rem 0.5rem", borderRadius: "4px" }}>
+                  <select 
+                    value={selectedWatchlist} 
+                    onChange={(e) => setSelectedWatchlist(e.target.value)}
+                    style={{ background: "transparent", color: "#FFF", border: "none", outline: "none", fontSize: "0.75rem", fontFamily: "'Inter', sans-serif", width: "120px" }}
+                  >
+                    {watchlists.length === 0 ? (
+                      <option value="">No watchlists</option>
+                    ) : (
+                      watchlists.map(wl => (
+                        <option key={wl.WatchListID} value={wl.WatchListID.toString()} style={{ background: "#222" }}>
+                          {wl.ListName}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                  <button 
+                    className="scoutx-pp-btn scoutx-pp-btn-secondary" 
+                    onClick={handleAddToWatchlist}
+                    disabled={isAddingToWatchlist || watchlists.length === 0}
+                    style={{ padding: "0.25rem 0.75rem", margin: 0, height: "100%" }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>bookmark_add</span> 
+                    {isAddingToWatchlist ? "ADDING..." : "ADD"}
+                  </button>
+                </div>
                 <Link href={`/compare?ids=${player.PlayerID}`} className="scoutx-pp-btn scoutx-pp-btn-primary">
                   <span className="material-symbols-outlined" style={{ fontSize: "16px" }}>compare_arrows</span> 
                   COMPARE
