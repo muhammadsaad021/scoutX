@@ -13,8 +13,8 @@ export async function GET(_req: NextRequest, { params }: Params) {
   if (error) return error;
 
   const { id } = await params;
-  const userId = parseInt(session!.user.id!);
-  const role = (session!.user as any).role;
+  const userId = parseInt(session?.user?.id || "0");
+  const role = (session?.user as any).role;
 
   const watchlist = await prisma.watchLists.findUnique({
     where: { WatchListID: parseInt(id) },
@@ -73,8 +73,8 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
   if (error) return error;
 
   const { id } = await params;
-  const userId = parseInt(session!.user.id!);
-  const role = (session!.user as any).role;
+  const userId = parseInt(session?.user?.id || "0");
+  const role = (session?.user as any).role;
 
   const watchlist = await prisma.watchLists.findUnique({
     where: { WatchListID: parseInt(id) },

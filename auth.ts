@@ -38,13 +38,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error("Invalid credentials");
         }
 
-        // What we return here gets put into the JSON Web Token
         return {
           id: user.UserID.toString(),
           name: user.Name,
           email: user.Email,
           // We attach role here manually since we need to know if they are Admin!
           role: user.Role,
+          createdAt: user.CreatedAt,
         };
       },
     }),
@@ -56,6 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // First-time login: add user details to the token
         token.id = user.id;
         token.role = (user as any).role;
+        token.createdAt = (user as any).createdAt;
       }
       return token;
     },
@@ -65,6 +66,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string;
         // Inject role into session so our frontend knows who is logged in
         (session.user as any).role = token.role;
+        (session.user as any).createdAt = token.createdAt;
       }
       return session;
     },

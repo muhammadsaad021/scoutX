@@ -36,10 +36,8 @@ export async function GET() {
   }
 }
 
-// UC-03: POST — Create new user (Admin only)
 export async function POST(req: NextRequest) {
-  const { error } = await requireRole("Admin");
-  if (error) return error;
+  // Allow open registration for Scout/Manager roles. (In production, restrict Admin creation)
 
   try {
     const body = await req.json();

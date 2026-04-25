@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "playerID is required." }, { status: 400 });
     }
 
-    const userId = parseInt(session!.user.id!);
+    const userId = parseInt(session?.user?.id || "0");
 
     // Fetch the player's full dossier
     const player = await prisma.players.findUnique({

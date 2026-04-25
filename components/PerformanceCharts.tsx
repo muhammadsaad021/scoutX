@@ -141,8 +141,7 @@ export default function PerformanceCharts({ playerId }: { playerId: number }) {
               <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-primary)", fontSize: 12, fontWeight: 500 }} />
               <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
               <Tooltip 
-                contentStyle={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)" }}
-                formatter={(value: number) => [`${Math.round(value)}% (Relative)`, "Rating"]}
+                formatter={(value: any) => [`${Math.round(Number(value))}% (Relative)`, "Rating"]}
               />
               <Radar name="Player Profile" dataKey="value" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
             </RadarChart>
