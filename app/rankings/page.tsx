@@ -1,27 +1,20 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { generateRankingsPDF } from "@/lib/pdf-generator";
-
-type RankedPlayer = {
-  Rank: number;
-  PlayerID: number;
-  Name: string;
-  Position: string;
-  Club: string | null;
-  Age: number | null;
-  MatchesPlayed: number;
-  AverageScore: number;
-};
+import { useRankings } from "../../hooks/useRankings";
+import { useToast } from "../../hooks/useToast";
+import { exportRankingsAPI } from "../../services/rankingsService";
+import { RankedPlayer } from "../../types/player";
 
 const POSITIONS = ["", "Goalkeeper", "Defender", "Midfielder", "Forward", "Winger", "Striker"];
 
 const getScoreColor = (score: number) => {
-  if (score >= 80) return "#5DFF31";
-  if (score >= 60) return "#F5B041";
-  return "#EF4444";
+  if (score >= 80) return "var(--color-primary)";
+  if (score >= 60) return "var(--color-warning)";
+  return "var(--color-danger)";
 };
 
 const ScoreBar = ({ score }: { score: number }) => {
@@ -40,56 +33,22 @@ export default function RankingsPage() {
   const { data: session } = useSession();
   const userRole = (session?.user as any)?.role;
 
-  const [ranked, setRanked] = useState<RankedPlayer[]>([]);
-  const [loading, setLoading] = useState(true);
   const [position, setPosition] = useState("");
-  const [total, setTotal] = useState(0);
-  const [message, setMessage] = useState("");
+  const { ranked, total, loading, message } = useRankings(position);
+  
   const [exporting, setExporting] = useState(false);
-  const [toast, setToast] = useState({ show: false, message: "", ok: true });
-
-  const showToast = (msg: string, ok = true) => {
-    setToast({ show: true, message: msg, ok });
-    setTimeout(() => setToast({ show: false, message: "", ok: true }), 3000);
-  };
-
-  const fetchRankings = useCallback(async () => {
-    setLoading(true);
-    setMessage("");
-    const params = new URLSearchParams();
-    if (position) params.set("position", position);
-
-    const res = await fetch(`/api/rankings?${params}`);
-    const data = await res.json();
-
-    if (res.ok) {
-      setRanked(data.ranked);
-      setTotal(data.total);
-      if (data.message) setMessage(data.message);
-    }
-    setLoading(false);
-  }, [position]);
-
-  useEffect(() => { fetchRankings(); }, [fetchRankings]);
+  const { toast, showToast } = useToast();
 
   const handleExport = async () => {
     setExporting(true);
-    const params = new URLSearchParams();
-    if (position) params.set("position", position);
-    const res = await fetch(`/api/rankings/export?${params}`);
-    if (res.ok) {
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = res.headers.get("Content-Disposition")?.split('filename="')[1]?.replace('"', '') ?? "rankings.csv";
-      a.click();
-      URL.revokeObjectURL(url);
+    try {
+      await exportRankingsAPI(position);
       showToast("Rankings exported as CSV!");
-    } else {
-      showToast("Export failed.", false);
+    } catch (err: any) {
+      showToast(err.message || "Export failed.", false);
+    } finally {
+      setExporting(false);
     }
-    setExporting(false);
   };
 
 

@@ -1,84 +1,44 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { generatePlayerReportPDF } from "@/lib/pdf-generator";
-
-type ReportLog = {
-  ReportID: number;
-  GeneratedDate: string;
-  Format: string;
-  Players: { Name: string; Position: string } | null;
-  Users: { Name: string } | null;
-};
-
-type SearchResult = { PlayerID: number; Name: string; Position: string; Club: string | null };
+import { useReports } from "../../hooks/useReports";
+import { usePlayerSearch } from "../../hooks/usePlayerSearch";
+import { useToast } from "../../hooks/useToast";
+import { generateReportAPI } from "../../services/reportService";
+import { SearchResult } from "../../types/player";
 
 export default function ReportsPage() {
   const { data: session } = useSession();
   const userRole = (session?.user as any)?.role;
-  const canGenerate = userRole === "Scout" || userRole === "Coach" || userRole === "Manager" || userRole === "Admin";
+  const canGenerate = ["Scout", "Coach", "Manager", "Admin"].includes(userRole);
 
-  const [reports, setReports] = useState<ReportLog[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const { reports, loading, refreshReports } = useReports();
+  const { toast, showToast } = useToast();
+  
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const { searchResults, isSearching, clearSearch } = usePlayerSearch(searchQuery);
   const [generatingFor, setGeneratingFor] = useState<number | null>(null);
-  
-  const [toast, setToast] = useState({ show: false, message: "", ok: true });
-
-  const showToast = (message: string, ok = true) => {
-    setToast({ show: true, message, ok });
-    setTimeout(() => setToast({ show: false, message: "", ok: true }), 3000);
-  };
-
-  const fetchReports = async () => {
-    setLoading(true);
-    const res = await fetch("/api/reports");
-    if (res.ok) setReports(await res.json());
-    setLoading(false);
-  };
-
-  useEffect(() => { fetchReports(); }, []);
-
-  // Live search for players to generate report
-  useEffect(() => {
-    if (!searchQuery.trim()) { setSearchResults([]); return; }
-    const timer = setTimeout(async () => {
-      const res = await fetch(`/api/players?q=${encodeURIComponent(searchQuery)}`);
-      if (res.ok) setSearchResults((await res.json()).slice(0, 5));
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
 
   const handleGenerateReport = async (player: SearchResult) => {
     setGeneratingFor(player.PlayerID);
     setSearchQuery("");
-    setSearchResults([]);
+    clearSearch();
 
     try {
-      const res = await fetch("/api/reports/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ playerID: player.PlayerID, format: "PDF" }),
-      });
-      const data = await res.json();
-      
-      if (!res.ok) {
-        showToast(data.error || "Failed to generate report.", false);
-      } else {
-        // Use client-side jsPDF to generate the document
-        generatePlayerReportPDF(data.player);
-        showToast("Report generated successfully!");
-        fetchReports(); // Refresh history
-      }
-    } catch (err) {
-      showToast("An error occurred during generation.", false);
+      const data = await generateReportAPI(player.PlayerID);
+      // Use client-side jsPDF to generate the document
+      generatePlayerReportPDF(data.player);
+      showToast("Report generated successfully!");
+      refreshReports(); // Refresh history
+    } catch (err: any) {
+      showToast(err.message || "An error occurred during generation.", false);
+    } finally {
+      setGeneratingFor(null);
     }
-    setGeneratingFor(null);
   };
 
   return (

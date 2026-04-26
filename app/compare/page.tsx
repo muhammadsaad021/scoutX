@@ -1,30 +1,11 @@
 "use client";
 
-import { Suspense, useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-
-type ComparedPlayer = {
-  PlayerID: number;
-  Name: string;
-  Position: string;
-  Club: string | null;
-  Age: number | null;
-  Height: number | null;
-  Weight: number | null;
-  ScoutName: string | null;
-  MatchesPlayed: number;
-  TotalGoals: number;
-  TotalAssists: number;
-  TotalPasses: number;
-  AvgRating: number | null;
-  AverageScore: number | null;
-  GoalsPerMatch: number | null;
-  AssistsPerMatch: number | null;
-  PassesPerMatch: number | null;
-};
-
-type SearchResult = { PlayerID: number; Name: string; Position: string; Club: string | null };
+import { useComparePlayers } from "../../hooks/useComparePlayers";
+import { usePlayerSearch } from "../../hooks/usePlayerSearch";
+import { ComparedPlayer, SearchResult } from "../../types/player";
 
 function CompareContent() {
   const router = useRouter();
@@ -34,12 +15,11 @@ function CompareContent() {
     const ids = searchParams.get("ids");
     return ids ? ids.split(",").map(Number).filter(Boolean) : [];
   });
-  const [compared, setCompared] = useState<ComparedPlayer[]>([]);
-  const [loading, setLoading] = useState(false);
+  
+  const { compared, loading } = useComparePlayers(selectedIds);
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [searching, setSearching] = useState(false);
+  const { searchResults, isSearching: searching, clearSearch } = usePlayerSearch(searchQuery);
   
   const [activePos, setActivePos] = useState("MIDFIELDER");
 
@@ -51,42 +31,14 @@ function CompareContent() {
     }
   }, [selectedIds, router]);
 
-  useEffect(() => {
-    if (selectedIds.length === 0) {
-      setCompared([]);
-      return;
-    }
-    setLoading(true);
-    fetch(`/api/players/compare?ids=${selectedIds.join(",")}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.error) setCompared(data);
-        else setCompared([]);
-        setLoading(false);
-      });
-  }, [selectedIds]);
-
-  const runSearch = useCallback(async (q: string) => {
-    if (!q.trim()) { setSearchResults([]); return; }
-    setSearching(true);
-    const res = await fetch(`/api/players?q=${encodeURIComponent(q)}`);
-    if (res.ok) {
-      const data = await res.json();
-      setSearchResults(data.filter((p: any) => !selectedIds.includes(p.PlayerID)).slice(0, 5));
-    }
-    setSearching(false);
-  }, [selectedIds]);
-
-  useEffect(() => {
-    const t = setTimeout(() => runSearch(searchQuery), 300);
-    return () => clearTimeout(t);
-  }, [searchQuery, runSearch]);
+  // Guard Clause: Filter out players already selected from search results
+  const filteredSearchResults = searchResults.filter(p => !selectedIds.includes(p.PlayerID));
 
   const addPlayer = (player: SearchResult) => {
     if (selectedIds.length >= 2) return; // Limit to 2 for this design
     setSelectedIds((prev) => [...prev, player.PlayerID]);
     setSearchQuery("");
-    setSearchResults([]);
+    clearSearch();
   };
 
   const removePlayer = (id: number) => {
@@ -187,9 +139,9 @@ function CompareContent() {
                 />
               </div>
               
-              {searchResults.length > 0 && (
+              {filteredSearchResults.length > 0 && (
                 <div className="scoutx-comp-search-results">
-                  {searchResults.map((player) => (
+                  {filteredSearchResults.map((player) => (
                     <button key={player.PlayerID} className="scoutx-comp-search-result-item" onClick={() => addPlayer(player)}>
                       <span style={{ fontWeight: 600 }}>{player.Name}</span>
                       <span style={{ color: "#999", fontSize: "11px" }}>{player.Position} · {player.Club ?? "—"}</span>

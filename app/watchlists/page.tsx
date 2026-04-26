@@ -1,23 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-
-type Watchlist = {
-  WatchListID: number;
-  ListName: string;
-  CreatedAt: string;
-  PlayerCount: number;
-};
+import { useWatchlists } from "../../hooks/useWatchlists";
+import { useToast } from "../../hooks/useToast";
+import { Watchlist } from "../../types/watchlist";
 
 export default function WatchlistsPage() {
   const { data: session } = useSession();
   const userRole = (session?.user as any)?.role;
-  const canManage = userRole === "Coach" || userRole === "Manager" || userRole === "Admin";
+  const canManage = ["Coach", "Manager", "Admin"].includes(userRole);
 
-  const [watchlists, setWatchlists] = useState<Watchlist[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { watchlists, loading, createWatchlist, deleteWatchlist } = useWatchlists();
 
   // Create modal state
   const [showCreate, setShowCreate] = useState(false);
@@ -27,51 +22,34 @@ export default function WatchlistsPage() {
 
   // Delete state
   const [deleteTarget, setDeleteTarget] = useState<Watchlist | null>(null);
-  const [toast, setToast] = useState({ show: false, message: "", ok: true });
-
-  const showToast = (message: string, ok = true) => {
-    setToast({ show: true, message, ok });
-    setTimeout(() => setToast({ show: false, message: "", ok: true }), 3000);
-  };
-
-  const fetchWatchlists = async () => {
-    setLoading(true);
-    const res = await fetch("/api/watchlists");
-    if (res.ok) setWatchlists(await res.json());
-    setLoading(false);
-  };
-
-  useEffect(() => { fetchWatchlists(); }, []);
+  const { toast, showToast } = useToast();
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setCreating(true);
     setCreateError("");
 
-    const res = await fetch("/api/watchlists", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ listName: newName }),
-    });
-
-    const data = await res.json();
-    if (!res.ok) {
-      setCreateError(data.error || "Failed to create watchlist.");
-    } else {
+    try {
+      await createWatchlist(newName);
       setShowCreate(false);
       setNewName("");
       showToast("Watchlist created!");
-      fetchWatchlists();
+    } catch (err: any) {
+      setCreateError(err.message || "Failed to create watchlist.");
+    } finally {
+      setCreating(false);
     }
-    setCreating(false);
   };
 
   const handleDelete = async () => {
     if (!deleteTarget) return;
-    const res = await fetch(`/api/watchlists/${deleteTarget.WatchListID}`, { method: "DELETE" });
-    setDeleteTarget(null);
-    if (res.ok) { showToast("Watchlist deleted."); fetchWatchlists(); }
-    else showToast("Failed to delete.", false);
+    try {
+      await deleteWatchlist(deleteTarget.WatchListID);
+      setDeleteTarget(null);
+      showToast("Watchlist deleted.");
+    } catch (err) {
+      showToast("Failed to delete.", false);
+    }
   };
 
   return (
