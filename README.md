@@ -50,8 +50,7 @@ Create a `.env` file in the root directory and populate it with your specific cr
 DATABASE_URL="postgresql://username:password@ep-xxxx.us-east-2.aws.neon.tech/scoutx-db?sslmode=require"
 
 # NextAuth secret key (Generate via `openssl rand -base64 32`)
-NEXTAUTH_SECRET="your-secure-random-string"
-NEXTAUTH_URL="http://localhost:3000"
+AUTH_SECRET="your-secure-random-string"
 ```
 
 ### 3. Database Initialization
@@ -95,7 +94,7 @@ Once the server is running, navigate to the following URL to view the OpenAPI sp
 ### Application Hosting (Vercel)
 
 1. Import the GitHub repository into a new Vercel project.
-2. Under the deployment configuration, define `DATABASE_URL` and `NEXTAUTH_SECRET` as Environment Variables.
+2. Under the deployment configuration, define `DATABASE_URL` and `AUTH_SECRET` as Environment Variables.
 3. Initiate the deployment. Vercel will automatically build and host the Next.js application.
 
 ---
