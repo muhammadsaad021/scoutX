@@ -15,9 +15,11 @@ export default function Sidebar() {
     { href: "/players", label: "Players", icon: "group" },
   ];
 
-  if (userRole === "Manager") {
+  if (userRole === "Manager" || userRole === "Scout") {
     links.push({ href: "/watchlists", label: "Watchlist", icon: "bookmark" });
-  } else {
+  }
+
+  if (userRole === "Scout" || userRole === "Admin" || userRole === "Coach") {
     links.push({ href: "/players/new", label: "Add Player", icon: "person_add" });
   }
 
