@@ -1,4 +1,4 @@
-# ScoutX Player Evaluation Platform
+# ScoutX
 
 ScoutX is a full-stack, modular platform designed for scouts, coaches, and managers to evaluate football talent, track performance, and generate actionable insights through rankings and comparisons.
 
