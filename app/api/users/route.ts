@@ -51,7 +51,10 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate role value
-    const validRoles = ["Admin", "Scout", "Coach", "Manager"];
+    const validRoles = ["Scout", "Coach", "Manager"];
+    if (role === "Admin") {
+      return NextResponse.json({ error: "Administrative accounts cannot be created via public registration." }, { status: 403 });
+    }
     if (!validRoles.includes(role)) {
       return NextResponse.json({ error: "Invalid role." }, { status: 400 });
     }

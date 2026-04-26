@@ -156,7 +156,7 @@ export default function RegisterPage() {
 
         .scoutx-role-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
           gap: var(--space-lg);
         }
 
@@ -341,7 +341,6 @@ export default function RegisterPage() {
                 <div className="scoutx-role-grid">
                   <RoleBox rTitle="Manager" icon="business_center" />
                   <RoleBox rTitle="Scout" icon="visibility" />
-                  <RoleBox rTitle="Admin" icon="settings" />
                 </div>
               </div>
 
