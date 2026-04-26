@@ -12,6 +12,53 @@ import { calculatePerformanceScore } from "@/lib/scoring";
 
 type Params = { params: Promise<{ id: string }> };
 
+/**
+ * @swagger
+ * /api/players/{id}/performance:
+ *   post:
+ *     summary: Add player performance
+ *     description: Submit match performance data for a player. Automatically calculates score.
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - matchDate
+ *               - goals
+ *               - assists
+ *               - passes
+ *             properties:
+ *               matchDate:
+ *                 type: string
+ *                 format: date-time
+ *               goals:
+ *                 type: integer
+ *               assists:
+ *                 type: integer
+ *               passes:
+ *                 type: integer
+ *               rating:
+ *                 type: number
+ *               comments:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Performance logged.
+ *       400:
+ *         description: Validation error.
+ *       404:
+ *         description: Player not found.
+ */
 export async function POST(req: NextRequest, { params }: Params) {
   const { error, session } = await requireAuth();
   if (error) return error;

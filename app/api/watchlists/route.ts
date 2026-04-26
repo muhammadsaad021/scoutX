@@ -10,6 +10,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
 
+/**
+ * @swagger
+ * /api/watchlists:
+ *   get:
+ *     summary: Get my watchlists
+ *     description: Retrieve watchlists owned by the currently authenticated user.
+ *     tags:
+ *       - Watchlists
+ *     responses:
+ *       200:
+ *         description: A list of watchlists.
+ *       401:
+ *         description: Unauthorized.
+ */
 export async function GET() {
   const { error, session } = await requireAuth();
   if (error) return error;
@@ -46,6 +60,35 @@ export async function GET() {
   }
 }
 
+/**
+ * @swagger
+ * /api/watchlists:
+ *   post:
+ *     summary: Create a watchlist
+ *     description: Create a new watchlist (Coach, Manager, or Admin).
+ *     tags:
+ *       - Watchlists
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - listName
+ *             properties:
+ *               listName:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Watchlist created successfully.
+ *       400:
+ *         description: Validation error.
+ *       403:
+ *         description: Forbidden.
+ *       409:
+ *         description: Watchlist already exists.
+ */
 export async function POST(req: NextRequest) {
   const { error, session } = await requireAuth();
   if (error) return error;

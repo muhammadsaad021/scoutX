@@ -10,6 +10,36 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
 
+/**
+ * @swagger
+ * /api/reports/generate:
+ *   post:
+ *     summary: Generate player report
+ *     description: Generate and log a full dossier report for a player.
+ *     tags:
+ *       - Reports
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - playerID
+ *             properties:
+ *               playerID:
+ *                 type: integer
+ *               format:
+ *                 type: string
+ *                 default: PDF
+ *     responses:
+ *       200:
+ *         description: Report data generated successfully.
+ *       400:
+ *         description: Missing data or validation error.
+ *       404:
+ *         description: Player not found.
+ */
 export async function POST(req: NextRequest) {
   const { error, session } = await requireAuth();
   if (error) return error;
