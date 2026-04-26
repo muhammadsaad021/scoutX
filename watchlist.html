@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScoutX - Watchlists</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&amp;family=Space+Grotesk:wght@600&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#2e312e",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed": "#dfe4dc",
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#454744",
+                        "on-background": "#e5e2e1",
+                        "tertiary": "#f9fdf6",
+                        "on-surface": "#e5e2e1",
+                        "primary": "#f7ffed",
+                        "on-primary": "#093900",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed-dim": "#3fe405",
+                        "on-primary-fixed-variant": "#115300",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#1a7200",
+                        "surface-container-low": "#1c1b1b",
+                        "surface": "#131313",
+                        "outline-variant": "#3d4b36",
+                        "on-primary-fixed": "#032100",
+                        "on-tertiary-fixed": "#181d18",
+                        "outline": "#86957d",
+                        "on-tertiary-container": "#5f645e",
+                        "surface-tint": "#3fe405",
+                        "surface-dim": "#131313",
+                        "surface-container-highest": "#353534",
+                        "surface-bright": "#3a3939",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#196e00",
+                        "background": "#131313",
+                        "surface-container": "#201f1f",
+                        "on-surface-variant": "#bbcbb0",
+                        "secondary-fixed": "#e1e3de",
+                        "tertiary-fixed-dim": "#c3c8c1",
+                        "primary-fixed": "#7aff54",
+                        "secondary-container": "#474a46",
+                        "on-secondary-container": "#b7b9b4",
+                        "on-tertiary": "#2d322d",
+                        "on-error": "#690005",
+                        "tertiary-container": "#dce1d9",
+                        "secondary-fixed-dim": "#c5c7c2",
+                        "surface-variant": "#353534",
+                        "secondary": "#c5c7c2",
+                        "on-secondary-fixed": "#191c19",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-container": "#5dff31",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#434843"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "40px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-xl": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #000000; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="text-on-surface antialiased min-h-screen flex">
+<!-- TopAppBar for Mobile (Hidden on md+) -->
+<header class="md:hidden bg-black/80 backdrop-blur-lg flex justify-between items-center h-16 px-6 w-full docked full-width top-0 z-50 border-b border-zinc-800 shadow-[0_4px_20px_rgba(0,0,0,0.5)] fixed">
+<div class="font-headline-lg text-headline-lg text-[#5DFF31] font-black italic">ScoutX</div>
+<div class="flex items-center gap-4 text-[#5DFF31]">
+<span class="material-symbols-outlined hover:text-[#5DFF31] transition-colors duration-200 cursor-pointer">notifications</span>
+<span class="material-symbols-outlined hover:text-[#5DFF31] transition-colors duration-200 cursor-pointer">settings</span>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden border border-[#5DFF31]/30">
+<img alt="Scout Profile" class="w-full h-full object-cover" data-alt="professional headshot of a scout with headset in dramatic dark lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtCAbPbfzNf6dOE_rcE03MszYWuwN__dRqIYAPdxCr6KXWEzoc6XotyVh5vEjW4YzdSi6YilawXb4of5Ff56YPaPi4tCCphF8RLqtwtzlYnW8-uNURPQxrHgE8uAEQbGHAANkgVJ0LVcOnqvhQ0gKMO7Bj2-sm2jkevuY9QUXOZYcfWNti2_Oijp7o8dwyzL3_4ruzq-PsSS0WV0VyuFwxovZ0NQ2GRz-nTR4Uznxt7ZNEnJn12YK_FiAMUMnXe2O4K0Imos9b72E"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar for Web (Hidden on mobile) -->
+<nav class="hidden md:flex bg-zinc-950 h-screen w-64 fixed left-0 top-0 pt-20 border-r border-white/5 flex-col gap-2 p-4 z-40">
+<div class="mb-8 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-[#5DFF31]/50">
+<img alt="Lead Scout" class="w-full h-full object-cover" data-alt="professional headshot of a scout with headset in dramatic dark lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO-gqB3ghwa3JHSO9wOcnhJUVyoMmXqOTLwUTEtlIkXWofRxh6YUmAfNmN_htb1r3wJxlXuJ3496cnGqY2zkrErY3xvIzKTmN8WCA3WoUS0-YO3jVvs3ndpekdFTXexof19avu-7_SOWRz378cTSGXysZQCIlDJlDF0DiPnc2gN55ViMhLnpnuvDrZOx4x8XyY2ykugHE7hWL4-TVkI8_M7h1pegfRpLPPwnxOUaId-PE5UyGs13sHsbWBZl3QuQjfj7NGKyQcjzQ"/>
+</div>
+<div>
+<div class="font-headline-lg text-sm text-white font-bold leading-tight">ScoutX Elite</div>
+<div class="font-label-caps text-[10px] text-zinc-500">Technical Intelligence</div>
+</div>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 opacity-60 hover:bg-zinc-900 hover:text-white transition-all font-['Plus_Jakarta_Sans'] text-sm font-semibold uppercase tracking-tighter group" href="#">
+<span class="material-symbols-outlined group-hover:text-white">dashboard</span>
+            Dashboard
+        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT text-zinc-500 opacity-60 hover:bg-zinc-900 hover:text-white transition-all font-['Plus_Jakarta_Sans'] text-sm font-semibold uppercase tracking-tighter group" href="#">
+<span class="material-symbols-outlined group-hover:text-white">person</span>
+            Profile
+        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT bg-white/5 text-[#5DFF31] border-r-2 border-[#5DFF31] shadow-[0_0_15px_rgba(93,255,49,0.2)] font-['Plus_Jakarta_Sans'] text-sm font-semibold uppercase tracking-tighter active:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">visibility</span>
+            Watchlists
+        </a>
+<div class="mt-auto px-2">
+<button class="w-full bg-primary-container text-black font-label-caps text-label-caps py-3 rounded-DEFAULT uppercase hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(93,255,49,0.3)]">
+                New Report
+            </button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 pt-24 md:pt-12 px-6 md:px-margin pb-20 w-full max-w-container-max mx-auto">
+<header class="mb-12">
+<h1 class="font-headline-xl text-headline-xl text-[#5DFF31] font-black uppercase tracking-tight drop-shadow-[0_0_15px_rgba(93,255,49,0.3)]">Watchlist</h1>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Player Card 1 -->
+<article class="bg-surface-container-high/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden group hover:border-[#5DFF31]/50 transition-colors relative">
+<div class="p-6 relative z-10">
+<div class="flex justify-between items-start mb-4">
+<h2 class="font-headline-lg text-2xl text-white font-bold uppercase tracking-tight leading-none group-hover:text-[#5DFF31] transition-colors">BELLINGHAM</h2>
+<div class="bg-surface border border-[#5DFF31] text-[#5DFF31] font-bold text-xl px-2 py-1 rounded shadow-[0_0_10px_rgba(93,255,49,0.2)]">88</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">CM / CAM</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">20 YEARS OLD</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">REAL MADRID</span>
+</div>
+<div class="space-y-4 mb-6">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>PASS ACCURACY</span>
+<span>92%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[92%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>GOAL CONVERSION</span>
+<span>24%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[24%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>DRIBBLE SUCCESS</span>
+<span>68%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[68%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 border-t border-white/5 p-4 flex justify-between items-center relative z-10">
+<button class="text-[#5DFF31] hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<label class="flex items-center gap-2 cursor-pointer group/chk">
+<input class="form-checkbox bg-transparent border-white/20 text-[#5DFF31] rounded focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-label-caps text-[10px] text-zinc-400 group-hover/chk:text-white transition-colors">COMPARE</span>
+</label>
+<button class="text-error hover:text-error-container hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Decorative gradient mesh bg for card -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-[#5DFF31]/5 rounded-full blur-3xl pointer-events-none"></div>
+</article>
+<!-- Player Card 2 -->
+<article class="bg-surface-container-high/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden group hover:border-[#5DFF31]/50 transition-colors relative">
+<div class="p-6 relative z-10">
+<div class="flex justify-between items-start mb-4">
+<h2 class="font-headline-lg text-2xl text-white font-bold uppercase tracking-tight leading-none group-hover:text-[#5DFF31] transition-colors">GVARDIOL</h2>
+<div class="bg-surface border border-[#5DFF31] text-[#5DFF31] font-bold text-xl px-2 py-1 rounded shadow-[0_0_10px_rgba(93,255,49,0.2)]">84</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">CB / LB</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">22 YEARS OLD</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">MAN CITY</span>
+</div>
+<div class="space-y-4 mb-6">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>PASS ACCURACY</span>
+<span>89%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[89%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>TACKLE SUCCESS</span>
+<span>76%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[76%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>AERIAL DUELS</span>
+<span>62%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[62%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 border-t border-white/5 p-4 flex justify-between items-center relative z-10">
+<button class="text-[#5DFF31] hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<label class="flex items-center gap-2 cursor-pointer group/chk">
+<input class="form-checkbox bg-transparent border-white/20 text-[#5DFF31] rounded focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-label-caps text-[10px] text-zinc-400 group-hover/chk:text-white transition-colors">COMPARE</span>
+</label>
+<button class="text-error hover:text-error-container hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Decorative gradient mesh bg for card -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-[#5DFF31]/5 rounded-full blur-3xl pointer-events-none"></div>
+</article>
+<!-- Player Card 3 -->
+<article class="bg-surface-container-high/40 backdrop-blur-md rounded-xl border border-white/10 overflow-hidden group hover:border-[#5DFF31]/50 transition-colors relative">
+<div class="p-6 relative z-10">
+<div class="flex justify-between items-start mb-4">
+<h2 class="font-headline-lg text-2xl text-white font-bold uppercase tracking-tight leading-none group-hover:text-[#5DFF31] transition-colors">OKAFOR</h2>
+<div class="bg-surface border border-[#5DFF31] text-[#5DFF31] font-bold text-xl px-2 py-1 rounded shadow-[0_0_10px_rgba(93,255,49,0.2)]">81</div>
+</div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">ST / LW</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">23 YEARS OLD</span>
+<span class="px-3 py-1 rounded-full border border-white/20 text-xs font-label-caps text-zinc-300">AC MILAN</span>
+</div>
+<div class="space-y-4 mb-6">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>SHOT ACCURACY</span>
+<span>55%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[55%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>SPRINT SPEED</span>
+<span>88%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[88%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-400 mb-1">
+<span>DRIBBLE SUCCESS</span>
+<span>61%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full overflow-hidden">
+<div class="h-full bg-[#5DFF31] w-[61%] shadow-[0_0_8px_rgba(93,255,49,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 border-t border-white/5 p-4 flex justify-between items-center relative z-10">
+<button class="text-[#5DFF31] hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<label class="flex items-center gap-2 cursor-pointer group/chk">
+<input class="form-checkbox bg-transparent border-white/20 text-[#5DFF31] rounded focus:ring-0 focus:ring-offset-0 w-4 h-4 cursor-pointer" type="checkbox"/>
+<span class="font-label-caps text-[10px] text-zinc-400 group-hover/chk:text-white transition-colors">COMPARE</span>
+</label>
+<button class="text-error hover:text-error-container hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+<!-- Decorative gradient mesh bg for card -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-[#5DFF31]/5 rounded-full blur-3xl pointer-events-none"></div>
+</article>
+</div>
+</main>
+</body></html>

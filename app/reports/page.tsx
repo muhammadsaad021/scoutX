@@ -89,8 +89,8 @@ export default function ReportsPage() {
         <div style={{
           position: "fixed", top: "1.5rem", right: "1.5rem", zIndex: 9999,
           padding: "0.875rem 1.25rem", borderRadius: "var(--radius-md)",
-          background: toast.ok ? "var(--success)" : "var(--danger)",
-          color: "white", fontWeight: 600, boxShadow: "var(--shadow-lg)",
+          background: toast.ok ? "var(--color-primary)" : "var(--color-danger)",
+          color: toast.ok ? "var(--color-on-primary)" : "white", fontWeight: 600, boxShadow: "var(--shadow-lg)",
         }}>
           {toast.ok ? "✓" : "✗"} {toast.message}
         </div>
@@ -116,7 +116,7 @@ export default function ReportsPage() {
             {searchResults.length > 0 && (
               <div style={{
                 position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
-                background: "var(--bg-card)", border: "1px solid var(--border-color)",
+                background: "var(--color-bg-card)", border: "1px solid var(--color-border)",
                 borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-lg)", overflow: "hidden",
               }}>
                 {searchResults.map((p) => (
@@ -128,14 +128,14 @@ export default function ReportsPage() {
                     style={{
                       display: "flex", justifyContent: "space-between", alignItems: "center",
                       width: "100%", padding: "0.75rem 1rem", background: "none", border: "none",
-                      borderBottom: "1px solid var(--border-color)", cursor: "pointer",
-                      color: "var(--text-primary)", textAlign: "left", transition: "background 0.15s",
+                      borderBottom: "1px solid var(--color-border)", cursor: "pointer",
+                      color: "var(--color-text-primary)", textAlign: "left", transition: "background 0.15s",
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--bg-secondary)")}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = "var(--color-bg-surface)")}
                     onMouseLeave={(e) => (e.currentTarget.style.background = "none")}
                   >
                     <span style={{ fontWeight: 600 }}>{p.Name}</span>
-                    <span style={{ color: "var(--text-muted)", fontSize: "0.8rem" }}>
+                    <span style={{ color: "var(--color-text-muted)", fontSize: "0.8rem" }}>
                       {p.Position} · {p.Club ?? "—"}
                       {generatingFor === p.PlayerID && " — Generating..."}
                     </span>
@@ -150,11 +150,11 @@ export default function ReportsPage() {
       {/* Report History */}
       <h3 style={{ marginBottom: "1rem" }}>Report History</h3>
       {loading ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>
+        <div className="card" style={{ textAlign: "center", padding: "3rem", color: "var(--color-text-muted)" }}>
           Loading history...
         </div>
       ) : reports.length === 0 ? (
-        <div className="card" style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>
+        <div className="card" style={{ textAlign: "center", padding: "3rem", color: "var(--color-text-muted)" }}>
           No reports generated yet.
         </div>
       ) : (
@@ -173,14 +173,14 @@ export default function ReportsPage() {
               {reports.map((report) => (
                 <tr key={report.ReportID}>
                   <td>{new Date(report.GeneratedDate).toLocaleString()}</td>
-                  <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>
+                  <td style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>
                     {report.Players?.Name ?? "Unknown Player"}
                   </td>
                   <td>{report.Players?.Position ?? "—"}</td>
                   <td>
                     <span className="badge badge-primary">{report.Format}</span>
                   </td>
-                  <td style={{ color: "var(--text-muted)" }}>{report.Users?.Name ?? "Unknown User"}</td>
+                  <td style={{ color: "var(--color-text-muted)" }}>{report.Users?.Name ?? "Unknown User"}</td>
                 </tr>
               ))}
             </tbody>

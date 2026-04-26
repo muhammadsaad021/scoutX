@@ -76,7 +76,7 @@ export default function EditPlayerPage() {
 
   if (loading) return (
     <div style={{ backgroundColor: "#000000", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <p style={{ color: "#00FF00", fontFamily: "'Space Grotesk', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}>
+      <p style={{ color: "#5DFF31", fontFamily: "'Space Grotesk', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}>
         Loading Record...
       </p>
     </div>
@@ -92,12 +92,12 @@ export default function EditPlayerPage() {
         .scoutx-ep-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #222222; padding-bottom: 2rem; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
         .scoutx-ep-title { font-size: 1.875rem; font-weight: 700; color: #FFFFFF; margin: 0 0 0.5rem 0; letter-spacing: -0.025em; }
         .scoutx-ep-subtitle { font-size: 0.75rem; color: #8A8A8A; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
-        .scoutx-ep-status { border: 1px solid #2a4a20; background-color: #142410; color: #00FF00; padding: 0.375rem 0.75rem; border-radius: 4px; font-size: 10px; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; margin-top: 0.5rem; }
+        .scoutx-ep-status { border: 1px solid #2a4a20; background-color: #142410; color: #5DFF31; padding: 0.375rem 0.75rem; border-radius: 4px; font-size: 10px; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; margin-top: 0.5rem; }
 
         .scoutx-ep-section { margin-bottom: 2rem; }
         .scoutx-ep-sec-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
-        .scoutx-ep-sec-line { width: 2rem; height: 1px; background-color: #00FF00; }
-        .scoutx-ep-sec-title { font-size: 0.75rem; font-family: 'Space Grotesk', monospace; color: #00FF00; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
+        .scoutx-ep-sec-line { width: 2rem; height: 1px; background-color: #5DFF31; }
+        .scoutx-ep-sec-title { font-size: 0.75rem; font-family: 'Space Grotesk', monospace; color: #5DFF31; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
         
         .scoutx-ep-grid { display: grid; grid-template-columns: 1fr; gap: 2rem 3rem; }
         @media (min-width: 768px) { .scoutx-ep-grid { grid-template-columns: 1fr 1fr; } }
@@ -105,7 +105,7 @@ export default function EditPlayerPage() {
         .scoutx-ep-field { display: flex; flex-direction: column; gap: 0.25rem; }
         .scoutx-ep-label { font-size: 10px; color: #8A8A8A; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
         .scoutx-ep-input { background: transparent; border: none; border-bottom: 1px solid #222222; color: #FFFFFF; font-size: 1rem; padding: 0.5rem 0; font-family: 'Plus Jakarta Sans', sans-serif; transition: border-color 0.2s; outline: none; border-radius: 0; }
-        .scoutx-ep-input:focus { border-color: #00FF00; }
+        .scoutx-ep-input:focus { border-color: #5DFF31; }
         select.scoutx-ep-input { appearance: none; padding-right: 2rem; cursor: pointer; }
         .scoutx-ep-select-wrapper { position: relative; }
         .scoutx-ep-select-icon { position: absolute; right: 0; top: 50%; transform: translateY(-50%); color: #8A8A8A; pointer-events: none; font-size: 20px; }
@@ -116,32 +116,32 @@ export default function EditPlayerPage() {
         .scoutx-ep-phys-subtitle { color: #8A8A8A; font-size: 10px; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; }
         .scoutx-ep-phys-input-box { display: flex; align-items: center; gap: 0.75rem; }
         .scoutx-ep-phys-input-wrap { background-color: #111111; border: 1px solid #222222; border-radius: 4px; padding: 0.5rem 1rem; width: 8rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .scoutx-ep-phys-input { background: transparent; border: none; color: #00FF00; font-size: 1.25rem; font-weight: 500; font-family: 'Plus Jakarta Sans', sans-serif; width: 100%; text-align: center; outline: none; padding: 0; -moz-appearance: textfield; }
+        .scoutx-ep-phys-input { background: transparent; border: none; color: #5DFF31; font-size: 1.25rem; font-weight: 500; font-family: 'Plus Jakarta Sans', sans-serif; width: 100%; text-align: center; outline: none; padding: 0; -moz-appearance: textfield; }
         .scoutx-ep-phys-input::-webkit-outer-spin-button, .scoutx-ep-phys-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .scoutx-ep-phys-unit { font-size: 0.875rem; color: #8A8A8A; }
 
         .scoutx-ep-perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         @media (min-width: 768px) { .scoutx-ep-perf-grid { grid-template-columns: repeat(4, 1fr); } }
         .scoutx-ep-perf-card { background-color: #111111; border: 1px solid #222222; border-radius: 4px; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; height: 6rem; }
-        .scoutx-ep-perf-card-primary { border-left: 2px solid #00FF00; }
+        .scoutx-ep-perf-card-primary { border-left: 2px solid #5DFF31; }
         .scoutx-ep-perf-date { font-size: 10px; color: #8A8A8A; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; }
         .scoutx-ep-perf-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
         .scoutx-ep-perf-score { font-size: 1.5rem; font-weight: 700; color: #FFFFFF; }
         .scoutx-ep-perf-score-dim { color: #8A8A8A; }
         .scoutx-ep-perf-metric { font-size: 0.75rem; font-family: 'Space Grotesk', monospace; color: #8A8A8A; }
-        .scoutx-ep-perf-metric-highlight { color: #00FF00; }
+        .scoutx-ep-perf-metric-highlight { color: #5DFF31; }
 
         .scoutx-ep-note-area { display: flex; flex-direction: column; gap: 0.5rem; }
         .scoutx-ep-note-header { display: flex; align-items: center; gap: 0.5rem; color: #8A8A8A; margin-bottom: 0.5rem; }
         .scoutx-ep-note-title { font-size: 10px; font-family: 'Space Grotesk', monospace; letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }
         .scoutx-ep-textarea { width: 100%; background-color: #111111; border: none; border-radius: 4px; padding: 1.25rem; color: #8A8A8A; font-size: 0.875rem; font-family: 'Inter', sans-serif; resize: vertical; min-height: 100px; outline: none; transition: box-shadow 0.2s; }
-        .scoutx-ep-textarea:focus { box-shadow: inset 0 0 0 1px #00FF00; color: #FFFFFF; }
+        .scoutx-ep-textarea:focus { box-shadow: inset 0 0 0 1px #5DFF31; color: #FFFFFF; }
 
         .scoutx-ep-actions { display: flex; flex-direction: column; gap: 1rem; padding-top: 2rem; border-top: 1px solid #222222; }
         @media (min-width: 640px) { .scoutx-ep-actions { flex-direction: row; } }
         
         .scoutx-ep-btn { flex: 1; padding: 1rem; border-radius: 4px; font-family: 'Space Grotesk', monospace; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; border: none; transition: all 0.2s; text-decoration: none; }
-        .scoutx-ep-btn-primary { background-color: #00FF00; color: #000000; }
+        .scoutx-ep-btn-primary { background-color: #5DFF31; color: #000000; }
         .scoutx-ep-btn-primary:hover { background-color: #00CC00; }
         .scoutx-ep-btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
         .scoutx-ep-btn-danger { background-color: transparent; border: 1px solid rgba(255, 77, 77, 0.3); color: #ff4d4d; }

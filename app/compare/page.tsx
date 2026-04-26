@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
@@ -26,7 +26,7 @@ type ComparedPlayer = {
 
 type SearchResult = { PlayerID: number; Name: string; Position: string; Club: string | null };
 
-export default function ComparePage() {
+function CompareContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -119,7 +119,7 @@ export default function ComparePage() {
   return (
     <>
       <style>{`
-        .scoutx-comp-bg { background-color: #111111; min-height: 100vh; padding: 2.5rem; color: #FFFFFF; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; }
+        .scoutx-comp-bg { background-color: var(--color-bg-card); min-height: 100vh; padding: var(--space-2xl); color: var(--color-text-primary); font-family: var(--font-body); display: flex; flex-direction: column; }
         .scoutx-comp-container { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
 
         .scoutx-comp-header { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 1.5rem; background-color: #1A1A1A; border-radius: 0.75rem; border: 1px solid #333333; padding: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
@@ -343,5 +343,17 @@ export default function ComparePage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#111", color: "#666", fontFamily: "Inter, sans-serif" }}>
+        Loading Comparison Engine...
+      </div>
+    }>
+      <CompareContent />
+    </Suspense>
   );
 }

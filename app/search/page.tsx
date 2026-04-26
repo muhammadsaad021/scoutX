@@ -73,14 +73,14 @@ export default function SearchPage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: "2rem" }}>
         <div>
           <h1 style={{ fontSize: "2rem", margin: 0, fontWeight: 700 }}>Verified Talent Pool</h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginTop: "0.25rem", textTransform: "uppercase", letterSpacing: "1px" }}>
+          <p style={{ color: "var(--color-text-muted)", fontSize: "0.875rem", marginTop: "0.25rem", textTransform: "uppercase", letterSpacing: "1px" }}>
             {results.length} ACTIVE PROFILES IDENTIFIED
           </p>
         </div>
         <select 
           value={sortBy} 
           onChange={(e) => setSortBy(e.target.value)}
-          style={{ background: "var(--bg-secondary)", color: "var(--text-primary)", border: "1px solid var(--border-color)", padding: "0.5rem 1rem", borderRadius: "4px", fontSize: "0.875rem", outline: "none" }}
+          style={{ background: "var(--color-bg-surface)", color: "var(--color-text-primary)", border: "1px solid var(--color-border)", padding: "0.5rem 1rem", borderRadius: "4px", fontSize: "0.875rem", outline: "none" }}
         >
           <option value="AverageScore">SORT BY: HIGHEST OVR</option>
           <option value="CreatedAt">SORT BY: NEWEST</option>
@@ -91,32 +91,32 @@ export default function SearchPage() {
       {/* Search Bar Row */}
       <div style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem" }}>
         <div style={{ flex: 1, position: "relative" }}>
-          <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--text-muted)" }}>🔍</span>
+          <span style={{ position: "absolute", left: "1rem", top: "50%", transform: "translateY(-50%)", color: "var(--color-text-muted)" }}>🔍</span>
           <input
             type="text"
-            placeholder="SEARCH BY NAME, CLUB, OR NATION..."
+            placeholder="SEARCH BY NAME, CLUB, OR POSITION..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{
               width: "100%",
               padding: "1rem 1rem 1rem 3rem",
               background: "transparent",
-              border: "1px solid var(--border-color)",
+              border: "1px solid var(--color-border)",
               borderRadius: "4px",
               color: "white",
               fontSize: "0.875rem",
               letterSpacing: "1px",
               outline: "none"
             }}
-            onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--border-color)"}
+            onFocus={(e) => e.target.style.borderColor = "var(--color-primary)"}
+            onBlur={(e) => e.target.style.borderColor = "var(--color-border)"}
           />
         </div>
         <button 
           onClick={() => setShowAdvanced(!showAdvanced)}
           style={{ 
-            padding: "0 1.5rem", background: showAdvanced ? "var(--primary)" : "var(--bg-secondary)", 
-            color: showAdvanced ? "#000" : "var(--text-primary)", border: showAdvanced ? "none" : "1px solid var(--border-color)", 
+            padding: "0 1.5rem", background: showAdvanced ? "var(--color-primary)" : "var(--color-bg-surface)", 
+            color: showAdvanced ? "#000" : "var(--color-text-primary)", border: showAdvanced ? "none" : "1px solid var(--color-border)", 
             borderRadius: "4px", fontSize: "0.875rem", cursor: "pointer", fontWeight: 600,
             display: "flex", alignItems: "center", gap: "0.5rem", transition: "all 0.2s ease"
           }}
@@ -127,7 +127,7 @@ export default function SearchPage() {
 
       {/* Advanced Filters Panel */}
       {showAdvanced && (
-        <div className="card animate-slide-in" style={{ marginBottom: "1.5rem", borderLeft: "4px solid var(--primary)" }}>
+        <div className="card animate-slide-in" style={{ marginBottom: "1.5rem", borderLeft: "4px solid var(--color-primary)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
             <div>
               <label className="label">Club</label>
@@ -165,8 +165,8 @@ export default function SearchPage() {
                 textTransform: "uppercase",
                 border: "none",
                 cursor: "pointer",
-                background: isActive ? "var(--primary)" : "var(--bg-secondary)",
-                color: isActive ? "#000" : "var(--text-secondary)",
+                background: isActive ? "var(--color-primary)" : "var(--color-bg-surface)",
+                color: isActive ? "#000" : "var(--color-text-secondary)",
                 transition: "all 0.2s ease"
               }}
             >
@@ -179,9 +179,9 @@ export default function SearchPage() {
       {/* Results List */}
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         {loading ? (
-          <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>Loading intelligence...</div>
+          <div style={{ textAlign: "center", padding: "3rem", color: "var(--color-text-muted)" }}>Loading intelligence...</div>
         ) : results.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)", border: "1px dashed var(--border-color)", borderRadius: "4px" }}>
+          <div style={{ textAlign: "center", padding: "3rem", color: "var(--color-text-muted)", border: "1px dashed var(--color-border)", borderRadius: "4px" }}>
             No profiles match the active filters.
           </div>
         ) : (
@@ -198,35 +198,35 @@ export default function SearchPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "1.25rem",
-                  background: "var(--bg-card)",
-                  border: "1px solid var(--border-color)",
+                  background: "var(--color-bg-card)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "4px",
                   transition: "all 0.2s ease",
                   cursor: "pointer"
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "var(--primary)";
+                  e.currentTarget.style.borderColor = "var(--color-primary)";
                   e.currentTarget.style.boxShadow = "var(--shadow-glow)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "var(--border-color)";
+                  e.currentTarget.style.borderColor = "var(--color-border)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                  <div style={{ width: "60px", height: "60px", background: "var(--bg-secondary)", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2rem" }}>
+                  <div style={{ width: "60px", height: "60px", background: "var(--color-bg-surface)", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "2rem" }}>
                     👤
                   </div>
                   <div>
                     <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "0.25rem" }}>
-                      <h3 style={{ margin: 0, fontSize: "1.25rem", color: "var(--text-primary)" }}>{player.Name}</h3>
+                      <h3 style={{ margin: 0, fontSize: "1.25rem", color: "var(--color-text-primary)" }}>{player.Name}</h3>
                       {player.AverageScore && player.AverageScore >= 80 && (
-                        <span style={{ fontSize: "0.6rem", background: "var(--primary-light)", color: "var(--primary)", padding: "0.2rem 0.5rem", borderRadius: "2px", fontWeight: 700, letterSpacing: "1px" }}>
+                        <span style={{ fontSize: "0.6rem", background: "var(--primary-light)", color: "var(--color-primary)", padding: "0.2rem 0.5rem", borderRadius: "2px", fontWeight: 700, letterSpacing: "1px" }}>
                           ELITE_PROSPECT
                         </span>
                       )}
                     </div>
-                    <div style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
+                    <div style={{ color: "var(--color-text-secondary)", fontSize: "0.875rem" }}>
                       {player.Club || "Free Agent"} • {player.Position} • {player.Age ? `${player.Age} Years Old` : "Age Unknown"}
                     </div>
                   </div>
@@ -234,17 +234,17 @@ export default function SearchPage() {
 
                 <div style={{ display: "flex", alignItems: "center", gap: "3rem", textAlign: "right" }}>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <div style={{ fontSize: "2rem", fontWeight: 700, color: player.AverageScore && player.AverageScore >= 80 ? "var(--primary)" : "var(--text-primary)", lineHeight: 1 }}>
+                    <div style={{ fontSize: "2rem", fontWeight: 700, color: player.AverageScore && player.AverageScore >= 80 ? "var(--color-primary)" : "var(--color-text-primary)", lineHeight: 1 }}>
                       {player.AverageScore ? Math.round(player.AverageScore) : "—"}
                     </div>
-                    <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px" }}>OVR SCORE</div>
+                    <div style={{ fontSize: "0.6rem", color: "var(--color-text-muted)", letterSpacing: "1px" }}>OVR SCORE</div>
                   </div>
-                  <div style={{ width: "1px", height: "40px", background: "var(--border-color)" }}></div>
+                  <div style={{ width: "1px", height: "40px", background: "var(--color-border)" }}></div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: "80px" }}>
-                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text-primary)", lineHeight: 1, marginBottom: "0.25rem" }}>
+                    <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1, marginBottom: "0.25rem" }}>
                       €{player.AverageScore ? Math.round((player.AverageScore * 1.5) + (Math.random() * 10)) : 10}M
                     </div>
-                    <div style={{ fontSize: "0.6rem", color: "var(--text-muted)", letterSpacing: "1px" }}>VALUE</div>
+                    <div style={{ fontSize: "0.6rem", color: "var(--color-text-muted)", letterSpacing: "1px" }}>VALUE</div>
                   </div>
                 </div>
               </div>

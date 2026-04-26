@@ -70,148 +70,179 @@ export default function PerformancePage() {
   };
 
   return (
-    <div className="container" style={{ paddingTop: "2rem", paddingBottom: "3rem", maxWidth: "640px" }}>
+    <>
+      <style>{`
+        .scoutx-perf-bg { background-color: #000000; min-height: 100vh; padding: 2.5rem 1rem; color: #fff; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; }
+        .scoutx-perf-container { max-width: 640px; width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
+        
+        .scoutx-perf-back { display: inline-flex; align-items: center; font-size: 0.6875rem; color: #888; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; transition: color 0.2s; font-weight: 600; margin-bottom: 0.5rem; }
+        .scoutx-perf-back:hover { color: #fff; }
+        
+        .scoutx-perf-header { margin-bottom: 1rem; }
+        .scoutx-perf-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2rem; font-weight: 800; margin: 0 0 0.5rem 0; letter-spacing: -0.02em; }
+        .scoutx-perf-subtitle { color: #888; font-size: 0.875rem; margin: 0; display: flex; align-items: center; gap: 0.75rem; }
+        
+        .scoutx-perf-tag { background-color: rgba(93, 255, 49, 0.1); color: #5DFF31; padding: 2px 8px; border-radius: 4px; font-size: 0.625rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(93, 255, 49, 0.3); }
 
-      {/* Toast */}
-      {toast.show && (
-        <div style={{
-          position: "fixed", top: "1.5rem", right: "1.5rem", zIndex: 9999,
-          padding: "0.875rem 1.25rem", borderRadius: "var(--radius-md)",
-          background: toast.ok ? "var(--success)" : "var(--danger)",
-          color: "white", fontWeight: 600, boxShadow: "var(--shadow-lg)",
-          animation: "fadeIn 0.3s ease",
-        }}>
-          {toast.ok ? "✓" : "✗"} {toast.message}
-        </div>
-      )}
+        .scoutx-perf-card { background-color: #111; border: 1px solid #222; border-radius: 8px; padding: 2rem; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5); }
+        
+        .scoutx-form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .scoutx-form-label { font-size: 0.6875rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.1em; }
+        
+        .scoutx-form-input { background-color: #0a0a0a; border: 1px solid #333; color: #fff; padding: 0.875rem 1rem; border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.875rem; transition: all 0.2s; outline: none; }
+        .scoutx-form-input:focus { border-color: #5DFF31; box-shadow: 0 0 0 1px rgba(93, 255, 49, 0.2); }
+        .scoutx-form-input::placeholder { color: #444; }
+        
+        .scoutx-form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        
+        .scoutx-range-container { display: flex; align-items: center; gap: 1rem; }
+        .scoutx-range-input { flex: 1; accent-color: #5DFF31; height: 4px; background: #333; outline: none; border-radius: 2px; }
+        .scoutx-range-value { min-width: 2.5rem; text-align: center; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.5rem; font-weight: 800; color: #5DFF31; }
+        
+        .scoutx-preview-box { padding: 1.25rem 1.5rem; border-radius: 4px; background-color: #0a0a0a; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .scoutx-preview-label { font-size: 0.6875rem; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; font-weight: 700; }
+        .scoutx-preview-formula { font-size: 0.6875rem; color: #555; font-family: 'Space Grotesk', monospace; }
+        .scoutx-preview-score { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.5rem; font-weight: 800; line-height: 1; }
+        
+        .scoutx-btn-row { display: flex; gap: 1rem; }
+        .scoutx-btn { flex: 1; padding: 0.875rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border: none; cursor: pointer; transition: all 0.2s; text-align: center; text-decoration: none; display: inline-block; }
+        .scoutx-btn-primary { background-color: #5DFF31; color: #000; }
+        .scoutx-btn-primary:hover:not(:disabled) { background-color: #7aff54; box-shadow: 0 0 15px rgba(93, 255, 49, 0.4); }
+        .scoutx-btn-secondary { background-color: #222; color: #fff; }
+        .scoutx-btn-secondary:hover { background-color: #333; }
+        .scoutx-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-      <div style={{ marginBottom: "1.5rem" }}>
-        <Link href={`/players/${id}`} style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
-          ← Back to {player?.Name ?? "Player"}
-        </Link>
-        <h1 style={{ marginTop: "0.75rem" }}>Add Performance Data</h1>
-        {player && (
-          <p style={{ marginTop: "0.25rem" }}>
-            Recording match stats for <strong style={{ color: "var(--text-primary)" }}>{player.Name}</strong>{" "}
-            <span className="badge badge-primary" style={{ marginLeft: "0.5rem" }}>{player.Position}</span>
-          </p>
-        )}
-      </div>
+        .scoutx-error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #EF4444; padding: 0.875rem; border-radius: 4px; font-size: 0.875rem; margin-bottom: 1.5rem; }
 
-      <div className="card animate-fade-in">
-        {formError && (
-          <div style={{
-            padding: "0.75rem", borderRadius: "var(--radius-md)", marginBottom: "1rem",
-            background: "rgba(239,68,68,0.15)", color: "var(--danger)", fontSize: "0.875rem",
-          }}>
-            {formError}
-          </div>
-        )}
+        .scoutx-toast {
+          position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999;
+          padding: 0.875rem 1.25rem; border-radius: 4px;
+          color: #000; font-weight: 600; box-shadow: 0 10px 25px -3px rgba(0,0,0,0.5);
+          font-family: 'Inter', sans-serif; font-size: 0.875rem;
+        }
+      `}</style>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      <div className="scoutx-perf-bg">
+        <div className="scoutx-perf-container">
 
-          {/* Match Date */}
-          <div>
-            <label className="label">Match Date *</label>
-            <input id="input-match-date" type="date" required className="input"
-              value={matchDate} onChange={(e) => setMatchDate(e.target.value)} />
-          </div>
-
-          {/* Stats Row */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
-            <div>
-              <label className="label">Goals *</label>
-              <input id="input-goals" type="number" required min={0} max={20} className="input"
-                value={goals} onChange={(e) => setGoals(e.target.value)} />
+          {/* Toast */}
+          {toast.show && (
+            <div className="scoutx-toast" style={{ background: toast.ok ? "#5DFF31" : "#EF4444", color: toast.ok ? "#000" : "#fff" }}>
+              {toast.message}
             </div>
-            <div>
-              <label className="label">Assists *</label>
-              <input id="input-assists" type="number" required min={0} max={20} className="input"
-                value={assists} onChange={(e) => setAssists(e.target.value)} />
-            </div>
-            <div>
-              <label className="label">Passes *</label>
-              <input id="input-passes" type="number" required min={0} max={200} className="input"
-                value={passes} onChange={(e) => setPasses(e.target.value)} />
-            </div>
-          </div>
+          )}
 
-          {/* Rating */}
-          <div>
-            <label className="label">Match Rating (0 – 10)</label>
-            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-              <input
-                id="input-rating"
-                type="range" min={0} max={10} step={0.5}
-                value={rating}
-                onChange={(e) => setRating(e.target.value)}
-                style={{ flex: 1, accentColor: "var(--primary)" }}
-              />
-              <span style={{
-                minWidth: "2.5rem", textAlign: "center",
-                fontSize: "1.25rem", fontWeight: 700, color: "var(--primary)"
-              }}>
-                {rating}
-              </span>
-            </div>
-          </div>
-
-          {/* Comments */}
-          <div>
-            <label className="label">Comments / Observations</label>
-            <textarea
-              id="input-comments"
-              className="textarea"
-              rows={3}
-              placeholder="e.g. Strong first half, lost momentum after 60 mins..."
-              value={comments}
-              onChange={(e) => setComments(e.target.value)}
-              style={{ resize: "vertical" }}
-            />
-          </div>
-
-          {/* Calculated Score Preview */}
-          <div style={{
-            padding: "1rem", borderRadius: "var(--radius-md)",
-            background: "var(--bg-secondary)", border: "1px solid var(--border-color)",
-            display: "flex", justifyContent: "space-between", alignItems: "center",
-          }}>
-            <div>
-              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginBottom: "0.25rem" }}>
-                CALCULATED PERFORMANCE SCORE
-              </div>
-              <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-                Goals×10 + Assists×6 + Passes×0.1 + Rating×3
-              </div>
-            </div>
-            <div style={{
-              fontSize: "2rem", fontWeight: 800,
-              color: parseFloat(previewScore()) >= 60 ? "var(--success)" :
-                     parseFloat(previewScore()) >= 30 ? "var(--warning)" : "var(--danger)",
-            }}>
-              {previewScore()}
-            </div>
-          </div>
-
-          <div style={{ display: "flex", gap: "0.75rem" }}>
-            <button type="submit" id="btn-save-performance" className="btn btn-primary"
-              disabled={submitting} style={{ flex: 1 }}>
-              {submitting ? "Saving..." : "Save Performance"}
-            </button>
-            <Link href={`/players/${id}`} className="btn btn-secondary"
-              style={{ flex: 1, justifyContent: "center" }}>
-              Cancel
+          <div className="scoutx-perf-header">
+            <Link href={`/players/${id}`} className="scoutx-perf-back">
+              <span className="material-symbols-outlined" style={{ fontSize: "14px", marginRight: "4px" }}>arrow_back</span>
+              Back to {player?.Name ?? "Profile"}
             </Link>
+            <h1 className="scoutx-perf-title">ADD PERFORMANCE</h1>
+            {player && (
+              <p className="scoutx-perf-subtitle">
+                Recording match data for <strong style={{ color: "#fff" }}>{player.Name}</strong>
+                <span className="scoutx-perf-tag">{player.Position}</span>
+              </p>
+            )}
           </div>
-        </form>
-      </div>
 
-      {/* View All button */}
-      <div style={{ marginTop: "1.5rem", textAlign: "center" }}>
-        <Link href={`/players/${id}`} style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>
-          View all performances on player profile →
-        </Link>
+          <div className="scoutx-perf-card">
+            {formError && <div className="scoutx-error">{formError}</div>}
+
+            <form onSubmit={handleSubmit}>
+              
+              <div className="scoutx-form-group">
+                <label className="scoutx-form-label">Match Date *</label>
+                <input 
+                  type="date" 
+                  required 
+                  className="scoutx-form-input"
+                  value={matchDate} 
+                  onChange={(e) => setMatchDate(e.target.value)} 
+                />
+              </div>
+
+              <div className="scoutx-form-row">
+                <div className="scoutx-form-group" style={{ marginBottom: 0 }}>
+                  <label className="scoutx-form-label">Goals *</label>
+                  <input 
+                    type="number" 
+                    required min={0} max={20} 
+                    className="scoutx-form-input"
+                    value={goals} 
+                    onChange={(e) => setGoals(e.target.value)} 
+                  />
+                </div>
+                <div className="scoutx-form-group" style={{ marginBottom: 0 }}>
+                  <label className="scoutx-form-label">Assists *</label>
+                  <input 
+                    type="number" 
+                    required min={0} max={20} 
+                    className="scoutx-form-input"
+                    value={assists} 
+                    onChange={(e) => setAssists(e.target.value)} 
+                  />
+                </div>
+                <div className="scoutx-form-group" style={{ marginBottom: 0 }}>
+                  <label className="scoutx-form-label">Passes *</label>
+                  <input 
+                    type="number" 
+                    required min={0} max={200} 
+                    className="scoutx-form-input"
+                    value={passes} 
+                    onChange={(e) => setPasses(e.target.value)} 
+                  />
+                </div>
+              </div>
+
+              <div className="scoutx-form-group">
+                <label className="scoutx-form-label">Match Rating (0 – 10)</label>
+                <div className="scoutx-range-container">
+                  <input
+                    type="range" min={0} max={10} step={0.5}
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                    className="scoutx-range-input"
+                  />
+                  <span className="scoutx-range-value">{rating}</span>
+                </div>
+              </div>
+
+              <div className="scoutx-form-group">
+                <label className="scoutx-form-label">Comments / Observations</label>
+                <textarea
+                  className="scoutx-form-input"
+                  rows={3}
+                  placeholder="Input tactical observations..."
+                  value={comments}
+                  onChange={(e) => setComments(e.target.value)}
+                  style={{ resize: "vertical" }}
+                />
+              </div>
+
+              <div className="scoutx-preview-box">
+                <div>
+                  <div className="scoutx-preview-label">Calculated Score</div>
+                  <div className="scoutx-preview-formula">G×10 + A×6 + P×0.1 + R×3</div>
+                </div>
+                <div className="scoutx-preview-score" style={{ color: parseFloat(previewScore()) >= 80 ? "#5DFF31" : parseFloat(previewScore()) >= 60 ? "#F5B041" : "#EF4444" }}>
+                  {previewScore()}
+                </div>
+              </div>
+
+              <div className="scoutx-btn-row">
+                <button type="submit" className="scoutx-btn scoutx-btn-primary" disabled={submitting}>
+                  {submitting ? "SAVING..." : "SAVE PERFORMANCE"}
+                </button>
+                <Link href={`/players/${id}`} className="scoutx-btn scoutx-btn-secondary">
+                  CANCEL
+                </Link>
+              </div>
+            </form>
+          </div>
+
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -167,7 +167,7 @@ export default function PlayerProfilePage() {
 
   if (loading) return (
     <div style={{ backgroundColor: "#141414", minHeight: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <p style={{ color: "#00FF00", fontFamily: "'Space Grotesk', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}>
+      <p style={{ color: "#5DFF31", fontFamily: "'Space Grotesk', sans-serif", fontSize: "14px", letterSpacing: "2px", textTransform: "uppercase" }}>
         Loading Profile Analytics...
       </p>
     </div>
@@ -176,7 +176,7 @@ export default function PlayerProfilePage() {
   if (notFound || !player) return (
     <div style={{ backgroundColor: "#141414", minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "1.5rem" }}>
       <h2 style={{ color: "#FFFFFF", fontFamily: "'Inter', sans-serif", fontSize: "2rem" }}>Profile Not Found</h2>
-      <Link href="/players" style={{ color: "#000000", backgroundColor: "#00FF00", padding: "0.5rem 1.5rem", textDecoration: "none", fontSize: "12px", textTransform: "uppercase", fontWeight: "600", fontFamily: "'Inter', sans-serif" }}>
+      <Link href="/players" style={{ color: "#000000", backgroundColor: "#5DFF31", padding: "0.5rem 1.5rem", textDecoration: "none", fontSize: "12px", textTransform: "uppercase", fontWeight: "600", fontFamily: "'Inter', sans-serif" }}>
         BACK TO PLAYERS
       </Link>
     </div>
@@ -200,7 +200,7 @@ export default function PlayerProfilePage() {
         .scoutx-pp-header { background-color: #0a0a0a; border: 1px solid #222222; padding: 2rem; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; border-radius: 8px; }
         
         .scoutx-pp-tags { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-        .scoutx-pp-tag-primary { padding: 2px 8px; background-color: rgba(0, 255, 0, 0.2); color: #00FF00; border: 1px solid rgba(0, 255, 0, 0.3); font-size: 10px; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; }
+        .scoutx-pp-tag-primary { padding: 2px 8px; background-color: rgba(0, 255, 0, 0.2); color: #5DFF31; border: 1px solid rgba(0, 255, 0, 0.3); font-size: 10px; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; }
         .scoutx-pp-tag-secondary { padding: 2px 8px; background-color: #2A2A2A; color: #A0A0A0; font-size: 10px; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; }
         
         .scoutx-pp-name { font-size: 1.875rem; font-weight: 500; letter-spacing: -0.025em; margin: 0 0 1rem 0; font-family: 'Inter', sans-serif; text-transform: uppercase; }
@@ -211,13 +211,13 @@ export default function PlayerProfilePage() {
         
         .scoutx-pp-score-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem; }
         .scoutx-pp-score-label { font-size: 10px; color: #A0A0A0; text-transform: uppercase; letter-spacing: 0.1em; margin: 0; }
-        .scoutx-pp-score-val { font-size: 3rem; color: #00FF00; font-family: 'Space Grotesk', monospace; padding-bottom: 0.5rem; border-bottom: 2px solid #00FF00; line-height: 1; }
+        .scoutx-pp-score-val { font-size: 3rem; color: #5DFF31; font-family: 'Space Grotesk', monospace; padding-bottom: 0.5rem; border-bottom: 2px solid #5DFF31; line-height: 1; }
         
         .scoutx-pp-actions { display: flex; justify-content: flex-end; gap: 0.75rem; padding: 1rem 0; flex-wrap: wrap; }
         .scoutx-pp-btn { padding: 0.5rem 1.5rem; font-size: 0.75rem; text-transform: uppercase; font-weight: 500; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: background-color 0.2s; text-decoration: none; font-family: 'Inter', sans-serif; border: none; outline: none; }
         .scoutx-pp-btn-secondary { background-color: #2A2A2A; color: #FFFFFF; }
         .scoutx-pp-btn-secondary:hover { background-color: #333333; }
-        .scoutx-pp-btn-primary { background-color: #00FF00; color: #000000; }
+        .scoutx-pp-btn-primary { background-color: #5DFF31; color: #000000; }
         .scoutx-pp-btn-primary:hover { background-color: #00CC00; }
         .scoutx-pp-btn:disabled { opacity: 0.7; cursor: not-allowed; }
         
@@ -241,16 +241,16 @@ export default function PlayerProfilePage() {
         .scoutx-pp-note-left .scoutx-pp-note-content { padding-right: 1.5rem; }
         
         .scoutx-pp-note-box { border: 1px solid #222222; padding: 1rem; background-color: #000000; border-radius: 4px; }
-        .scoutx-pp-note-date { font-size: 10px; color: #00FF00; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; margin-bottom: 0.5rem; margin-top: 0; }
+        .scoutx-pp-note-date { font-size: 10px; color: #5DFF31; text-transform: uppercase; font-family: 'Space Grotesk', monospace; letter-spacing: 0.05em; margin-bottom: 0.5rem; margin-top: 0; }
         .scoutx-pp-note-left .scoutx-pp-note-date { color: #A0A0A0; }
         .scoutx-pp-note-text { font-size: 0.75rem; color: #A0A0A0; line-height: 1.6; margin: 0; }
         
-        .scoutx-pp-node { position: absolute; left: 50%; top: 1rem; transform: translateX(-50%); w-3 h-3; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #00FF00; background-color: #141414; z-index: 10; display: flex; align-items: center; justify-content: center; }
-        .scoutx-pp-node-inner { width: 4px; height: 4px; border-radius: 50%; background-color: #00FF00; }
+        .scoutx-pp-node { position: absolute; left: 50%; top: 1rem; transform: translateX(-50%); w-3 h-3; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #5DFF31; background-color: #141414; z-index: 10; display: flex; align-items: center; justify-content: center; }
+        .scoutx-pp-node-inner { width: 4px; height: 4px; border-radius: 50%; background-color: #5DFF31; }
         .scoutx-pp-note-left .scoutx-pp-node { border-color: #333333; }
         .scoutx-pp-note-left .scoutx-pp-node-inner { display: none; }
         
-        .scoutx-pp-add-note { font-size: 10px; color: #00FF00; text-transform: uppercase; letter-spacing: 0.1em; background: none; border: none; cursor: pointer; }
+        .scoutx-pp-add-note { font-size: 10px; color: #5DFF31; text-transform: uppercase; letter-spacing: 0.1em; background: none; border: none; cursor: pointer; }
         .scoutx-pp-add-note:hover { color: rgba(0,255,0,0.8); }
 
         .scoutx-pp-note-input-container { margin-bottom: 1.5rem; border: 1px solid #222222; padding: 1rem; background-color: #000000; position: relative; z-index: 20; border-radius: 4px; }
@@ -261,7 +261,7 @@ export default function PlayerProfilePage() {
         .scoutx-pp-table th { font-size: 9px; color: #A0A0A0; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid #333333; padding-bottom: 1rem; font-weight: 400; }
         .scoutx-pp-table td { padding: 1rem 0; border-bottom: 1px solid rgba(51, 51, 51, 0.5); }
         .scoutx-pp-table tr:last-child td { border-bottom: none; }
-        .scoutx-pp-td-date { color: #00FF00; font-family: 'Space Grotesk', monospace; width: 15%; }
+        .scoutx-pp-td-date { color: #5DFF31; font-family: 'Space Grotesk', monospace; width: 15%; }
         .scoutx-pp-td-score { color: #FFFFFF; width: 15%; }
         .scoutx-pp-td-val { color: #FFFFFF; font-weight: 500; text-align: left; width: 10%; }
         .scoutx-pp-td-dim { color: #A0A0A0; text-align: left; width: 10%; }
@@ -281,7 +281,7 @@ export default function PlayerProfilePage() {
           
           {/* Toast */}
           {toast.show && (
-            <div className="scoutx-toast" style={{ background: toast.ok ? "#2A2A2A" : "#ef4444", color: toast.ok ? "#FFF" : "#fff", borderLeft: toast.ok ? "3px solid #00FF00" : "none" }}>
+            <div className="scoutx-toast" style={{ background: toast.ok ? "#2A2A2A" : "#ef4444", color: toast.ok ? "#FFF" : "#fff", borderLeft: toast.ok ? "3px solid #5DFF31" : "none" }}>
               {toast.message}
             </div>
           )}
@@ -299,21 +299,20 @@ export default function PlayerProfilePage() {
             <div>
               <div className="scoutx-pp-tags">
                 <span className="scoutx-pp-tag-primary">{player.Position}</span>
-                <span className="scoutx-pp-tag-secondary">{player.Club || "FREE AGENT"}</span>
               </div>
               <h2 className="scoutx-pp-name">{player.Name}</h2>
               <div className="scoutx-pp-meta-row">
+                <div>
+                  <p className="scoutx-pp-meta-label">CLUB</p>
+                  <p className="scoutx-pp-meta-value">{player.Club || "FREE AGENT"}</p>
+                </div>
                 <div>
                   <p className="scoutx-pp-meta-label">AGE</p>
                   <p className="scoutx-pp-meta-value">{player.Age || "—"}</p>
                 </div>
                 <div>
-                  <p className="scoutx-pp-meta-label">NATION</p>
-                  <p className="scoutx-pp-meta-value">N/A</p>
-                </div>
-                <div>
-                  <p className="scoutx-pp-meta-label">FOOT</p>
-                  <p className="scoutx-pp-meta-value">RIGHT</p>
+                  <p className="scoutx-pp-meta-label">WEIGHT</p>
+                  <p className="scoutx-pp-meta-value">{player.Weight ? `${player.Weight} kg` : "—"}</p>
                 </div>
               </div>
             </div>

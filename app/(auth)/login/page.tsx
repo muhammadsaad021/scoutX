@@ -34,34 +34,9 @@ export default function LoginPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Plus+Jakarta+Sans:wght@600;700&family=Space+Grotesk:wght@600&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-
-        :root {
-          --bg-main: #131313;
-          --bg-left: #0e0e0e;
-          --bg-card: rgba(32, 31, 31, 0.4);
-          --border-card: #2a2a2a;
-          --border-card-hover: rgba(93, 255, 49, 0.3);
-          --border-input: #2a2a2a;
-          --border-input-hover: rgba(93, 255, 49, 0.5);
-          
-          --text-main: #e5e2e1;
-          --text-secondary: #c5c7c2;
-          --text-white: #ffffff;
-          
-          --primary: #5dff31;
-          --primary-hover: #7aff54;
-          --on-primary: #032100;
-          
-          --font-body: 'Inter', sans-serif;
-          --font-head: 'Plus Jakarta Sans', sans-serif;
-          --font-mono: 'Space Grotesk', sans-serif;
-        }
-
         .login-page {
-          background-color: var(--bg-main);
-          color: var(--text-main);
+          background-color: #131313;
+          color: var(--color-text-secondary);
           min-height: 100vh;
           display: flex;
           flex-direction: column;
@@ -70,9 +45,7 @@ export default function LoginPage() {
           overflow: hidden;
         }
         @media (min-width: 768px) {
-          .login-page {
-            flex-direction: row;
-          }
+          .login-page { flex-direction: row; }
         }
 
         .login-left {
@@ -80,12 +53,10 @@ export default function LoginPage() {
           flex-direction: column;
           width: 60%;
           position: relative;
-          background-color: var(--bg-left);
+          background-color: var(--color-bg-elevated);
         }
         @media (min-width: 768px) {
-          .login-left {
-            display: flex;
-          }
+          .login-left { display: flex; }
         }
 
         .login-bg-img {
@@ -109,11 +80,11 @@ export default function LoginPage() {
           top: 40px;
           left: 40px;
           z-index: 10;
-          color: var(--primary);
-          font-family: var(--font-head);
-          font-size: 24px;
+          color: var(--color-primary);
+          font-family: var(--font-heading);
+          font-size: var(--text-2xl);
           letter-spacing: -0.05em;
-          font-weight: 900;
+          font-weight: var(--fw-black);
         }
 
         .login-hero {
@@ -124,51 +95,51 @@ export default function LoginPage() {
           justify-content: flex-end;
           height: 100%;
           padding-bottom: 120px;
-          padding-left: 3rem;
-          padding-right: 3rem;
+          padding-left: var(--space-3xl);
+          padding-right: var(--space-3xl);
         }
         @media (min-width: 1024px) {
           .login-hero { padding-left: 5rem; padding-right: 5rem; }
         }
 
         .login-hero-sub {
-          font-family: var(--font-head);
-          font-size: 48px;
-          color: var(--text-white);
-          margin-bottom: 0.5rem;
+          font-family: var(--font-heading);
+          font-size: var(--text-5xl);
+          color: var(--color-text-primary);
+          margin-bottom: var(--space-sm);
           letter-spacing: -0.02em;
-          font-weight: 700;
-          line-height: 1.1;
+          font-weight: var(--fw-bold);
+          line-height: var(--lh-tight);
         }
 
         .login-hero-main {
-          font-family: var(--font-head);
-          font-size: 64px;
+          font-family: var(--font-heading);
+          font-size: var(--text-6xl);
           line-height: 1;
           letter-spacing: -0.02em;
-          font-weight: 800;
-          color: var(--primary);
-          text-shadow: 0 0 15px rgba(93, 255, 49, 0.3);
-          margin-bottom: 2rem;
+          font-weight: var(--fw-extrabold);
+          color: var(--color-primary);
+          text-shadow: 0 0 15px var(--color-primary-glow);
+          margin-bottom: var(--space-xl);
         }
 
         .login-hero-desc-container {
           display: flex;
           align-items: stretch;
-          gap: 1.5rem;
+          gap: var(--space-lg);
           max-width: 36rem;
         }
         .login-hero-desc-bar {
           width: 2px;
-          background-color: var(--primary);
-          border-radius: 9999px;
+          background-color: var(--color-primary);
+          border-radius: var(--radius-full);
           box-shadow: 0 0 10px rgba(93, 255, 49, 0.5);
         }
         .login-hero-desc {
           font-family: var(--font-body);
-          font-size: 16px;
+          font-size: var(--text-md);
           color: rgba(197, 199, 194, 0.9);
-          line-height: 1.6;
+          line-height: var(--lh-relaxed);
         }
 
         .login-right {
@@ -177,15 +148,15 @@ export default function LoginPage() {
           flex-direction: column;
           justify-content: center;
           align-items: center;
-          padding: 2rem;
+          padding: var(--space-xl);
           position: relative;
-          background-color: var(--bg-main);
+          background-color: #131313;
           z-index: 20;
         }
         @media (min-width: 768px) {
           .login-right {
             width: 40%;
-            border-left: 1px solid rgba(42, 42, 42, 0.5);
+            border-left: 1px solid var(--color-border-subtle);
           }
         }
         @media (min-width: 1024px) {
@@ -194,28 +165,28 @@ export default function LoginPage() {
 
         .login-mobile-logo {
           position: absolute;
-          top: 2rem;
-          left: 2rem;
+          top: var(--space-xl);
+          left: var(--space-xl);
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
         }
         @media (min-width: 768px) {
           .login-mobile-logo { display: none; }
         }
         .login-mobile-logo-icon {
-          color: var(--primary);
+          color: var(--color-primary);
           font-size: 20px;
           font-family: 'Material Symbols Outlined';
           font-variation-settings: 'FILL' 1;
         }
         .login-mobile-logo-text {
-          font-family: var(--font-head);
+          font-family: var(--font-heading);
           font-size: 20px;
-          color: var(--primary);
+          color: var(--color-primary);
           letter-spacing: 0.1em;
           text-transform: lowercase;
-          font-weight: 600;
+          font-weight: var(--fw-semibold);
         }
 
         .login-form-wrapper {
@@ -224,40 +195,40 @@ export default function LoginPage() {
         }
 
         .login-header {
-          margin-bottom: 2.5rem;
+          margin-bottom: var(--space-2xl);
           text-align: center;
         }
         @media (min-width: 768px) {
           .login-header { text-align: left; }
         }
         .login-title {
-          font-family: var(--font-head);
+          font-family: var(--font-heading);
           font-size: 32px;
-          color: var(--text-white);
-          margin-bottom: 0.5rem;
-          font-weight: 600;
+          color: var(--color-text-primary);
+          margin-bottom: var(--space-sm);
+          font-weight: var(--fw-semibold);
           letter-spacing: -0.01em;
         }
         .login-subtitle {
           font-family: var(--font-body);
-          font-size: 16px;
-          color: var(--text-secondary);
+          font-size: var(--text-md);
+          color: var(--color-text-muted);
         }
 
         .login-card {
-          background-color: var(--bg-card);
+          background-color: rgba(32, 31, 31, 0.4);
           backdrop-filter: blur(24px);
           -webkit-backdrop-filter: blur(24px);
-          border: 1px solid var(--border-card);
-          padding: 2rem;
-          border-radius: 0.75rem;
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+          border: 1px solid var(--color-border);
+          padding: var(--space-xl);
+          border-radius: var(--radius-lg);
+          box-shadow: var(--shadow-xl);
           position: relative;
           overflow: hidden;
-          transition: border-color 0.5s;
+          transition: border-color var(--transition-slow);
         }
         .login-card:hover {
-          border-color: var(--border-card-hover);
+          border-color: var(--color-border-primary);
         }
 
         .login-glow {
@@ -267,10 +238,10 @@ export default function LoginPage() {
           width: 10rem;
           height: 10rem;
           background-color: rgba(93, 255, 49, 0.05);
-          border-radius: 9999px;
+          border-radius: var(--radius-full);
           filter: blur(50px);
           pointer-events: none;
-          transition: background-color 0.5s;
+          transition: background-color var(--transition-slow);
         }
         .login-card:hover .login-glow {
           background-color: rgba(93, 255, 49, 0.1);
@@ -281,7 +252,7 @@ export default function LoginPage() {
           z-index: 10;
           display: flex;
           flex-direction: column;
-          gap: 2rem;
+          gap: var(--space-xl);
         }
 
         .login-input-group {
@@ -289,41 +260,41 @@ export default function LoginPage() {
         }
         .login-label {
           font-family: var(--font-mono);
-          font-size: 12px;
-          color: var(--text-secondary);
-          margin-bottom: 0.5rem;
+          font-size: var(--text-sm);
+          color: var(--color-text-muted);
+          margin-bottom: var(--space-sm);
           display: block;
-          letter-spacing: 0.15em;
+          letter-spacing: var(--ls-widest);
           text-transform: uppercase;
-          font-weight: 600;
+          font-weight: var(--fw-semibold);
         }
 
         .login-input-wrapper {
           position: relative;
           display: flex;
           align-items: flex-end;
-          border-bottom: 1px solid var(--border-input);
-          transition: border-color 0.3s;
+          border-bottom: 1px solid var(--color-border);
+          transition: border-color var(--transition-slow);
         }
         .login-input-wrapper:hover {
-          border-color: var(--border-input-hover);
+          border-color: var(--color-border-primary);
         }
         .login-input-wrapper:focus-within {
-          border-color: var(--primary);
+          border-color: var(--color-primary);
         }
 
         .login-input {
           width: 100%;
           background: transparent;
           border: none;
-          padding: 0 0 0.5rem 0;
-          color: var(--text-white);
+          padding: 0 0 var(--space-sm) 0;
+          color: var(--color-text-primary);
           font-family: var(--font-body);
-          font-size: 16px;
+          font-size: var(--text-md);
           outline: none;
         }
         .login-input::placeholder {
-          color: #353534;
+          color: var(--color-text-dim);
         }
         .login-input[type="password"] {
           letter-spacing: 0.2em;
@@ -331,41 +302,41 @@ export default function LoginPage() {
 
         .login-icon {
           font-family: 'Material Symbols Outlined';
-          color: var(--text-secondary);
+          color: var(--color-text-muted);
           position: absolute;
           right: 0;
-          bottom: 0.5rem;
+          bottom: var(--space-sm);
           pointer-events: none;
-          transition: color 0.3s;
+          transition: color var(--transition-slow);
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .login-input-wrapper:focus-within .login-icon {
-          color: var(--primary);
+          color: var(--color-primary);
         }
 
         .login-submit-btn {
           width: 100%;
-          background-color: var(--primary);
-          color: var(--on-primary);
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
           font-family: var(--font-mono);
-          font-size: 12px;
-          font-weight: 600;
-          padding: 1rem;
-          border-radius: 0.5rem;
+          font-size: var(--text-sm);
+          font-weight: var(--fw-semibold);
+          padding: var(--space-md);
+          border-radius: var(--radius-md);
           text-transform: uppercase;
-          letter-spacing: 0.15em;
+          letter-spacing: var(--ls-widest);
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
           border: none;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: all var(--transition-slow);
           box-shadow: 0 0 15px rgba(93, 255, 49, 0.1);
         }
         .login-submit-btn:hover:not(:disabled) {
-          background-color: var(--primary-hover);
-          box-shadow: 0 0 25px rgba(93, 255, 49, 0.3);
+          background-color: var(--color-primary-hover);
+          box-shadow: var(--shadow-glow-lg);
         }
         .login-submit-btn:disabled {
           opacity: 0.5;
@@ -374,7 +345,7 @@ export default function LoginPage() {
         .login-submit-icon {
           font-family: 'Material Symbols Outlined';
           font-size: 18px;
-          transition: transform 0.3s;
+          transition: transform var(--transition-slow);
           font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         .login-submit-btn:hover:not(:disabled) .login-submit-icon {
@@ -386,48 +357,47 @@ export default function LoginPage() {
           flex-direction: column;
           justify-content: space-between;
           align-items: center;
-          margin-top: 2rem;
-          gap: 1rem;
+          margin-top: var(--space-xl);
+          gap: var(--space-md);
           font-family: var(--font-mono);
-          font-size: 12px;
-          font-weight: 600;
+          font-size: var(--text-sm);
+          font-weight: var(--fw-semibold);
         }
         @media (min-width: 640px) {
-          .login-footer {
-            flex-direction: row;
-          }
+          .login-footer { flex-direction: row; }
         }
         .login-footer-link {
-          color: var(--text-secondary);
+          color: var(--color-text-muted);
           text-decoration: none;
           text-transform: uppercase;
-          letter-spacing: 0.15em;
-          transition: color 0.3s;
+          letter-spacing: var(--ls-widest);
+          transition: color var(--transition-slow);
         }
         .login-footer-link:hover {
-          color: var(--primary);
+          color: var(--color-primary);
         }
         .login-footer-link-group {
           display: flex;
           align-items: center;
-          gap: 0.25rem;
+          gap: var(--space-xs);
         }
         .login-footer-arrow {
           font-family: 'Material Symbols Outlined';
           font-size: 14px;
-          transition: transform 0.3s;
+          transition: transform var(--transition-slow);
         }
         .login-footer-link-group:hover .login-footer-arrow {
           transform: translateX(2px) translateY(-2px);
         }
         
         .login-error {
-          padding: 0.75rem;
-          background-color: #93000a;
-          color: #ffdad6;
-          border-radius: 0.25rem;
-          font-size: 14px;
+          padding: var(--space-lg);
+          background-color: rgba(239, 68, 68, 0.15);
+          color: var(--color-danger);
+          border-radius: var(--radius-sm);
+          font-size: var(--text-base);
           font-family: var(--font-body);
+          border: 1px solid rgba(239, 68, 68, 0.3);
         }
       `}</style>
 

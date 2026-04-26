@@ -144,7 +144,7 @@ export default function AdminUsersPage() {
       {/* Users Table */}
       <div className="table-container">
         {loading ? (
-          <div style={{ padding: "3rem", textAlign: "center", color: "var(--text-muted)" }}>
+          <div style={{ padding: "3rem", textAlign: "center", color: "var(--color-text-muted)" }}>
             Loading users...
           </div>
         ) : (
@@ -162,15 +162,15 @@ export default function AdminUsersPage() {
             <tbody>
               {users.length === 0 ? (
                 <tr>
-                  <td colSpan={6} style={{ textAlign: "center", padding: "3rem", color: "var(--text-muted)" }}>
+                  <td colSpan={6} style={{ textAlign: "center", padding: "3rem", color: "var(--color-text-muted)" }}>
                     No users found. Click "+ Add User" to create one.
                   </td>
                 </tr>
               ) : (
                 users.map((user) => (
                   <tr key={user.UserID} className="animate-fade-in">
-                    <td style={{ color: "var(--text-muted)" }}>{user.UserID}</td>
-                    <td style={{ fontWeight: 600, color: "var(--text-primary)" }}>{user.Name}</td>
+                    <td style={{ color: "var(--color-text-muted)" }}>{user.UserID}</td>
+                    <td style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>{user.Name}</td>
                     <td>{user.Email}</td>
                     <td>
                       <span className={`badge ${ROLE_BADGE[user.Role] || "badge-primary"}`}>
@@ -282,7 +282,7 @@ export default function AdminUsersPage() {
           <div className="card animate-fade-in" style={{ width: "100%", maxWidth: "380px", textAlign: "center" }}>
             <h3 style={{ marginBottom: "0.75rem" }}>Delete User?</h3>
             <p style={{ marginBottom: "1.5rem" }}>
-              Are you sure you want to delete <strong style={{ color: "var(--text-primary)" }}>
+              Are you sure you want to delete <strong style={{ color: "var(--color-text-primary)" }}>
               {deleteTarget.Name}</strong>? This cannot be undone.
             </p>
             <div style={{ display: "flex", gap: "0.75rem" }}>

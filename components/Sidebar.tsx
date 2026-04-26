@@ -30,54 +30,54 @@ export default function Sidebar() {
         .scoutx-sidebar {
           width: 260px;
           height: 100vh;
-          background-color: #000000;
-          border-right: 1px solid rgba(255, 255, 255, 0.05);
+          background-color: var(--color-bg-body);
+          border-right: 1px solid var(--color-border-subtle);
           display: flex;
           flex-direction: column;
           position: fixed;
           left: 0;
           top: 0;
           z-index: 50;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-body);
         }
         .scoutx-sidebar-logo-container {
-          padding: 2rem;
+          padding: var(--space-xl);
         }
         .scoutx-sidebar-logo {
-          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-family: var(--font-heading);
           font-size: 28px;
-          font-weight: 900;
+          font-weight: var(--fw-black);
           letter-spacing: -0.05em;
-          color: #a3e635;
+          color: var(--color-primary);
           margin: 0;
         }
         .scoutx-sidebar-nav {
           flex: 1;
-          padding-top: 1rem;
-          padding-bottom: 1rem;
+          padding-top: var(--space-md);
+          padding-bottom: var(--space-md);
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          gap: var(--space-xs);
         }
         .scoutx-sidebar-link {
           display: flex;
           align-items: center;
-          gap: 1rem;
-          padding: 1rem 2rem;
+          gap: var(--space-md);
+          padding: var(--space-md) var(--space-xl);
           text-decoration: none;
-          transition: color 0.2s;
+          transition: color var(--transition-normal);
           border-right: 4px solid transparent;
         }
         .scoutx-sidebar-link.active {
-          color: #a3e635;
-          background-color: #000000;
-          border-right-color: #a3e635;
+          color: var(--color-primary);
+          background-color: var(--color-bg-body);
+          border-right-color: var(--color-primary);
         }
         .scoutx-sidebar-link:not(.active) {
-          color: #a1a1aa;
+          color: var(--color-text-ghost);
         }
         .scoutx-sidebar-link:not(.active):hover {
-          color: #e4e4e7;
+          color: var(--color-text-secondary);
         }
         .scoutx-sidebar-icon {
           font-family: 'Material Symbols Outlined';
@@ -87,59 +87,59 @@ export default function Sidebar() {
           font-variation-settings: 'FILL' 1;
         }
         .scoutx-sidebar-label {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-weight: 700;
-          font-size: 14px;
+          font-family: var(--font-heading);
+          font-weight: var(--fw-bold);
+          font-size: var(--text-base);
         }
         .scoutx-sidebar-footer {
-          padding: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          padding: var(--space-lg);
+          border-top: 1px solid var(--color-border-subtle);
           display: flex;
           align-items: center;
           justify-content: space-between;
-          background-color: #0a0a0a;
+          background-color: var(--color-bg-elevated);
           margin-top: auto;
         }
         .scoutx-sidebar-profile {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: var(--space-md);
         }
         .scoutx-sidebar-avatar {
           width: 40px;
           height: 40px;
-          border-radius: 9999px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          background-color: #27272a;
+          border-radius: var(--radius-full);
+          border: 1px solid var(--color-border-subtle);
+          background-color: var(--color-bg-surface-2);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #ffffff;
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-weight: 700;
+          color: var(--color-text-primary);
+          font-family: var(--font-heading);
+          font-weight: var(--fw-bold);
         }
         .scoutx-sidebar-user-name {
-          font-size: 14px;
-          font-weight: 700;
-          color: #ffffff;
+          font-size: var(--text-base);
+          font-weight: var(--fw-bold);
+          color: var(--color-text-primary);
           margin: 0;
-          line-height: 1.2;
+          line-height: var(--lh-snug);
         }
         .scoutx-sidebar-user-role {
-          font-size: 10px;
-          color: #71717a;
+          font-size: var(--text-xs);
+          color: var(--color-text-ghost);
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: var(--ls-wide);
           margin: 0;
-          margin-top: 0.25rem;
+          margin-top: var(--space-xs);
         }
         .scoutx-sidebar-logout {
           background: none;
           border: none;
-          color: #ef4444;
+          color: var(--color-danger);
           cursor: pointer;
-          padding: 0.5rem;
-          transition: color 0.2s;
+          padding: var(--space-sm);
+          transition: color var(--transition-normal);
           display: flex;
           align-items: center;
           justify-content: center;

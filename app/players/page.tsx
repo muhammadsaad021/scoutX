@@ -70,11 +70,11 @@ export default function PlayersPage() {
   return (
     <>
       <style>{`
-        .scoutx-pool-bg { background-color: #0a0a0a; min-height: 100vh; padding: 2.5rem; width: 100%; }
+        .scoutx-pool-bg { background-color: var(--color-bg-elevated); min-height: 100vh; padding: var(--space-2xl); width: 100%; }
         .scoutx-pool-container { max-width: 1000px; margin: 0 auto; }
         .scoutx-pool-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
-        .scoutx-pool-title { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 2.25rem; font-weight: 700; color: #ffffff; margin: 0 0 0.5rem 0; }
-        .scoutx-pool-subtitle { color: #888888; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin: 0; font-family: 'Inter', sans-serif; }
+        .scoutx-pool-title { font-family: var(--font-heading); font-size: 2.25rem; font-weight: var(--fw-bold); color: var(--color-text-primary); margin: 0 0 0.5rem 0; }
+        .scoutx-pool-subtitle { color: var(--color-text-muted); font-size: var(--text-sm); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: 0.05em; margin: 0; font-family: var(--font-body); }
         
         .scoutx-pool-sort-btn {
           background-color: #222222; color: #888888; font-size: 0.75rem; font-weight: 600; padding: 0.625rem 1rem;
@@ -87,7 +87,7 @@ export default function PlayersPage() {
           flex: 1; background-color: #111111; border: 1px solid #222222; border-radius: 4px;
           display: flex; align-items: center; padding: 0.75rem 1rem;
         }
-        .scoutx-pool-search-input { background: transparent; border: none; outline: none; width: 100%; color: #ffffff; font-family: 'Inter', sans-serif; font-size: 0.875rem; }
+        .scoutx-pool-search-input { background: transparent; border: none; outline: none; width: 100%; color: var(--color-text-primary); font-family: var(--font-body); font-size: var(--text-base); }
         .scoutx-pool-search-input::placeholder { color: #555555; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
         
         .scoutx-pool-filter-btn {
@@ -101,7 +101,7 @@ export default function PlayersPage() {
         .scoutx-pool-chip {
           padding: 0.5rem 1.5rem; border-radius: 9999px; font-size: 0.6875rem; font-weight: 600;
           letter-spacing: 0.05em; text-transform: uppercase; background-color: #222222; color: #888888;
-          transition: all 0.2s; border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+          transition: all var(--transition-normal); border: none; cursor: pointer; font-family: var(--font-body);
         }
         .scoutx-pool-chip:hover { background-color: #2a2a2a; color: #ffffff; }
         .scoutx-pool-chip.active { background-color: #5DFF31; color: #000000; }
@@ -113,19 +113,19 @@ export default function PlayersPage() {
           transition: all 0.2s; text-decoration: none; position: relative;
         }
         .scoutx-pool-card:hover { background-color: #151515; border-color: #333333; }
-        .scoutx-pool-avatar { width: 60px; height: 60px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 24px; color: #0a0a0a; background-color: #5DFF31; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; }
+        .scoutx-pool-avatar { width: 60px; height: 60px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 24px; color: var(--color-on-primary); background-color: var(--color-primary); font-family: var(--font-heading); font-weight: var(--fw-extrabold); }
         
         .scoutx-pool-info { flex: 1; }
         .scoutx-pool-name-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.25rem; }
-        .scoutx-pool-name { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.25rem; color: #ffffff; margin: 0; text-decoration: none; }
+        .scoutx-pool-name { font-family: var(--font-heading); font-weight: var(--fw-bold); font-size: var(--text-xl); color: var(--color-text-primary); margin: 0; text-decoration: none; }
         .scoutx-pool-name:hover { text-decoration: underline; }
-        .scoutx-pool-tag { background-color: rgba(93, 255, 49, 0.1); color: #5DFF31; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.05em; font-family: 'Inter', sans-serif; }
-        .scoutx-pool-meta { color: #888888; font-size: 0.75rem; margin: 0; font-family: 'Inter', sans-serif; }
+        .scoutx-pool-tag { background-color: var(--color-primary-muted); color: var(--color-primary); padding: 2px 8px; border-radius: var(--radius-sm); font-size: var(--text-xs); font-weight: var(--fw-semibold); letter-spacing: 0.05em; font-family: var(--font-body); }
+        .scoutx-pool-meta { color: var(--color-text-muted); font-size: var(--text-sm); margin: 0; font-family: var(--font-body); }
         
         .scoutx-pool-stats { display: flex; align-items: center; gap: 3rem; text-align: right; }
-        .scoutx-pool-stat-value { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.875rem; color: #ffffff; line-height: 1; margin-bottom: 0.125rem; }
-        .scoutx-pool-stat-value.muted { color: #888888; }
-        .scoutx-pool-stat-label { color: #555555; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; font-family: 'Inter', sans-serif; }
+        .scoutx-pool-stat-value { font-family: var(--font-heading); font-weight: var(--fw-bold); font-size: 1.875rem; color: var(--color-text-primary); line-height: 1; margin-bottom: 0.125rem; }
+        .scoutx-pool-stat-value.muted { color: var(--color-text-muted); }
+        .scoutx-pool-stat-label { color: var(--color-text-dim); font-size: 9px; font-weight: var(--fw-bold); text-transform: uppercase; letter-spacing: var(--ls-wider); font-family: var(--font-body); }
         .scoutx-pool-divider { width: 1px; height: 40px; background-color: #222222; }
 
         .scoutx-pool-actions { position: absolute; right: 1.5rem; top: 1.5rem; display: flex; gap: 0.5rem; opacity: 0; transition: opacity 0.2s; }
@@ -138,7 +138,7 @@ export default function PlayersPage() {
           position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999;
           padding: 0.875rem 1.25rem; border-radius: 0.5rem;
           color: white; font-weight: 600; box-shadow: 0 10px 25px -3px rgba(0,0,0,0.5);
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-body);
         }
 
         .scoutx-modal-overlay {
@@ -150,7 +150,7 @@ export default function PlayersPage() {
           background: #111; border: 1px solid #222; border-radius: 8px;
           padding: 2rem; width: 100%; max-width: 400px; text-align: center;
         }
-        .scoutx-modal h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.5rem; color: #fff; margin: 0 0 1rem 0; }
+        .scoutx-modal h3 { font-family: var(--font-heading); font-weight: var(--fw-bold); font-size: var(--text-2xl); color: var(--color-text-primary); margin: 0 0 var(--space-md) 0; }
         .scoutx-modal p { color: #888; margin: 0 0 2rem 0; font-size: 0.875rem; }
         .scoutx-modal-btns { display: flex; gap: 1rem; }
         .scoutx-modal-btn { flex: 1; padding: 0.75rem; border-radius: 4px; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s; }
@@ -197,10 +197,12 @@ export default function PlayersPage() {
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <button className="scoutx-pool-filter-btn">
-              <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>tune</span>
-              ADVANCED FILTERS
-            </button>
+            <Link href="/search" style={{ textDecoration: "none" }}>
+              <button className="scoutx-pool-filter-btn">
+                <span className="material-symbols-outlined" style={{ fontSize: "18px" }}>manage_search</span>
+                ADVANCED SEARCH
+              </button>
+            </Link>
           </div>
 
           {/* Filters */}
