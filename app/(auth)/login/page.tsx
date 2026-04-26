@@ -408,13 +408,13 @@ export default function LoginPage() {
       <div className="login-page">
         {/* Left Side: Image & Branding */}
         <div className="login-left">
-          <img 
-            alt="Stadium at night" 
-            className="login-bg-img" 
-            src="/stadium_bg.png" 
+          <img
+            alt="Stadium at night"
+            className="login-bg-img"
+            src="/stadium_bg.png"
           />
           <div className="login-bg-overlay"></div>
-          
+
           <div className="login-logo">
             scoutX
           </div>
@@ -422,7 +422,7 @@ export default function LoginPage() {
           <div className="login-hero">
             <h1 className="login-hero-sub">THE FUTURE OF</h1>
             <div className="login-hero-main">
-              TALENT<br/>IDENTIFICATION
+              TALENT<br />IDENTIFICATION
             </div>
             <div className="login-hero-desc-container">
               <div className="login-hero-desc-bar"></div>
@@ -449,7 +449,7 @@ export default function LoginPage() {
             <div className="login-card">
               <div className="login-glow"></div>
               <form onSubmit={handleSubmit} className="login-form">
-                
+
                 {error && (
                   <div className="login-error">
                     {error}
@@ -459,14 +459,14 @@ export default function LoginPage() {
                 <div className="login-input-group">
                   <label className="login-label" htmlFor="email">EMAIL</label>
                   <div className="login-input-wrapper">
-                    <input 
-                      id="email" 
-                      type="email" 
+                    <input
+                      id="email"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      placeholder="operative@scoutx.network" 
-                      className="login-input" 
+                      placeholder="operative@scoutx.network"
+                      className="login-input"
                     />
                     <span className="login-icon">alternate_email</span>
                   </div>
@@ -475,21 +475,21 @@ export default function LoginPage() {
                 <div className="login-input-group">
                   <label className="login-label" htmlFor="password">PASSWORD</label>
                   <div className="login-input-wrapper">
-                    <input 
-                      id="password" 
+                    <input
+                      id="password"
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      required 
-                      placeholder="••••••••••••" 
-                      className="login-input" 
+                      required
+                      placeholder="••••••••••••"
+                      className="login-input"
                     />
                     <span className="login-icon">lock</span>
                   </div>
                 </div>
 
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={loading}
                   className="login-submit-btn"
                 >

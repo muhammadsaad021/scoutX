@@ -241,6 +241,13 @@ export default function RegisterPage() {
         .scoutx-input::placeholder {
           color: var(--color-text-dim);
         }
+        .scoutx-input:-webkit-autofill,
+        .scoutx-input:-webkit-autofill:hover, 
+        .scoutx-input:-webkit-autofill:focus {
+          -webkit-text-fill-color: var(--color-text-primary);
+          -webkit-box-shadow: 0 0 0px 1000px #131313 inset;
+          transition: background-color 5000s ease-in-out 0s;
+        }
         .scoutx-input:focus {
           border-bottom-color: var(--color-primary);
         }
