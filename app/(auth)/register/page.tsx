@@ -78,13 +78,19 @@ export default function RegisterPage() {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          opacity: 0.3;
+          opacity: 0.5;
           mix-blend-mode: luminosity;
+        }
+        .scoutx-bg-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.6), rgba(0,0,0,0.9));
         }
         .scoutx-bg-effect {
           position: absolute;
           inset: 0;
-          z-index: 1;
+          z-index: 2;
           pointer-events: none;
           opacity: 0.2;
           background: radial-gradient(circle at top right, rgba(93, 255, 49, 0.15), transparent 40%), 
@@ -354,6 +360,7 @@ export default function RegisterPage() {
           className="scoutx-bg-img" 
           src="/stadium_bg.png" 
         />
+        <div className="scoutx-bg-overlay"></div>
         <div className="scoutx-bg-effect"></div>
 
         <header className="scoutx-header">
