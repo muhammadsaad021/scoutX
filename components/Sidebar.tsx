@@ -22,6 +22,11 @@ export default function Sidebar() {
   }
 
   links.push({ href: "/rankings", label: "Rankings", icon: "leaderboard" });
+
+  if (userRole === "Admin") {
+    links.push({ href: "/admin/users", label: "Users", icon: "manage_accounts" });
+  }
+
   links.push({ href: "/profile", label: "Profile", icon: "account_circle" });
 
   return (

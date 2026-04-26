@@ -41,6 +41,14 @@ export default auth((req) => {
     return Response.redirect(new URL("/login", nextUrl));
   }
 
+  // 5. If accessing Admin area, ensure user has Admin role
+  if (nextUrl.pathname.startsWith("/admin")) {
+    const userRole = (req.auth?.user as any)?.role;
+    if (userRole !== "Admin") {
+      return Response.redirect(new URL("/dashboard", nextUrl));
+    }
+  }
+
   return;
 });
 
