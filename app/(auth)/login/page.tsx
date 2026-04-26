@@ -197,11 +197,11 @@ export default function LoginPage() {
         }
         .login-mobile-logo-text {
           font-family: var(--font-heading);
-          font-size: 20px;
+          font-size: 24px;
           color: var(--color-primary);
-          letter-spacing: 0.1em;
-          text-transform: lowercase;
-          font-weight: var(--fw-semibold);
+          letter-spacing: -0.05em;
+          text-transform: none;
+          font-weight: var(--fw-black);
         }
 
         .login-form-wrapper {
@@ -456,7 +456,6 @@ export default function LoginPage() {
         {/* Right Side: Login Form */}
         <div className="login-right">
           <div className="login-mobile-logo">
-            <span className="login-mobile-logo-icon">target</span>
             <span className="login-mobile-logo-text">scoutX</span>
           </div>
 
