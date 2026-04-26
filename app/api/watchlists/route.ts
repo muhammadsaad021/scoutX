@@ -96,9 +96,9 @@ export async function POST(req: NextRequest) {
   if (error) return error;
 
   const role = (session?.user as any).role;
-  if (role !== "Coach" && role !== "Manager" && role !== "Admin" && role !== "Scout") {
+  if (role !== "Coach" && role !== "Manager" && role !== "Admin") {
     return NextResponse.json(
-      { error: "Only Coaches, Managers, Scouts or Admins can create watchlists." },
+      { error: "Only Coaches, Managers or Admins can create watchlists." },
       { status: 403 }
     );
   }

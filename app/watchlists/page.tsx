@@ -10,7 +10,7 @@ import { Watchlist } from "../../types/watchlist";
 export default function WatchlistsPage() {
   const { data: session } = useSession();
   const userRole = (session?.user as any)?.role;
-  const canManage = ["Coach", "Manager", "Admin", "Scout"].includes(userRole);
+  const canManage = ["Coach", "Manager", "Admin"].includes(userRole);
 
   const { watchlists, loading, createWatchlist, deleteWatchlist } = useWatchlists();
 

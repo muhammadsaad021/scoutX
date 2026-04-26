@@ -15,11 +15,9 @@ export default function Sidebar() {
     { href: "/players", label: "Players", icon: "group" },
   ];
 
-  if (userRole === "Manager" || userRole === "Scout") {
+  if (userRole === "Manager") {
     links.push({ href: "/watchlists", label: "Watchlist", icon: "bookmark" });
-  }
-
-  if (userRole === "Scout" || userRole === "Admin" || userRole === "Coach") {
+  } else {
     links.push({ href: "/players/new", label: "Add Player", icon: "person_add" });
   }
 
