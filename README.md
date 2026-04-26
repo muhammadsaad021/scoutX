@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ScoutX — Advanced Player Evaluation Platform
 
-## Getting Started
+ScoutX is a full-stack, modular platform designed for scouts, coaches, and managers to evaluate football talent, track performance, and generate actionable insights through rankings and comparisons.
 
-First, run the development server:
+## 🚀 Key Features
+- **Role-Based Access Control**: Different permissions for Admins, Managers, Coaches, and Scouts.
+- **Dynamic Player Profiles**: Comprehensive statistics, metrics, and scout notes.
+- **Advanced Scoring & Rankings**: Custom mathematical model to evaluate and rank players by position.
+- **Side-by-Side Comparison**: Live search and statistical comparison of up to 3 players.
+- **Watchlists**: Personal, managed watchlists for tracking talent.
+- **PDF Reporting**: Instant generation of professional scout reports.
+- **Tactical Dark Mode UI**: A highly responsive, neon-green "True Dark" aesthetic design system.
 
-```bash
+---
+
+## 🛠️ Tech Stack
+- **Frontend**: Next.js 16 (App Router), React 19, TypeScript
+- **Styling**: Vanilla CSS (Global Design System Tokens)
+- **Backend**: Next.js API Routes (Serverless)
+- **Database**: MS SQL Server (via Prisma ORM)
+- **Authentication**: NextAuth.js (Credentials Provider + JWT)
+
+---
+
+## 💻 Getting Started (Local Development)
+
+### Prerequisites
+- Node.js (v24 LTS recommended)
+- MS SQL Server (or Azure SQL Database)
+
+### 1. Clone the repository
+\`\`\`bash
+git clone https://github.com/muhammadsaad021/scoutX.git
+cd scout-x-app
+\`\`\`
+
+### 2. Install Dependencies
+\`\`\`bash
+npm install
+\`\`\`
+
+### 3. Environment Variables
+Create a \`.env\` file in the root directory:
+\`\`\`env
+# Database connection (Update with your SQL Server credentials)
+DATABASE_URL="sqlserver://localhost:1433;database=scoutx;user=sa;password=your_password;encrypt=true;trustServerCertificate=true;"
+
+# NextAuth secret key (Generate via `openssl rand -base64 32`)
+NEXTAUTH_SECRET="your-secure-random-string"
+NEXTAUTH_URL="http://localhost:3000"
+\`\`\`
+
+### 4. Database Setup
+Push the Prisma schema to your SQL Server:
+\`\`\`bash
+npx prisma db push
+\`\`\`
+
+### 5. Start the Application
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
+The app will be running at \`http://localhost:3000\`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📖 API Documentation
+ScoutX provides interactive Swagger API documentation.
+Start the server and navigate to:
+**\`http://localhost:3000/docs\`**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ☁️ Deployment (Vercel & Azure)
 
-To learn more about Next.js, take a look at the following resources:
+### Database (Azure SQL)
+1. Create a new Azure SQL Database in the Azure Portal.
+2. Under "Networking", allow "Azure services" and add your local IP.
+3. Update your local \`DATABASE_URL\` to the Azure Connection String.
+4. Run \`npx prisma db push\` to initialize tables on the cloud.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Application (Vercel)
+1. Import the GitHub repository into Vercel.
+2. In the deployment settings, add \`DATABASE_URL\` and \`NEXTAUTH_SECRET\` as Environment Variables.
+3. Click **Deploy**. Vercel will automatically build and host the Next.js application.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🏗️ Architecture
+ScoutX follows Software Design and Architecture (SDA) principles:
+- **Layered Architecture**: Separation of UI components, custom React hooks, and API Services.
+- **Single Responsibility**: Decentralized logic handling for maximum modularity.
+- **Guard Clauses**: Clean code architecture avoiding deeply nested conditionals.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*Designed with tactical precision for the modern scout.*
