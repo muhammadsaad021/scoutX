@@ -19,11 +19,11 @@ export default function ProfilePage() {
     <>
       <style>{`
         .scoutx-prof-bg {
-          background-color: #0b0b0b;
+          background-color: var(--color-bg-elevated);
           min-height: 100vh;
-          padding: 2rem;
-          color: #FFFFFF;
-          font-family: 'Inter', sans-serif;
+          padding: var(--space-xl);
+          color: var(--color-text-primary);
+          font-family: var(--font-body);
         }
         .scoutx-prof-container {
           max-width: 1000px;
@@ -67,18 +67,18 @@ export default function ProfilePage() {
           margin-bottom: 0.75rem;
         }
         .scoutx-prof-name {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 3rem;
-          color: #FFFFFF;
+          font-family: var(--font-heading);
+          font-size: var(--text-5xl);
+          color: var(--color-text-primary);
           text-transform: uppercase;
           margin: 0;
           line-height: 1;
-          letter-spacing: -0.02em;
-          font-weight: 700;
+          letter-spacing: var(--ls-tight);
+          font-weight: var(--fw-bold);
         }
         .scoutx-prof-role-badge {
-          background-color: #5DFF31;
-          color: #000000;
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
           padding: 0.125rem 0.5rem;
           border-radius: 0.25rem;
           font-size: 11px;
@@ -90,7 +90,7 @@ export default function ProfilePage() {
 
         .scoutx-prof-sysid {
           font-size: 14px;
-          color: #00E5FF;
+          color: var(--color-accent);
           letter-spacing: 0.025em;
           font-weight: 500;
           margin: 0;
@@ -106,13 +106,13 @@ export default function ProfilePage() {
         .scoutx-prof-section-title div {
           width: 1.5rem;
           height: 1px;
-          background-color: #5DFF31;
+          background-color: var(--color-primary);
         }
         .scoutx-prof-section-title h3 {
           font-size: 13px;
           font-weight: 600;
           letter-spacing: 0.05em;
-          color: #d4d4d8;
+          color: var(--color-text-secondary);
           text-transform: uppercase;
           margin: 0;
         }
@@ -142,7 +142,7 @@ export default function ProfilePage() {
           display: block;
           font-size: 11px;
           font-weight: 600;
-          color: #71717a;
+          color: var(--color-text-ghost);
           text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.75rem;
@@ -171,7 +171,7 @@ export default function ProfilePage() {
         }
         .scoutx-prof-field-text {
           font-size: 15px;
-          color: #e4e4e7;
+          color: var(--color-text-secondary);
         }
         .scoutx-prof-field-lock {
           color: #71717a;
@@ -187,7 +187,7 @@ export default function ProfilePage() {
         .scoutx-prof-auth-title h4 {
           font-size: 16px;
           font-weight: 600;
-          color: #ffffff;
+          color: var(--color-text-primary);
           margin: 0;
         }
         .scoutx-prof-auth-desc {
@@ -218,7 +218,7 @@ export default function ProfilePage() {
           font-size: 12px;
           font-weight: 700;
           letter-spacing: 0.05em;
-          color: #5DFF31;
+          color: var(--color-primary);
         }
 
         .scoutx-prof-actions {
@@ -239,8 +239,8 @@ export default function ProfilePage() {
         
         .scoutx-prof-btn-primary {
           flex: 1;
-          background-color: #5DFF31;
-          color: #000000;
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
           font-size: 13px;
           font-weight: 700;
           letter-spacing: 0.05em;

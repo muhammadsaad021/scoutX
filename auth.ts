@@ -49,28 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  callbacks: {
-    // This callback controls what goes into the JWT cookie
-    async jwt({ token, user }) {
-      if (user) {
-        // First-time login: add user details to the token
-        token.id = user.id;
-        token.role = (user as any).role;
-        token.createdAt = (user as any).createdAt;
-      }
-      return token;
-    },
-    // This callback controls what data is exposed to the frontend / client component
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string;
-        // Inject role into session so our frontend knows who is logged in
-        (session.user as any).role = token.role;
-        (session.user as any).createdAt = token.createdAt;
-      }
-      return session;
-    },
-  },
   session: { strategy: "jwt" },
   pages: {
     signIn: "/login", // We'll build this page next

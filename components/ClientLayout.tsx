@@ -10,16 +10,27 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const isAuthPage = pathname === "/login" || pathname === "/register" || pathname === "/";
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh" }}>
-      {!isAuthPage && <Sidebar />}
-      <main style={{ 
-        flex: 1, 
-        marginLeft: isAuthPage ? 0 : "260px",
-        padding: "0",
-        minHeight: "100vh",
-      }}>
-        {children}
-      </main>
-    </div>
+    <>
+      <style>{`
+        .scoutx-app-shell {
+          display: flex;
+          min-height: 100vh;
+        }
+        .scoutx-app-main {
+          flex: 1;
+          padding: 0;
+          min-height: 100vh;
+        }
+        .scoutx-app-main--with-sidebar {
+          margin-left: 260px;
+        }
+      `}</style>
+      <div className="scoutx-app-shell">
+        {!isAuthPage && <Sidebar />}
+        <main className={`scoutx-app-main ${!isAuthPage ? 'scoutx-app-main--with-sidebar' : ''}`}>
+          {children}
+        </main>
+      </div>
+    </>
   );
 }

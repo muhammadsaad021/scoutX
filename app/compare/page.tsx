@@ -1,32 +1,13 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useComparePlayers } from "../../hooks/useComparePlayers";
+import { usePlayerSearch } from "../../hooks/usePlayerSearch";
+import { ComparedPlayer, SearchResult } from "../../types/player";
 
-type ComparedPlayer = {
-  PlayerID: number;
-  Name: string;
-  Position: string;
-  Club: string | null;
-  Age: number | null;
-  Height: number | null;
-  Weight: number | null;
-  ScoutName: string | null;
-  MatchesPlayed: number;
-  TotalGoals: number;
-  TotalAssists: number;
-  TotalPasses: number;
-  AvgRating: number | null;
-  AverageScore: number | null;
-  GoalsPerMatch: number | null;
-  AssistsPerMatch: number | null;
-  PassesPerMatch: number | null;
-};
-
-type SearchResult = { PlayerID: number; Name: string; Position: string; Club: string | null };
-
-export default function ComparePage() {
+function CompareContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -34,12 +15,11 @@ export default function ComparePage() {
     const ids = searchParams.get("ids");
     return ids ? ids.split(",").map(Number).filter(Boolean) : [];
   });
-  const [compared, setCompared] = useState<ComparedPlayer[]>([]);
-  const [loading, setLoading] = useState(false);
+  
+  const { compared, loading } = useComparePlayers(selectedIds);
   
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [searching, setSearching] = useState(false);
+  const { searchResults, isSearching: searching, clearSearch } = usePlayerSearch(searchQuery);
   
   const [activePos, setActivePos] = useState("MIDFIELDER");
 
@@ -51,42 +31,14 @@ export default function ComparePage() {
     }
   }, [selectedIds, router]);
 
-  useEffect(() => {
-    if (selectedIds.length === 0) {
-      setCompared([]);
-      return;
-    }
-    setLoading(true);
-    fetch(`/api/players/compare?ids=${selectedIds.join(",")}`)
-      .then((r) => r.json())
-      .then((data) => {
-        if (!data.error) setCompared(data);
-        else setCompared([]);
-        setLoading(false);
-      });
-  }, [selectedIds]);
-
-  const runSearch = useCallback(async (q: string) => {
-    if (!q.trim()) { setSearchResults([]); return; }
-    setSearching(true);
-    const res = await fetch(`/api/players?q=${encodeURIComponent(q)}`);
-    if (res.ok) {
-      const data = await res.json();
-      setSearchResults(data.filter((p: any) => !selectedIds.includes(p.PlayerID)).slice(0, 5));
-    }
-    setSearching(false);
-  }, [selectedIds]);
-
-  useEffect(() => {
-    const t = setTimeout(() => runSearch(searchQuery), 300);
-    return () => clearTimeout(t);
-  }, [searchQuery, runSearch]);
+  // Guard Clause: Filter out players already selected from search results
+  const filteredSearchResults = searchResults.filter(p => !selectedIds.includes(p.PlayerID));
 
   const addPlayer = (player: SearchResult) => {
     if (selectedIds.length >= 2) return; // Limit to 2 for this design
     setSelectedIds((prev) => [...prev, player.PlayerID]);
     setSearchQuery("");
-    setSearchResults([]);
+    clearSearch();
   };
 
   const removePlayer = (id: number) => {
@@ -119,7 +71,7 @@ export default function ComparePage() {
   return (
     <>
       <style>{`
-        .scoutx-comp-bg { background-color: #111111; min-height: 100vh; padding: 2.5rem; color: #FFFFFF; font-family: 'Inter', sans-serif; display: flex; flex-direction: column; }
+        .scoutx-comp-bg { background-color: var(--color-bg-card); min-height: 100vh; padding: var(--space-2xl); color: var(--color-text-primary); font-family: var(--font-body); display: flex; flex-direction: column; }
         .scoutx-comp-container { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 1.5rem; }
 
         .scoutx-comp-header { display: flex; flex-direction: column; justify-content: space-between; align-items: center; gap: 1.5rem; background-color: #1A1A1A; border-radius: 0.75rem; border: 1px solid #333333; padding: 1rem; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
@@ -187,9 +139,9 @@ export default function ComparePage() {
                 />
               </div>
               
-              {searchResults.length > 0 && (
+              {filteredSearchResults.length > 0 && (
                 <div className="scoutx-comp-search-results">
-                  {searchResults.map((player) => (
+                  {filteredSearchResults.map((player) => (
                     <button key={player.PlayerID} className="scoutx-comp-search-result-item" onClick={() => addPlayer(player)}>
                       <span style={{ fontWeight: 600 }}>{player.Name}</span>
                       <span style={{ color: "#999", fontSize: "11px" }}>{player.Position} · {player.Club ?? "—"}</span>
@@ -343,5 +295,17 @@ export default function ComparePage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function ComparePage() {
+  return (
+    <Suspense fallback={
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "#111", color: "#666", fontFamily: "Inter, sans-serif" }}>
+        Loading Comparison Engine...
+      </div>
+    }>
+      <CompareContent />
+    </Suspense>
   );
 }

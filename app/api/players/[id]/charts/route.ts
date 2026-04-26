@@ -5,6 +5,8 @@
   Returns performance data formatted specifically for visualization (Recharts).
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";

@@ -13,10 +13,32 @@
   6. Return the sorted ranked list with player details
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
 
+/**
+ * @swagger
+ * /api/rankings:
+ *   get:
+ *     summary: Get player rankings
+ *     description: Retrieve ranked players, optionally filtered by position. This calculates and persists ranks.
+ *     tags:
+ *       - Rankings
+ *     parameters:
+ *       - in: query
+ *         name: position
+ *         schema:
+ *           type: string
+ *         description: Optional position filter (e.g., Forward, Midfielder)
+ *     responses:
+ *       200:
+ *         description: A list of ranked players.
+ *       500:
+ *         description: Server error.
+ */
 export async function GET(req: NextRequest) {
   const { error } = await requireAuth();
   if (error) return error;

@@ -7,6 +7,8 @@
   - DELETE: Admin only (UC-09)
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, requireRole } from "@/lib/auth-helpers";
@@ -14,6 +16,26 @@ import { requireAuth, requireRole } from "@/lib/auth-helpers";
 type Params = { params: Promise<{ id: string }> };
 
 // UC-10: GET single player profile
+/**
+ * @swagger
+ * /api/players/{id}:
+ *   get:
+ *     summary: Get player profile
+ *     description: Retrieve detailed profile for a specific player by ID.
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Player details.
+ *       404:
+ *         description: Player not found.
+ */
 export async function GET(_req: NextRequest, { params }: Params) {
   const { error } = await requireAuth();
   if (error) return error;
@@ -40,6 +62,43 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // UC-08: PUT — Update player profile
+/**
+ * @swagger
+ * /api/players/{id}:
+ *   put:
+ *     summary: Update player profile
+ *     description: Update player details (Scout or Admin only).
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               position:
+ *                 type: string
+ *               club:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Player updated.
+ *       403:
+ *         description: Forbidden.
+ *       404:
+ *         description: Player not found.
+ */
 export async function PUT(req: NextRequest, { params }: Params) {
   const { error, session } = await requireAuth();
   if (error) return error;
@@ -86,6 +145,28 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 // UC-09: DELETE — Admin only
+/**
+ * @swagger
+ * /api/players/{id}:
+ *   delete:
+ *     summary: Delete player
+ *     description: Delete a player profile (Admin only).
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Player deleted.
+ *       403:
+ *         description: Forbidden.
+ *       404:
+ *         description: Player not found.
+ */
 export async function DELETE(_req: NextRequest, { params }: Params) {
   const { error } = await requireRole("Admin");
   if (error) return error;

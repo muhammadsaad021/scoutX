@@ -37,113 +37,93 @@ export default function PerformanceCharts({ playerId }: { playerId: number }) {
   }, [playerId]);
 
   if (loading) return (
-    <div style={{ padding: "2rem", textAlign: "center", color: "var(--text-muted)" }}>
-      Loading charts...
+    <div style={{ padding: "2rem", textAlign: "center", color: "#888888", fontSize: "0.75rem", fontFamily: "'Inter', sans-serif" }}>
+      Processing analytics...
     </div>
   );
 
-  if (error === "No data" || !data || data.timeline.length === 0) return null; // Don't show chart section if no data
+  if (error === "No data" || !data || data.timeline.length === 0) return null;
 
   if (error) return (
-    <div style={{ padding: "2rem", textAlign: "center", color: "var(--danger)" }}>
+    <div style={{ padding: "2rem", textAlign: "center", color: "#EF4444", fontSize: "0.75rem", fontFamily: "'Inter', sans-serif" }}>
       {error}
     </div>
   );
 
   return (
-    <div className="card animate-fade-in" style={{ marginBottom: "2rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "1rem" }}>
-        <h3 style={{ fontSize: "1.25rem" }}>📊 Performance Visualization</h3>
-        
-        {/* Chart Type Selector */}
-        <div style={{ display: "flex", background: "var(--bg-secondary)", borderRadius: "var(--radius-md)", padding: "0.25rem" }}>
-          <button
-            onClick={() => setActiveTab("line")}
-            style={{
-              padding: "0.4rem 1rem", border: "none", borderRadius: "var(--radius-sm)", fontSize: "0.875rem", cursor: "pointer",
-              background: activeTab === "line" ? "var(--bg-card)" : "transparent",
-              color: activeTab === "line" ? "var(--text-primary)" : "var(--text-muted)",
-              fontWeight: activeTab === "line" ? 600 : 400,
-              boxShadow: activeTab === "line" ? "var(--shadow-sm)" : "none", transition: "all 0.2s ease"
-            }}
-          >
-            Trend (Line)
-          </button>
-          <button
-            onClick={() => setActiveTab("bar")}
-            style={{
-              padding: "0.4rem 1rem", border: "none", borderRadius: "var(--radius-sm)", fontSize: "0.875rem", cursor: "pointer",
-              background: activeTab === "bar" ? "var(--bg-card)" : "transparent",
-              color: activeTab === "bar" ? "var(--text-primary)" : "var(--text-muted)",
-              fontWeight: activeTab === "bar" ? 600 : 400,
-              boxShadow: activeTab === "bar" ? "var(--shadow-sm)" : "none", transition: "all 0.2s ease"
-            }}
-          >
-            Output (Bar)
-          </button>
-          <button
-            onClick={() => setActiveTab("radar")}
-            style={{
-              padding: "0.4rem 1rem", border: "none", borderRadius: "var(--radius-sm)", fontSize: "0.875rem", cursor: "pointer",
-              background: activeTab === "radar" ? "var(--bg-card)" : "transparent",
-              color: activeTab === "radar" ? "var(--text-primary)" : "var(--text-muted)",
-              fontWeight: activeTab === "radar" ? 600 : 400,
-              boxShadow: activeTab === "radar" ? "var(--shadow-sm)" : "none", transition: "all 0.2s ease"
-            }}
-          >
-            Profile (Radar)
-          </button>
+    <div style={{ width: "100%", animation: "fadeIn 0.3s ease" }}>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "1.5rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          {["line", "bar", "radar"].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab as any)}
+              style={{
+                padding: "0.4rem 1rem", border: "1px solid", borderRadius: "9999px", fontSize: "0.6875rem", cursor: "pointer",
+                background: activeTab === tab ? "rgba(93, 255, 49, 0.1)" : "#111111",
+                color: activeTab === tab ? "#5DFF31" : "#888888",
+                borderColor: activeTab === tab ? "rgba(93, 255, 49, 0.3)" : "#222222",
+                fontWeight: 600, transition: "all 0.2s ease",
+                textTransform: "uppercase", letterSpacing: "0.05em", fontFamily: "'Inter', sans-serif"
+              }}
+            >
+              {tab === "line" ? "TREND" : tab === "bar" ? "OUTPUT" : "PROFILE"}
+            </button>
+          ))}
         </div>
       </div>
 
-      <div style={{ height: "350px", width: "100%", position: "relative" }}>
+      <div style={{ height: "300px", width: "100%", position: "relative" }}>
         
         {activeTab === "line" && (
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={data.timeline} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
-              <XAxis dataKey="matchName" tick={{ fill: "var(--text-muted)", fontSize: 12 }} axisLine={{ stroke: "var(--border-color)" }} />
-              <YAxis yAxisId="left" tick={{ fill: "var(--text-muted)", fontSize: 12 }} axisLine={false} tickLine={false} domain={[0, 100]} />
-              <YAxis yAxisId="right" orientation="right" tick={{ fill: "var(--text-muted)", fontSize: 12 }} axisLine={false} tickLine={false} domain={[0, 10]} />
+            <LineChart data={data.timeline} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#222222" vertical={false} />
+              <XAxis dataKey="matchName" tick={{ fill: "#888888", fontSize: 10, fontFamily: "'Space Grotesk', monospace" }} axisLine={{ stroke: "#333333" }} />
+              <YAxis yAxisId="left" tick={{ fill: "#888888", fontSize: 10, fontFamily: "'Space Grotesk', monospace" }} axisLine={false} tickLine={false} domain={[0, 100]} />
+              <YAxis yAxisId="right" orientation="right" tick={{ fill: "#888888", fontSize: 10, fontFamily: "'Space Grotesk', monospace" }} axisLine={false} tickLine={false} domain={[0, 10]} />
               <Tooltip 
-                contentStyle={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)" }}
-                labelStyle={{ color: "var(--text-primary)", fontWeight: 600, marginBottom: "0.5rem" }}
+                contentStyle={{ background: "#111111", border: "1px solid #333333", borderRadius: "4px", color: "#FFFFFF", fontFamily: "'Inter', sans-serif", fontSize: "0.75rem" }}
+                labelStyle={{ color: "#5DFF31", fontWeight: 700, marginBottom: "0.5rem", fontFamily: "'Space Grotesk', monospace", textTransform: "uppercase" }}
               />
-              <Legend verticalAlign="top" height={36} iconType="circle" />
-              <Line yAxisId="left" type="monotone" name="Overall Score" dataKey="Score" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} activeDot={{ r: 6 }} />
-              <Line yAxisId="right" type="monotone" name="Match Rating" dataKey="Rating" stroke="#10B981" strokeWidth={3} dot={{ r: 4, strokeWidth: 2 }} />
+              <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: "10px", fontFamily: "'Inter', sans-serif", color: "#A0A0A0" }} />
+              <Line yAxisId="left" type="monotone" name="SCORE" dataKey="Score" stroke="#5DFF31" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: "#000", stroke: "#5DFF31" }} activeDot={{ r: 6, fill: "#5DFF31" }} />
+              <Line yAxisId="right" type="monotone" name="RATING" dataKey="Rating" stroke="#A0A0A0" strokeWidth={2} dot={{ r: 3, strokeWidth: 2, fill: "#000", stroke: "#A0A0A0" }} strokeDasharray="4 4" />
             </LineChart>
           </ResponsiveContainer>
         )}
 
         {activeTab === "bar" && (
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data.timeline} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" vertical={false} />
-              <XAxis dataKey="matchName" tick={{ fill: "var(--text-muted)", fontSize: 12 }} axisLine={{ stroke: "var(--border-color)" }} />
-              <YAxis tick={{ fill: "var(--text-muted)", fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
+            <BarChart data={data.timeline} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#222222" vertical={false} />
+              <XAxis dataKey="matchName" tick={{ fill: "#888888", fontSize: 10, fontFamily: "'Space Grotesk', monospace" }} axisLine={{ stroke: "#333333" }} />
+              <YAxis tick={{ fill: "#888888", fontSize: 10, fontFamily: "'Space Grotesk', monospace" }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip 
-                contentStyle={{ background: "var(--bg-card)", border: "1px solid var(--border-color)", borderRadius: "var(--radius-md)" }}
-                cursor={{ fill: "var(--bg-secondary)", opacity: 0.5 }}
+                contentStyle={{ background: "#111111", border: "1px solid #333333", borderRadius: "4px", color: "#FFFFFF", fontFamily: "'Inter', sans-serif", fontSize: "0.75rem" }}
+                cursor={{ fill: "#1A1A1A", opacity: 0.8 }}
+                labelStyle={{ color: "#5DFF31", fontWeight: 700, marginBottom: "0.5rem", fontFamily: "'Space Grotesk', monospace", textTransform: "uppercase" }}
               />
-              <Legend verticalAlign="top" height={36} iconType="circle" />
-              <Bar name="Goals" dataKey="Goals" fill="#4F46E5" radius={[4, 4, 0, 0]} maxBarSize={50} />
-              <Bar name="Assists" dataKey="Assists" fill="#F59E0B" radius={[4, 4, 0, 0]} maxBarSize={50} />
-              <Bar name="Passes" dataKey="Passes" fill="#8B5CF6" radius={[4, 4, 0, 0]} maxBarSize={50} />
+              <Legend verticalAlign="top" height={36} iconType="circle" wrapperStyle={{ fontSize: "10px", fontFamily: "'Inter', sans-serif", color: "#A0A0A0" }} />
+              <Bar name="GOALS" dataKey="Goals" fill="#5DFF31" radius={[2, 2, 0, 0]} maxBarSize={40} />
+              <Bar name="ASSISTS" dataKey="Assists" fill="#A0A0A0" radius={[2, 2, 0, 0]} maxBarSize={40} />
+              <Bar name="PASSES" dataKey="Passes" fill="#333333" radius={[2, 2, 0, 0]} maxBarSize={40} />
             </BarChart>
           </ResponsiveContainer>
         )}
 
         {activeTab === "radar" && (
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data.radar}>
-              <PolarGrid stroke="var(--border-color)" />
-              <PolarAngleAxis dataKey="subject" tick={{ fill: "var(--text-primary)", fontSize: 12, fontWeight: 500 }} />
+            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data.radar}>
+              <PolarGrid stroke="#333333" />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: "#FFFFFF", fontSize: 9, fontFamily: "'Space Grotesk', monospace", letterSpacing: "1px" }} />
               <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
               <Tooltip 
-                formatter={(value: any) => [`${Math.round(Number(value))}% (Relative)`, "Rating"]}
+                formatter={(value: any) => [`${Math.round(Number(value))}%`, "PROXIMITY"]}
+                contentStyle={{ background: "#111111", border: "1px solid #333333", borderRadius: "4px", color: "#FFFFFF", fontFamily: "'Inter', sans-serif", fontSize: "0.75rem" }}
+                itemStyle={{ color: "#5DFF31", fontFamily: "'Space Grotesk', monospace" }}
               />
-              <Radar name="Player Profile" dataKey="value" stroke="var(--primary)" fill="var(--primary)" fillOpacity={0.4} />
+              <Radar name="PROFILE METRICS" dataKey="value" stroke="#5DFF31" strokeWidth={2} fill="#5DFF31" fillOpacity={0.15} />
             </RadarChart>
           </ResponsiveContainer>
         )}

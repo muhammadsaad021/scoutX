@@ -4,39 +4,39 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlserver"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Performances {
-  PerformanceID   Int       @id(map: "PK__Performa__F9606DE1B0F36CCD") @default(autoincrement())
+  PerformanceID   Int       @id @default(autoincrement())
   PlayerID        Int?
   ScoutID         Int?
   MatchDate       DateTime  @db.Date
-  Goals           Int?      @default(0, map: "DF__Performan__Goals__571DF1D5")
-  Assists         Int?      @default(0, map: "DF__Performan__Assis__5812160E")
-  Passes          Int?      @default(0, map: "DF__Performan__Passe__59063A47")
+  Goals           Int?      @default(0)
+  Assists         Int?      @default(0)
+  Passes          Int?      @default(0)
   Rating          Float?
-  Comments        String?   @db.NVarChar(Max)
+  Comments        String?   @db.Text
   CalculatedScore Float?
-  CreatedAt       DateTime? @default(now(), map: "DF__Performan__Creat__59FA5E80")
-  Players         Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Performan__Playe__5535A963")
-  Users           Users?    @relation(fields: [ScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Performan__Scout__5629CD9C")
+  CreatedAt       DateTime? @default(now())
+  Players         Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction)
+  Users           Users?    @relation(fields: [ScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Players {
-  PlayerID         Int                @id(map: "PK__Players__4A4E74A8F62C5269") @default(autoincrement())
-  Name             String             @db.NVarChar(100)
+  PlayerID         Int                @id @default(autoincrement())
+  Name             String             @db.VarChar(100)
   Age              Int?
-  Position         String             @db.NVarChar(30)
-  Club             String?            @db.NVarChar(100)
+  Position         String             @db.VarChar(30)
+  Club             String?            @db.VarChar(100)
   Height           Float?
   Weight           Float?
   CreatedByScoutID Int?
-  CreatedAt        DateTime?          @default(now(), map: "DF__Players__Created__5165187F")
-  UpdatedAt        DateTime?          @default(now(), map: "DF__Players__Updated__52593CB8")
+  CreatedAt        DateTime?          @default(now())
+  UpdatedAt        DateTime?          @default(now())
   Performances     Performances[]
-  Users            Users?             @relation(fields: [CreatedByScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Players__Created__5070F446")
+  Users            Users?             @relation(fields: [CreatedByScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction)
   Rankings         Rankings[]
   Reports          Reports[]
   ScoutNotes       ScoutNotes[]
@@ -44,52 +44,42 @@ model Players {
 }
 
 model Rankings {
-  RankingID     Int       @id(map: "PK__Rankings__018A6AF9E89BD59F") @default(autoincrement())
+  RankingID     Int       @id @default(autoincrement())
   PlayerID      Int?
-  Position      String    @db.NVarChar(30)
+  Position      String    @db.VarChar(30)
   Rank          Int
-  GeneratedDate DateTime? @default(now(), map: "DF__Rankings__Genera__628FA481")
-  Players       Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Rankings__Player__619B8048")
+  GeneratedDate DateTime? @default(now())
+  Players       Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Reports {
-  ReportID          Int       @id(map: "PK__Reports__D5BD48E589DB51A3") @default(autoincrement())
+  ReportID          Int       @id @default(autoincrement())
   GeneratedByUserID Int?
   PlayerID          Int?
-  GeneratedDate     DateTime? @default(now(), map: "DF__Reports__Generat__6FE99F9F")
-  Format            String    @db.NVarChar(10)
-  Users             Users?    @relation(fields: [GeneratedByUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Reports__Generat__6E01572D")
-  Players           Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Reports__PlayerI__6EF57B66")
+  GeneratedDate     DateTime? @default(now())
+  Format            String    @db.VarChar(10)
+  Users             Users?    @relation(fields: [GeneratedByUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction)
+  Players           Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model ScoutNotes {
-  NoteID    Int       @id(map: "PK__ScoutNot__EACE357F27EA1EA4") @default(autoincrement())
+  NoteID    Int       @id @default(autoincrement())
   PlayerID  Int?
   ScoutID   Int?
-  NoteText  String    @db.NVarChar(Max)
-  CreatedAt DateTime? @default(now(), map: "DF__ScoutNote__Creat__5EBF139D")
-  Players   Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction, map: "FK__ScoutNote__Playe__5CD6CB2B")
-  Users     Users?    @relation(fields: [ScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK__ScoutNote__Scout__5DCAEF64")
-}
-
-model sysdiagrams {
-  name         String @db.NVarChar(128)
-  principal_id Int
-  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B61AD86644F") @default(autoincrement())
-  version      Int?
-  definition   Bytes?
-
-  @@unique([principal_id, name], map: "UK_principal_name")
+  NoteText  String    @db.Text
+  CreatedAt DateTime? @default(now())
+  Players   Players?  @relation(fields: [PlayerID], references: [PlayerID], onDelete: NoAction, onUpdate: NoAction)
+  Users     Users?    @relation(fields: [ScoutID], references: [UserID], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model Users {
-  UserID       Int            @id(map: "PK__Users__1788CCACE28D5D61") @default(autoincrement())
-  Name         String         @db.NVarChar(100)
-  Email        String         @unique(map: "UQ__Users__A9D105347A73D4F0") @db.NVarChar(150)
-  PasswordHash String         @db.NVarChar(256)
-  Role         String         @db.NVarChar(20)
-  CreatedAt    DateTime?      @default(now(), map: "DF__Users__CreatedAt__4CA06362")
-  UpdatedAt    DateTime?      @default(now(), map: "DF__Users__UpdatedAt__4D94879B")
+  UserID       Int            @id @default(autoincrement())
+  Name         String         @db.VarChar(100)
+  Email        String         @unique @db.VarChar(150)
+  PasswordHash String         @db.VarChar(256)
+  Role         String         @db.VarChar(20)
+  CreatedAt    DateTime?      @default(now())
+  UpdatedAt    DateTime?      @default(now())
   Performances Performances[]
   Players      Players[]
   Reports      Reports[]
@@ -100,18 +90,18 @@ model Users {
 model WatchListPlayers {
   WatchListID Int
   PlayerID    Int
-  AddedAt     DateTime?  @default(now(), map: "DF__WatchList__Added__6B24EA82")
-  Players     Players    @relation(fields: [PlayerID], references: [PlayerID], onUpdate: NoAction, map: "FK__WatchList__Playe__6A30C649")
-  WatchLists  WatchLists @relation(fields: [WatchListID], references: [WatchListID], onUpdate: NoAction, map: "FK__WatchList__Watch__693CA210")
+  AddedAt     DateTime?  @default(now())
+  Players     Players    @relation(fields: [PlayerID], references: [PlayerID], onUpdate: NoAction)
+  WatchLists  WatchLists @relation(fields: [WatchListID], references: [WatchListID], onUpdate: NoAction)
 
-  @@id([WatchListID, PlayerID], map: "PK__WatchLis__08E94414193A553D")
+  @@id([WatchListID, PlayerID])
 }
 
 model WatchLists {
-  WatchListID      Int                @id(map: "PK__WatchLis__9C4DA35EAC79451D") @default(autoincrement())
-  ListName         String             @db.NVarChar(100)
+  WatchListID      Int                @id @default(autoincrement())
+  ListName         String             @db.VarChar(100)
   OwnerUserID      Int?
-  CreatedAt        DateTime?          @default(now(), map: "DF__WatchList__Creat__66603565")
+  CreatedAt        DateTime?          @default(now())
   WatchListPlayers WatchListPlayers[]
-  Users            Users?             @relation(fields: [OwnerUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction, map: "FK__WatchList__Owner__656C112C")
+  Users            Users?             @relation(fields: [OwnerUserID], references: [UserID], onDelete: NoAction, onUpdate: NoAction)
 }

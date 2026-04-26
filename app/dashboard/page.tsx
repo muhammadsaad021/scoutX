@@ -1,13 +1,15 @@
+export const dynamic = "force-dynamic";
+
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 
 const SCORE_COLOR_HEX = (score: number | null) => {
-  if (!score) return "#71717a"; // zinc-500
-  if (score >= 70) return "#a3e635"; // lime-400
-  if (score >= 40) return "#f97316"; // orange-500
-  return "#ef4444"; // red-500
+  if (!score) return "#71717a";
+  if (score >= 70) return "#5DFF31";
+  if (score >= 40) return "#F5B041";
+  return "#EF4444";
 };
 
 export default async function DashboardPage() {
@@ -52,28 +54,28 @@ export default async function DashboardPage() {
     <>
       <style>{`
         .scoutx-dashboard-bg {
-          background-color: #000000;
+          background-color: var(--color-bg-body);
           min-height: 100vh;
           width: 100%;
         }
         .scoutx-dashboard-inner {
-          padding: 3rem;
+          padding: var(--space-3xl);
           max-width: 1200px;
         }
         .scoutx-dash-title {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 36px;
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.02em;
-          margin-bottom: 3rem;
+          font-family: var(--font-heading);
+          font-size: var(--text-4xl);
+          font-weight: var(--fw-bold);
+          color: var(--color-text-primary);
+          letter-spacing: var(--ls-tight);
+          margin-bottom: var(--space-3xl);
           margin-top: 0;
         }
         .scoutx-metrics-grid {
           display: grid;
           grid-template-columns: repeat(1, 1fr);
-          gap: 1.5rem;
-          margin-bottom: 3rem;
+          gap: var(--space-lg);
+          margin-bottom: var(--space-3xl);
         }
         @media (min-width: 768px) {
           .scoutx-metrics-grid {
@@ -81,16 +83,16 @@ export default async function DashboardPage() {
           }
         }
         .scoutx-metric-card {
-          background-color: #1e1e1e;
-          padding: 1.5rem;
-          border-radius: 0 0.5rem 0.5rem 0;
+          background-color: var(--color-bg-surface);
+          padding: var(--space-lg);
+          border-radius: 0 var(--radius-md) var(--radius-md) 0;
           display: flex;
           flex-direction: column;
           justify-content: center;
           height: 120px;
         }
         .scoutx-metric-label {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-body);
           font-size: 11px;
           font-weight: 700;
           text-transform: uppercase;
@@ -103,38 +105,38 @@ export default async function DashboardPage() {
           gap: 0.75rem;
         }
         .scoutx-metric-value {
-          font-family: 'Inter', sans-serif;
-          font-weight: 700;
+          font-family: var(--font-body);
+          font-weight: var(--fw-bold);
           font-size: 42px;
           line-height: 1;
         }
         .scoutx-metric-desc {
-          font-family: 'Inter', sans-serif;
-          font-size: 12px;
-          color: #71717a;
+          font-family: var(--font-body);
+          font-size: var(--text-sm);
+          color: var(--color-text-ghost);
           max-width: 100px;
           line-height: 1.2;
         }
 
         .scoutx-table-section {
-          background-color: #222222;
-          border-radius: 0.75rem;
+          background-color: var(--color-bg-surface-2);
+          border-radius: var(--radius-lg);
           overflow: hidden;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          margin-bottom: 3rem;
+          box-shadow: var(--shadow-lg);
+          border: 1px solid var(--color-border-subtle);
+          margin-bottom: var(--space-3xl);
         }
         .scoutx-table-header {
-          padding: 1.5rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding: var(--space-lg);
+          border-bottom: 1px solid var(--color-border-subtle);
           display: flex;
           align-items: center;
           justify-content: space-between;
         }
         .scoutx-table-title {
-          font-family: 'Inter', sans-serif;
-          font-weight: 700;
-          color: #ffffff;
+          font-family: var(--font-body);
+          font-weight: var(--fw-bold);
+          color: var(--color-text-primary);
           letter-spacing: 0.025em;
           display: flex;
           align-items: center;
@@ -145,25 +147,25 @@ export default async function DashboardPage() {
           width: 8px;
           height: 8px;
           border-radius: 9999px;
-          background-color: #a3e635;
+          background-color: var(--color-primary);
         }
         .scoutx-table-btn {
-          background-color: #a3e635;
-          color: #000000;
-          font-weight: 700;
-          font-size: 12px;
-          padding: 0.625rem 1.5rem;
-          border-radius: 0.25rem;
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
+          font-weight: var(--fw-bold);
+          font-size: var(--text-sm);
+          padding: 0.625rem var(--space-lg);
+          border-radius: var(--radius-sm);
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
           text-decoration: none;
-          transition: background-color 0.2s;
+          transition: background-color var(--transition-normal);
           border: none;
           cursor: pointer;
         }
         .scoutx-table-btn:hover {
-          background-color: #bef264;
+          background-color: var(--color-primary-hover);
         }
         .scoutx-table-wrapper {
           overflow-x: auto;
@@ -174,21 +176,21 @@ export default async function DashboardPage() {
           border-collapse: collapse;
         }
         .scoutx-table th {
-          padding: 1.5rem;
-          font-family: 'Inter', sans-serif;
-          font-weight: 600;
-          font-size: 10px;
-          color: #71717a;
+          padding: var(--space-lg);
+          font-family: var(--font-body);
+          font-weight: var(--fw-semibold);
+          font-size: var(--text-xs);
+          color: var(--color-text-ghost);
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          letter-spacing: var(--ls-wider);
+          border-bottom: 1px solid var(--color-border-subtle);
         }
         .scoutx-table td {
-          padding: 1.5rem;
-          font-family: 'Inter', sans-serif;
-          font-size: 14px;
-          color: #d4d4d8;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+          padding: var(--space-lg);
+          font-family: var(--font-body);
+          font-size: var(--text-base);
+          color: var(--color-text-secondary);
+          border-bottom: 1px solid var(--color-border-subtle);
         }
         .scoutx-table tbody tr {
           transition: background-color 0.2s;
@@ -210,8 +212,8 @@ export default async function DashboardPage() {
           font-size: 12px;
           font-weight: 700;
           border-radius: 0.25rem;
-          border: 1px solid rgba(163, 230, 53, 0.3);
-          color: #a3e635;
+          border: 1px solid var(--color-border-primary);
+          color: var(--color-primary);
         }
         .scoutx-rating-bar-container {
           width: 4rem;
@@ -226,36 +228,36 @@ export default async function DashboardPage() {
         }
 
         .scoutx-banner {
-          background-color: #222222;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 0.75rem;
-          padding: 2rem;
+          background-color: var(--color-bg-surface-2);
+          border: 1px solid var(--color-border-subtle);
+          border-radius: var(--radius-lg);
+          padding: var(--space-xl);
           display: flex;
           align-items: center;
           justify-content: space-between;
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+          box-shadow: var(--shadow-lg);
         }
         .scoutx-banner-title {
           font-size: 28px;
-          font-family: 'Inter', sans-serif;
-          font-weight: 900;
-          color: #ffffff;
-          letter-spacing: -0.025em;
-          margin: 0 0 0.5rem 0;
+          font-family: var(--font-body);
+          font-weight: var(--fw-black);
+          color: var(--color-text-primary);
+          letter-spacing: var(--ls-tight);
+          margin: 0 0 var(--space-sm) 0;
         }
         .scoutx-banner-desc {
-          color: #71717a;
+          color: var(--color-text-ghost);
           font-size: 11px;
-          font-weight: 700;
+          font-weight: var(--fw-bold);
           text-transform: uppercase;
-          letter-spacing: 0.1em;
+          letter-spacing: var(--ls-wider);
           margin: 0;
         }
         .scoutx-banner-btn {
           width: 3.5rem;
           height: 3.5rem;
-          background-color: #a3e635;
-          border-radius: 0.25rem;
+          background-color: var(--color-primary);
+          border-radius: var(--radius-sm);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -277,12 +279,12 @@ export default async function DashboardPage() {
           <div className="scoutx-metrics-grid">
             
             {/* Metric 1 */}
-            <div className="scoutx-metric-card" style={{ borderLeftColor: "#a3e635" }}>
-              <div style={{ color: "#a3e635" }} className="scoutx-metric-label">
+            <div className="scoutx-metric-card" style={{ borderLeftColor: "var(--color-primary)" }}>
+              <div style={{ color: "var(--color-primary)" }} className="scoutx-metric-label">
                 {isScout ? "TOTAL PLAYERS SCOUTED" : "TOTAL PLAYERS"}
               </div>
               <div className="scoutx-metric-value-row">
-                <div style={{ color: "#a3e635" }} className="scoutx-metric-value">{totalPlayers}</div>
+                <div style={{ color: "var(--color-primary)" }} className="scoutx-metric-value">{totalPlayers}</div>
                 <div className="scoutx-metric-desc">
                   {isScout ? "ACTIVE IN DATABASE" : "ACROSS NETWORK"}
                 </div>
@@ -290,12 +292,12 @@ export default async function DashboardPage() {
             </div>
 
             {/* Metric 2 */}
-            <div className="scoutx-metric-card" style={{ borderLeftColor: "#a3e635" }}>
-              <div style={{ color: "#a3e635" }} className="scoutx-metric-label">
+            <div className="scoutx-metric-card" style={{ borderLeftColor: "var(--color-primary)" }}>
+              <div style={{ color: "var(--color-primary)" }} className="scoutx-metric-label">
                 {isScout ? "MY EVALUATIONS" : "ACTIVE SCOUTS"}
               </div>
               <div className="scoutx-metric-value-row">
-                <div style={{ color: "#a3e635" }} className="scoutx-metric-value">
+                <div style={{ color: "var(--color-primary)" }} className="scoutx-metric-value">
                   {isScout ? totalEvaluations : totalScouts}
                 </div>
                 <div className="scoutx-metric-desc">

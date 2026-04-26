@@ -13,10 +13,33 @@
   - Match count
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
 
+/**
+ * @swagger
+ * /api/players/compare:
+ *   get:
+ *     summary: Compare players
+ *     description: Compare up to 3 players side-by-side by providing their IDs.
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: query
+ *         name: ids
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Comma-separated PlayerIDs (e.g. 1,2,3)
+ *     responses:
+ *       200:
+ *         description: Comparison data.
+ *       400:
+ *         description: Need at least 2 or maximum 3 players.
+ */
 export async function GET(req: NextRequest) {
   const { error } = await requireAuth();
   if (error) return error;

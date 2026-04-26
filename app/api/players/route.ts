@@ -15,11 +15,38 @@
   - POST: Scout or Admin only
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";
 import bcrypt from "bcryptjs";
 
+/**
+ * @swagger
+ * /api/players:
+ *   get:
+ *     summary: Retrieve a list of players
+ *     description: Retrieve players with optional advanced search, filter, and pagination.
+ *     tags:
+ *       - Players
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         description: Search by player name or club
+ *       - in: query
+ *         name: position
+ *         schema:
+ *           type: string
+ *         description: Filter by exact position
+ *     responses:
+ *       200:
+ *         description: A list of players.
+ *       401:
+ *         description: Unauthorized.
+ */
 export async function GET(req: NextRequest) {
   const { error } = await requireAuth();
   if (error) return error;
@@ -91,6 +118,46 @@ export async function GET(req: NextRequest) {
 }
 
 // UC-07: POST — Create player profile (Scout only)
+/**
+ * @swagger
+ * /api/players:
+ *   post:
+ *     summary: Create a new player
+ *     description: Create a new player profile (Scout or Admin only).
+ *     tags:
+ *       - Players
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - position
+ *             properties:
+ *               name:
+ *                 type: string
+ *               age:
+ *                 type: integer
+ *               position:
+ *                 type: string
+ *               club:
+ *                 type: string
+ *               height:
+ *                 type: number
+ *               weight:
+ *                 type: number
+ *     responses:
+ *       201:
+ *         description: Player created successfully.
+ *       400:
+ *         description: Validation error.
+ *       403:
+ *         description: Forbidden.
+ *       409:
+ *         description: Player already exists.
+ */
 export async function POST(req: NextRequest) {
   const { error, session } = await requireAuth();
   if (error) return error;

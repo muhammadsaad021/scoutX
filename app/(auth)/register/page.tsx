@@ -18,19 +18,24 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
-    // Send to our user creation endpoint
-    const res = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role }),
-    });
+    try {
+      // Send to our user creation endpoint
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error || "Failed to create account");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to create account");
+        setLoading(false);
+      } else {
+        router.push("/login");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
       setLoading(false);
-    } else {
-      router.push("/login");
     }
   };
 
@@ -51,30 +56,9 @@ export default function RegisterPage() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
-
-        :root {
-          --bg-main: #111111;
-          --text-main: #e5e2e1;
-          --text-white: #ffffff;
-          --text-muted: #bbcbb0;
-          --primary: #5DFF31;
-          --primary-hover: #3fe405;
-          --bg-card-active: #1a1a1a;
-          --bg-card: #151515;
-          --border-light: rgba(255, 255, 255, 0.1);
-          --border-lighter: rgba(255, 255, 255, 0.2);
-          --border-primary-dim: rgba(93, 255, 49, 0.5);
-          
-          --font-body: 'Inter', sans-serif;
-          --font-head: 'Plus Jakarta Sans', sans-serif;
-          --font-mono: 'Space Grotesk', sans-serif;
-        }
-
         .scoutx-page {
-          background-color: var(--bg-main);
-          color: var(--text-main);
+          background-color: var(--color-bg-card);
+          color: var(--color-text-secondary);
           min-height: 100vh;
           display: flex;
           flex-direction: column;
@@ -83,14 +67,30 @@ export default function RegisterPage() {
           -webkit-font-smoothing: antialiased;
         }
         .scoutx-page::selection, .scoutx-page *::selection {
-          background-color: var(--primary);
-          color: #1a7200;
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
         }
 
-        .scoutx-bg-effect {
+        .scoutx-bg-img {
           position: absolute;
           inset: 0;
           z-index: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.5;
+          mix-blend-mode: luminosity;
+        }
+        .scoutx-bg-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.6), rgba(0,0,0,0.9));
+        }
+        .scoutx-bg-effect {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
           pointer-events: none;
           opacity: 0.2;
           background: radial-gradient(circle at top right, rgba(93, 255, 49, 0.15), transparent 40%), 
@@ -101,18 +101,18 @@ export default function RegisterPage() {
           position: relative;
           z-index: 10;
           width: 100%;
-          padding: 2rem;
+          padding: var(--space-xl);
           display: flex;
           justify-content: flex-start;
           align-items: center;
         }
 
         .scoutx-logo {
-          color: var(--primary);
-          font-family: var(--font-head);
-          font-size: 24px;
+          color: var(--color-primary);
+          font-family: var(--font-heading);
+          font-size: var(--text-2xl);
           letter-spacing: -1px;
-          font-weight: 900;
+          font-weight: var(--fw-black);
         }
 
         .scoutx-main {
@@ -123,7 +123,16 @@ export default function RegisterPage() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 3rem 1rem;
+          padding: var(--space-3xl) var(--space-md);
+          background-color: rgba(17, 17, 17, 0.8);
+          backdrop-filter: blur(8px);
+          min-height: calc(100vh - 160px);
+        }
+        @media (min-width: 768px) {
+          .scoutx-main {
+             background-color: transparent;
+             backdrop-filter: none;
+          }
         }
 
         .scoutx-container {
@@ -137,43 +146,43 @@ export default function RegisterPage() {
 
         .scoutx-heading-sub {
           font-family: var(--font-mono);
-          font-size: 10px;
-          color: var(--primary);
+          font-size: var(--text-xs);
+          color: var(--color-primary);
           text-transform: uppercase;
           letter-spacing: 0.2em;
-          margin-bottom: 1rem;
+          margin-bottom: var(--space-md);
           display: block;
         }
 
         .scoutx-heading-main {
-          font-family: var(--font-head);
-          font-size: 48px;
-          color: var(--text-white);
-          line-height: 1.1;
-          font-weight: 700;
+          font-family: var(--font-heading);
+          font-size: var(--text-5xl);
+          color: var(--color-text-primary);
+          line-height: var(--lh-tight);
+          font-weight: var(--fw-bold);
           margin: 0;
         }
 
         .scoutx-role-section {
           width: 100%;
-          margin-bottom: 2.5rem;
+          margin-bottom: var(--space-2xl);
         }
 
         .scoutx-label {
           font-family: var(--font-mono);
-          font-size: 10px;
-          color: var(--text-muted);
+          font-size: var(--text-xs);
+          color: var(--color-text-ghost);
           text-transform: uppercase;
           letter-spacing: 0.2em;
-          margin-bottom: 0.5rem;
+          margin-bottom: var(--space-sm);
           display: block;
           transition: color 0.2s;
         }
 
         .scoutx-role-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 1.5rem;
+          grid-template-columns: repeat(2, 1fr);
+          gap: var(--space-lg);
         }
 
         .scoutx-role-card {
@@ -181,37 +190,37 @@ export default function RegisterPage() {
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 1.5rem 1rem;
-          border-radius: 0.25rem;
-          transition: all 0.2s;
+          padding: var(--space-lg) var(--space-md);
+          border-radius: var(--radius-sm);
+          transition: all var(--transition-normal);
           cursor: pointer;
-          background-color: var(--bg-card);
-          border: 1px solid var(--border-light);
+          background-color: var(--color-bg-card-hover);
+          border: 1px solid var(--color-border-subtle);
           outline: none;
         }
         .scoutx-role-card:hover {
-          border-color: var(--border-lighter);
+          border-color: rgba(255, 255, 255, 0.2);
         }
         .scoutx-role-card.active {
-          background-color: var(--bg-card-active);
-          border-color: var(--border-primary-dim);
+          background-color: var(--color-bg-surface);
+          border-color: rgba(93, 255, 49, 0.5);
           box-shadow: 0 0 15px rgba(93, 255, 49, 0.1);
         }
 
         .scoutx-role-icon {
           font-family: 'Material Symbols Outlined';
-          margin-bottom: 0.75rem;
+          margin-bottom: var(--space-lg);
           font-size: 30px;
           font-weight: 300;
           transition: color 0.2s;
-          color: var(--text-muted);
+          color: var(--color-text-muted);
           font-variation-settings: 'FILL' 0;
         }
         .scoutx-role-card:hover .scoutx-role-icon {
-          color: var(--text-white);
+          color: var(--color-text-primary);
         }
         .scoutx-role-card.active .scoutx-role-icon {
-          color: var(--primary);
+          color: var(--color-primary);
         }
 
         .scoutx-role-title {
@@ -219,14 +228,14 @@ export default function RegisterPage() {
           font-size: 10px;
           text-transform: uppercase;
           letter-spacing: 0.2em;
-          transition: color 0.2s;
-          color: var(--text-muted);
+          transition: color var(--transition-normal);
+          color: var(--color-text-ghost);
         }
         .scoutx-role-card:hover .scoutx-role-title {
-          color: var(--text-white);
+          color: var(--color-text-primary);
         }
         .scoutx-role-card.active .scoutx-role-title {
-          color: var(--primary);
+          color: var(--color-primary);
         }
 
         .scoutx-form {
@@ -235,10 +244,10 @@ export default function RegisterPage() {
 
         .scoutx-input-group {
           position: relative;
-          margin-bottom: 2rem;
+          margin-bottom: var(--space-xl);
         }
         .scoutx-input-group:focus-within .scoutx-label {
-          color: var(--primary);
+          color: var(--color-primary);
         }
 
         .scoutx-input {
@@ -246,19 +255,28 @@ export default function RegisterPage() {
           width: 100%;
           background: transparent;
           border: none;
-          border-bottom: 1px solid var(--border-light);
-          padding: 0.75rem 0;
-          color: var(--text-white);
+          border-bottom: 1px solid var(--color-border-subtle);
+          padding: var(--space-lg) 0;
+          color: var(--color-text-primary);
           font-family: var(--font-body);
           font-size: 16px;
-          transition: border-color 0.2s;
+          transition: border-color var(--transition-normal);
           outline: none;
         }
         .scoutx-input::placeholder {
-          color: #353534;
+          color: var(--color-text-dim);
+        }
+        .scoutx-input:-webkit-autofill,
+        .scoutx-input:-webkit-autofill:hover, 
+        .scoutx-input:-webkit-autofill:focus,
+        .scoutx-input:autofill {
+          -webkit-text-fill-color: #FFFFFF !important;
+          -webkit-box-shadow: 0 0 0px 1000px #131313 inset !important;
+          background-color: #131313 !important;
+          transition: background-color 5000s ease-in-out 0s !important;
         }
         .scoutx-input:focus {
-          border-bottom-color: var(--primary);
+          border-bottom-color: var(--color-primary);
         }
         .scoutx-input[type="password"] {
           letter-spacing: 0.2em;
@@ -266,24 +284,24 @@ export default function RegisterPage() {
 
         .scoutx-submit-btn {
           width: 100%;
-          background-color: var(--primary);
-          color: #000;
-          font-family: var(--font-head);
-          font-size: 16px;
-          font-weight: 800;
+          background-color: var(--color-primary);
+          color: var(--color-on-primary);
+          font-family: var(--font-heading);
+          font-size: var(--text-md);
+          font-weight: var(--fw-extrabold);
           text-transform: uppercase;
-          letter-spacing: 0.1em;
-          padding: 1rem;
+          letter-spacing: var(--ls-wider);
+          padding: var(--space-md);
           border-radius: 0.25rem;
           border: none;
           cursor: pointer;
           transition: all 0.2s;
           box-shadow: 0 0 20px rgba(93, 255, 49, 0.2);
-          margin-top: 1rem;
+          margin-top: var(--space-md);
         }
         .scoutx-submit-btn:hover:not(:disabled) {
-          background-color: var(--primary-hover);
-          box-shadow: 0 0 30px rgba(93, 255, 49, 0.4);
+          background-color: var(--color-primary-hover);
+          box-shadow: var(--shadow-glow-xl);
         }
         .scoutx-submit-btn:disabled {
           opacity: 0.5;
@@ -291,39 +309,39 @@ export default function RegisterPage() {
         }
 
         .scoutx-footer-link {
-          margin-top: 2rem;
+          margin-top: var(--space-xl);
           text-align: center;
           width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: 0.5rem;
+          gap: var(--space-sm);
         }
         .scoutx-footer-text {
           font-family: var(--font-mono);
           font-size: 10px;
-          color: var(--text-muted);
+          color: var(--color-text-muted);
           text-transform: uppercase;
           letter-spacing: 0.1em;
         }
         .scoutx-link {
           font-family: var(--font-mono);
           font-size: 10px;
-          color: var(--primary);
+          color: var(--color-primary);
           text-transform: uppercase;
           letter-spacing: 0.1em;
           text-decoration: none;
           transition: color 0.2s;
         }
         .scoutx-link:hover {
-          color: var(--text-white);
+          color: var(--color-text-primary);
         }
 
         .scoutx-footer {
           position: relative;
           z-index: 10;
           width: 100%;
-          padding: 1.5rem 2rem;
+          padding: var(--space-lg) var(--space-xl);
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
@@ -331,12 +349,18 @@ export default function RegisterPage() {
         .scoutx-copyright {
           font-family: var(--font-mono);
           font-size: 10px;
-          color: var(--text-muted);
-          letter-spacing: 0.1em;
+          color: var(--color-text-ghost);
+          letter-spacing: var(--ls-wider);
         }
       `}</style>
 
       <div className="scoutx-page">
+        <img 
+          alt="Stadium background" 
+          className="scoutx-bg-img" 
+          src="/stadium_bg.png" 
+        />
+        <div className="scoutx-bg-overlay"></div>
         <div className="scoutx-bg-effect"></div>
 
         <header className="scoutx-header">
@@ -357,11 +381,10 @@ export default function RegisterPage() {
                 <div className="scoutx-role-grid">
                   <RoleBox rTitle="Manager" icon="business_center" />
                   <RoleBox rTitle="Scout" icon="visibility" />
-                  <RoleBox rTitle="Admin" icon="settings" />
                 </div>
               </div>
 
-              {error && <div style={{ color: "#ffb4ab", fontSize: "14px", marginBottom: "1.5rem" }}>{error}</div>}
+              {error && <div style={{ color: "var(--color-danger)", fontSize: "var(--text-base)", marginBottom: "var(--space-lg)" }}>{error}</div>}
 
               <div className="scoutx-input-group">
                 <label className="scoutx-label" htmlFor="fullName">FULL NAME</label>
