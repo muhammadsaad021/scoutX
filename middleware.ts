@@ -7,6 +7,7 @@ const { auth } = NextAuth(authConfig);
 const publicRoutes = ["/", "/login", "/register"];
 const authRoutes = ["/login", "/register"];
 const apiAuthPrefix = "/api/auth";
+const publicApiRoutes = ["/api/users"]; // registration endpoint
 
 export default auth((req) => {
   const { nextUrl } = req;
@@ -15,13 +16,19 @@ export default auth((req) => {
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+  const isPublicApiRoute = publicApiRoutes.includes(nextUrl.pathname);
 
   // 1. Let NextAuth internal API routes process normally
   if (isApiAuthRoute) {
     return;
   }
 
-  // 2. If trying to visit Login page while already logged in -> kick them to dashboard
+  // 2. Let public API routes (e.g. registration) through without auth
+  if (isPublicApiRoute) {
+    return;
+  }
+
+  // 3. If trying to visit Login page while already logged in -> kick them to dashboard
   if (isAuthRoute) {
     if (isLoggedIn) {
       return Response.redirect(new URL("/dashboard", nextUrl));
@@ -29,7 +36,7 @@ export default auth((req) => {
     return;
   }
 
-  // 3. If accessing a protected route (e.g. /dashboard) without being logged in -> kick to /login
+  // 4. If accessing a protected route (e.g. /dashboard) without being logged in -> kick to /login
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/login", nextUrl));
   }

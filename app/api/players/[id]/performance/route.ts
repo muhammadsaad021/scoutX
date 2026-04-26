@@ -5,6 +5,8 @@
   Automatically calculates and stores the CalculatedScore using our scoring formula.
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";

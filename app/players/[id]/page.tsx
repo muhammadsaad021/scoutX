@@ -185,6 +185,10 @@ export default function PlayerProfilePage() {
   const avgRating = player.Performances.length
     ? (player.Performances.reduce((s, p) => s + (p.Rating || 0), 0) / player.Performances.length).toFixed(1)
     : null;
+
+  const avgScore = player.Performances.length
+    ? Math.round(player.Performances.reduce((s, p) => s + (p.CalculatedScore || 0), 0) / player.Performances.length)
+    : null;
     
   const isScoutOrAdmin = userRole === "Scout" || userRole === "Admin";
 
@@ -320,7 +324,7 @@ export default function PlayerProfilePage() {
             <div className="scoutx-pp-score-col">
               <p className="scoutx-pp-score-label">SCORE</p>
               <div className="scoutx-pp-score-val">
-                {avgRating ? Math.round(parseFloat(avgRating) * 10) : "—"}
+                {avgScore || "—"}
               </div>
             </div>
           </div>

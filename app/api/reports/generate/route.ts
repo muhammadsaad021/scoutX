@@ -6,6 +6,8 @@
   dossier (profile, performances, notes) so the frontend can build the PDF.
 */
 
+export const dynamic = "force-dynamic";
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth } from "@/lib/auth-helpers";

@@ -63,7 +63,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     // This callback controls what data is exposed to the frontend / client component
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id as string;
+        session.user.id = (token.id as string) || (token.sub as string);
         // Inject role into session so our frontend knows who is logged in
         (session.user as any).role = token.role;
         (session.user as any).createdAt = token.createdAt;

@@ -18,19 +18,24 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
-    // Send to our user creation endpoint
-    const res = await fetch("/api/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role }),
-    });
+    try {
+      // Send to our user creation endpoint
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
+      });
 
-    const data = await res.json();
-    if (!res.ok) {
-      setError(data.error || "Failed to create account");
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to create account");
+        setLoading(false);
+      } else {
+        router.push("/login");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
       setLoading(false);
-    } else {
-      router.push("/login");
     }
   };
 
