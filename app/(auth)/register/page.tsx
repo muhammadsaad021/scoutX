@@ -71,10 +71,20 @@ export default function RegisterPage() {
           color: var(--color-on-primary);
         }
 
-        .scoutx-bg-effect {
+        .scoutx-bg-img {
           position: absolute;
           inset: 0;
           z-index: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity: 0.3;
+          mix-blend-mode: luminosity;
+        }
+        .scoutx-bg-effect {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
           pointer-events: none;
           opacity: 0.2;
           background: radial-gradient(circle at top right, rgba(93, 255, 49, 0.15), transparent 40%), 
@@ -108,6 +118,15 @@ export default function RegisterPage() {
           align-items: center;
           justify-content: center;
           padding: var(--space-3xl) var(--space-md);
+          background-color: rgba(17, 17, 17, 0.8);
+          backdrop-filter: blur(8px);
+          min-height: calc(100vh - 160px);
+        }
+        @media (min-width: 768px) {
+          .scoutx-main {
+             background-color: transparent;
+             backdrop-filter: none;
+          }
         }
 
         .scoutx-container {
@@ -243,10 +262,12 @@ export default function RegisterPage() {
         }
         .scoutx-input:-webkit-autofill,
         .scoutx-input:-webkit-autofill:hover, 
-        .scoutx-input:-webkit-autofill:focus {
-          -webkit-text-fill-color: var(--color-text-primary);
-          -webkit-box-shadow: 0 0 0px 1000px #131313 inset;
-          transition: background-color 5000s ease-in-out 0s;
+        .scoutx-input:-webkit-autofill:focus,
+        .scoutx-input:autofill {
+          -webkit-text-fill-color: #FFFFFF !important;
+          -webkit-box-shadow: 0 0 0px 1000px #131313 inset !important;
+          background-color: #131313 !important;
+          transition: background-color 5000s ease-in-out 0s !important;
         }
         .scoutx-input:focus {
           border-bottom-color: var(--color-primary);
@@ -328,6 +349,11 @@ export default function RegisterPage() {
       `}</style>
 
       <div className="scoutx-page">
+        <img 
+          alt="Stadium background" 
+          className="scoutx-bg-img" 
+          src="/stadium_bg.png" 
+        />
         <div className="scoutx-bg-effect"></div>
 
         <header className="scoutx-header">

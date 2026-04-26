@@ -53,14 +53,20 @@ export default function LoginPage() {
         }
 
         .login-left {
-          display: none;
+          display: flex;
           flex-direction: column;
-          width: 60%;
-          position: relative;
+          width: 100%;
+          position: absolute;
+          inset: 0;
+          z-index: 0;
           background-color: var(--color-bg-elevated);
         }
         @media (min-width: 768px) {
-          .login-left { display: flex; }
+          .login-left { 
+            position: relative;
+            width: 60%;
+            display: flex; 
+          }
         }
 
         .login-bg-img {
@@ -154,13 +160,18 @@ export default function LoginPage() {
           align-items: center;
           padding: var(--space-xl);
           position: relative;
-          background-color: #131313;
+          background-color: rgba(19, 19, 19, 0.85);
+          backdrop-filter: blur(8px);
           z-index: 20;
+          min-height: 100vh;
         }
         @media (min-width: 768px) {
           .login-right {
             width: 40%;
             border-left: 1px solid var(--color-border-subtle);
+            background-color: #131313;
+            backdrop-filter: none;
+            min-height: auto;
           }
         }
         @media (min-width: 1024px) {
@@ -299,6 +310,15 @@ export default function LoginPage() {
         }
         .login-input::placeholder {
           color: var(--color-text-dim);
+        }
+        .login-input:-webkit-autofill,
+        .login-input:-webkit-autofill:hover, 
+        .login-input:-webkit-autofill:focus,
+        .login-input:autofill {
+          -webkit-text-fill-color: #FFFFFF !important;
+          -webkit-box-shadow: 0 0 0px 1000px #131313 inset !important;
+          background-color: #131313 !important;
+          transition: background-color 5000s ease-in-out 0s !important;
         }
         .login-input[type="password"] {
           letter-spacing: 0.2em;
