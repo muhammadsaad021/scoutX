@@ -217,21 +217,6 @@ export default function WatchlistsPage() {
               </div>
             )}
           </div>
-
-          {/* Decorative Technical Grid Overlay Hint */}
-          <div className="scoutx-wl-grid-hint">
-            <div className="scoutx-wl-grid-lines">
-              <div className="scoutx-wl-grid-line-active"></div>
-              <div className="scoutx-wl-grid-line"></div>
-              <div className="scoutx-wl-grid-line"></div>
-              <div className="scoutx-wl-grid-line"></div>
-            </div>
-            <div className="scoutx-wl-system-status">
-              <p className="scoutx-wl-system-text">System Status: Optim</p>
-              <p className="scoutx-wl-system-text">Ref: SX-WL-9920</p>
-            </div>
-          </div>
-
         </div>
       </div>
 
