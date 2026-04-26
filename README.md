@@ -19,7 +19,7 @@ ScoutX is a full-stack, modular platform designed for scouts, coaches, and manag
 - **Frontend**: Next.js 16 (App Router), React 19, TypeScript
 - **Styling**: Vanilla CSS (Global Design System Tokens)
 - **Backend**: Next.js API Routes (Serverless architecture)
-- **Database**: MS SQL Server (via Prisma ORM)
+- **Database**: PostgreSQL (hosted on Neon, accessed via Prisma ORM)
 - **Authentication**: NextAuth.js (Credentials Provider and JWT)
 
 ---
@@ -29,7 +29,7 @@ ScoutX is a full-stack, modular platform designed for scouts, coaches, and manag
 ### Prerequisites
 
 - Node.js (v24 LTS recommended)
-- MS SQL Server (or Azure SQL Database)
+- A Neon PostgreSQL database (free tier available at [neon.tech](https://neon.tech))
 
 ### 1. Repository Setup
 
@@ -46,8 +46,8 @@ npm install
 Create a `.env` file in the root directory and populate it with your specific credentials:
 
 ```env
-# Database connection (Update with your SQL Server credentials)
-DATABASE_URL="sqlserver://localhost:1433;database=scoutx;user=sa;password=your_password;encrypt=true;trustServerCertificate=true;"
+# Neon PostgreSQL Connection String (from Neon Dashboard)
+DATABASE_URL="postgresql://username:password@ep-xxxx.us-east-2.aws.neon.tech/scoutx-db?sslmode=require"
 
 # NextAuth secret key (Generate via `openssl rand -base64 32`)
 NEXTAUTH_SECRET="your-secure-random-string"
@@ -56,7 +56,7 @@ NEXTAUTH_URL="http://localhost:3000"
 
 ### 3. Database Initialization
 
-Push the Prisma schema to your SQL Server to establish the tables:
+Push the Prisma schema to your Neon PostgreSQL database to establish the tables:
 
 ```bash
 npx prisma db push
@@ -85,12 +85,12 @@ Once the server is running, navigate to the following URL to view the OpenAPI sp
 
 ## Deployment Procedures
 
-### Database Hosting (Azure SQL)
+### Database Hosting (Neon PostgreSQL)
 
-1. Provision a new Azure SQL Database via the Azure Portal.
-2. In the Networking settings, enable "Allow Azure services and resources to access this server" and add your local IP address.
-3. Update your local `DATABASE_URL` with the Azure Connection String.
-4. Execute `npx prisma db push` to initialize the tables on the cloud infrastructure.
+1. Sign up at [neon.tech](https://neon.tech) and create a new project.
+2. Copy the connection string from the Neon Dashboard (format: `postgresql://user:pass@ep-xxxx.aws.neon.tech/dbname?sslmode=require`).
+3. Set the `DATABASE_URL` environment variable to the connection string.
+4. Execute `npx prisma db push` to initialize the tables on the cloud database.
 
 ### Application Hosting (Vercel)
 

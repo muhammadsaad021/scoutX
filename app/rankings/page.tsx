@@ -150,7 +150,7 @@ export default function RankingsPage() {
           {/* Page Header */}
           <header className="scoutx-rankings-header">
             <div>
-              <h1 className="scoutx-rankings-title">ScoutX Intel Rankings</h1>
+              <h1 className="scoutx-rankings-title">Rankings</h1>
               <p className="scoutx-rankings-subtitle">
                 {loading ? "Analyzing Database..." : message || `${total} player${total !== 1 ? "s" : ""} evaluated${position ? ` — ${position}` : ""}`}
               </p>
